@@ -4,12 +4,12 @@
     <h1>@ViewBag.CurrentViewName</h1>
     <table class='table table-striped'>
         <tr><th>Id</th><th>Name</th><th>Price</th><th>Description</th></tr>
-        @foreach (var item in Model)
+        @foreach (var bruker in Model)
         {
             <tr>
-                <td>@item.ItemId</td>
-                <td>@item.Name</td>
-                <td>@item.Price.ToString("0.00 NOK")</td>
+                <td>@bruker.Id</td>
+                <td>@item.Brukernavn</td>
+                <td>@item.Epost</td>
                 <td></td>
             </tr>
         }
