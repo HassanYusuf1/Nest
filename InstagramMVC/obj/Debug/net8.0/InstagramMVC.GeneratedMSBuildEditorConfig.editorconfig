@@ -9,31 +9,31 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = InstagramMVC
 build_property.RootNamespace = InstagramMVC
-build_property.ProjectDir = C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\
+build_property.ProjectDir = C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC
+build_property.MSBuildProjectDirectory = C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/mbmik/OneDrive/Dokumenter/GitHub/Instagram/InstagramMVC/Views/Home/Index.cshtml]
+[C:/Users/hassan/Documents/DataIngeniør/WebApp/Instagram/Instagram/InstagramMVC/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mbmik/OneDrive/Dokumenter/GitHub/Instagram/InstagramMVC/Views/Item/Table.cshtml]
+[C:/Users/hassan/Documents/DataIngeniør/WebApp/Instagram/Instagram/InstagramMVC/Views/Item/Table.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSXRlbVxUYWJsZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mbmik/OneDrive/Dokumenter/GitHub/Instagram/InstagramMVC/Views/_ViewImports.cshtml]
+[C:/Users/hassan/Documents/DataIngeniør/WebApp/Instagram/Instagram/InstagramMVC/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mbmik/OneDrive/Dokumenter/GitHub/Instagram/InstagramMVC/Views/_ViewStart.cshtml]
+[C:/Users/hassan/Documents/DataIngeniør/WebApp/Instagram/Instagram/InstagramMVC/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/mbmik/OneDrive/Dokumenter/GitHub/Instagram/InstagramMVC/Views/Shared/_Layout.cshtml]
+[C:/Users/hassan/Documents/DataIngeniør/WebApp/Instagram/Instagram/InstagramMVC/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-afvbbtr849
