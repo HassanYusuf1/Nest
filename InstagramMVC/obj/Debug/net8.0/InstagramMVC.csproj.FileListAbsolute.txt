@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\bin\Debug\net8.0\appsettings.json
 C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\bin\Debug\net8.0\InstagramMVC.exe
@@ -24,3 +25,31 @@ C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\obj\Debug\net8.
 C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.pdb
 C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.genruntimeconfig.cache
 C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\obj\Debug\net8.0\ref\InstagramMVC.dll
+=======
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\bin\Debug\net8.0\appsettings.json
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\bin\Debug\net8.0\InstagramMVC.exe
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\bin\Debug\net8.0\InstagramMVC.deps.json
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\bin\Debug\net8.0\InstagramMVC.runtimeconfig.json
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\bin\Debug\net8.0\InstagramMVC.dll
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\bin\Debug\net8.0\InstagramMVC.pdb
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.AssemblyInfoInputs.cache
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.AssemblyInfo.cs
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.csproj.CoreCompileInputs.cache
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.sourcelink.json
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\staticwebassets\msbuild.InstagramMVC.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\staticwebassets\msbuild.build.InstagramMVC.props
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.InstagramMVC.props
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.InstagramMVC.props
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\scopedcss\bundle\InstagramMVC.styles.css
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.dll
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\refint\InstagramMVC.dll
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.pdb
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.genruntimeconfig.cache
+C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\ref\InstagramMVC.dll
+>>>>>>> fad57e36dcfb687d674fe0fb9f1ad760d56afdd2
