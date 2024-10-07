@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "a2HJZ5worRCmWJAnLQoMrd58QG1gZCk13U+0w4NO7SQ=",
+  "Hash": "RsKeMvZqNJLCVMdhM8MseqwyYSAztSCR3TpRO+tBuog=",
   "Source": "InstagramMVC",
   "BasePath": "_content/InstagramMVC",
   "Mode": "Default",
@@ -9,10 +9,10 @@
   "DiscoveryPatterns": [],
   "Assets": [
     {
-      "Identity": "C:\\Users\\hassan\\Documents\\DataIngeniør\\WebApp\\Instagram\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\bundle\\InstagramMVC.styles.css",
+      "Identity": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\bundle\\InstagramMVC.styles.css",
       "SourceId": "InstagramMVC",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\hassan\\Documents\\DataIngeniør\\WebApp\\Instagram\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/InstagramMVC",
       "RelativePath": "InstagramMVC.styles.css",
       "AssetKind": "All",
@@ -25,13 +25,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\hassan\\Documents\\DataIngeniør\\WebApp\\Instagram\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\bundle\\InstagramMVC.styles.css"
+      "OriginalItemSpec": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\bundle\\InstagramMVC.styles.css"
     },
     {
-      "Identity": "C:\\Users\\hassan\\Documents\\DataIngeniør\\WebApp\\Instagram\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\InstagramMVC.bundle.scp.css",
+      "Identity": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\InstagramMVC.bundle.scp.css",
       "SourceId": "InstagramMVC",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\hassan\\Documents\\DataIngeniør\\WebApp\\Instagram\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/InstagramMVC",
       "RelativePath": "InstagramMVC.bundle.scp.css",
       "AssetKind": "All",
@@ -44,7 +44,7 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\hassan\\Documents\\DataIngeniør\\WebApp\\Instagram\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\InstagramMVC.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\InstagramMVC.bundle.scp.css"
     }
   ]
 }
