@@ -1,0 +1,17 @@
+@model IEnumerable<InstagramMVC.Models.Bruker>
+
+<div class="container">
+    <h1>@ViewBag.CurrentViewName</h1>
+    <table class='table table-striped'>
+        <tr><th>Id</th><th>Name</th><th>Price</th><th>Description</th></tr>
+        @foreach (var bruker in Model)
+        {
+            <tr>
+                <td>@bruker.Id</td>
+                <td>@bruker.BrukerNavn</td>
+                <td>@bruker.Epost</td>
+                <td></td>
+            </tr>
+        }
+    </table>
+</div>
