@@ -1,4 +1,4 @@
-namespace Instagram.Models{
+namespace InstagramMVC.Models{
 public class Bruker {
     public int Id { get; set;}
     public string BrukerNavn {get; set;}

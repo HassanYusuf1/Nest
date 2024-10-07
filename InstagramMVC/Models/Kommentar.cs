@@ -1,4 +1,4 @@
-namespace Instagram.Models{
+namespace InstagramMVC.Models{
 public class Kommentar {
 
     public int Id {get; set;}

@@ -1,5 +1,5 @@
 using System;
-namespace Instagram.Models {
+namespace InstagramMVC.Models {
     public class Innlegg {
         public int Id {get; set;}  
         public string BildeSti {get; set;}  // Lagrer filstien til bilde
