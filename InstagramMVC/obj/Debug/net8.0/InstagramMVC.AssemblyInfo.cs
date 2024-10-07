@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InstagramMVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0ea431e008691efb8ecc4944c3cde2cb0c0a0c01")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+72a2f15bab453eda3a24cabdad7e982c5ccc6a60")]
 [assembly: System.Reflection.AssemblyProductAttribute("InstagramMVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InstagramMVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
