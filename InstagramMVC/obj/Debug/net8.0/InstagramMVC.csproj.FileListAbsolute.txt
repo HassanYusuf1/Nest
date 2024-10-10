@@ -56,8 +56,6 @@ C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\
 C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\bin\Debug\net8.0\InstagramMVC.staticwebassets.runtime.json
 C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.RazorAssemblyInfo.cache
 C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.RazorAssemblyInfo.cs
-C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
-C:\Users\mbmik\OneDrive\Dokumenter\GitHub\Instagram\InstagramMVC\obj\Debug\net8.0\scopedcss\projectbundle\InstagramMVC.bundle.scp.css
 C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\bin\Debug\net8.0\InstagramMVC.staticwebassets.runtime.json
 C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.RazorAssemblyInfo.cache
 C:\Users\hassan\Documents\DataIngeniør\WebApp\Instagram\Instagram\InstagramMVC\obj\Debug\net8.0\InstagramMVC.RazorAssemblyInfo.cs

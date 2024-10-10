@@ -1,50 +1,39 @@
 {
   "Version": 1,
-  "Hash": "RsKeMvZqNJLCVMdhM8MseqwyYSAztSCR3TpRO+tBuog=",
+  "Hash": "bSh/ssvQ3hIf4psz94gL0976MMeRGbio7oVGx4MEPk0=",
   "Source": "InstagramMVC",
   "BasePath": "_content/InstagramMVC",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "InstagramMVC\\wwwroot",
+      "Source": "InstagramMVC",
+      "ContentRoot": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\wwwroot\\",
+      "BasePath": "_content/InstagramMVC",
+      "Pattern": "**"
+    }
+  ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\bundle\\InstagramMVC.styles.css",
+      "Identity": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\wwwroot\\css\\h.css",
       "SourceId": "InstagramMVC",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\wwwroot\\",
       "BasePath": "_content/InstagramMVC",
-      "RelativePath": "InstagramMVC.styles.css",
+      "RelativePath": "css/h.css",
       "AssetKind": "All",
-      "AssetMode": "CurrentProject",
+      "AssetMode": "All",
       "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
+      "AssetMergeBehavior": "PreferTarget",
       "AssetMergeSource": "",
       "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\bundle\\InstagramMVC.styles.css"
-    },
-    {
-      "Identity": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\InstagramMVC.bundle.scp.css",
-      "SourceId": "InstagramMVC",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/InstagramMVC",
-      "RelativePath": "InstagramMVC.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\InstagramMVC.bundle.scp.css"
+      "OriginalItemSpec": "wwwroot\\css\\h.css"
     }
   ]
 }

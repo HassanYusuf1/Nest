@@ -1,8 +1,8 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\InstagramMVC.bundle.scp.css",
-      "PackagePath": "staticwebassets\\InstagramMVC.bundle.scp.css"
+      "Id": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\wwwroot\\css\\h.css",
+      "PackagePath": "staticwebassets\\css\\h.css"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.InstagramMVC.Microsoft.AspNetCore.StaticWebAssets.props",
