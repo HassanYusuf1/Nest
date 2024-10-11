@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bSh/ssvQ3hIf4psz94gL0976MMeRGbio7oVGx4MEPk0=",
+  "Hash": "crBCB2uCVLzNzhjX5FTBghco0mBXuGYLfj8XX0dBAII=",
   "Source": "InstagramMVC",
   "BasePath": "_content/InstagramMVC",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\wwwroot\\css\\h.css",
+      "Identity": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\wwwroot\\css\\Layout.css",
       "SourceId": "InstagramMVC",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\wwwroot\\",
       "BasePath": "_content/InstagramMVC",
-      "RelativePath": "css/h.css",
+      "RelativePath": "css/Layout.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -33,7 +33,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\h.css"
+      "OriginalItemSpec": "wwwroot\\css\\Layout.css"
     }
   ]
 }

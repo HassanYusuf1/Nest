@@ -1,8 +1,8 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\wwwroot\\css\\h.css",
-      "PackagePath": "staticwebassets\\css\\h.css"
+      "Id": "C:\\Users\\mbmik\\OneDrive\\Dokumenter\\GitHub\\Instagram\\InstagramMVC\\wwwroot\\css\\Layout.css",
+      "PackagePath": "staticwebassets\\css\\Layout.css"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.InstagramMVC.Microsoft.AspNetCore.StaticWebAssets.props",
