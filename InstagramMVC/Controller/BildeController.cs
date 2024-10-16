@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 using InstagramMVC.Models;
-using InstagramMVC.DAL; 
+ 
 using Microsoft.AspNetCore.Authorization;
 
 
@@ -35,7 +35,7 @@ namespace InstagramMVC.Controllers{
             {
                 _logger.LogError("[BildeController] Ingen bilder funnet");
                 
-                return NotFound("Ingen bilder funnet")
+                return NotFound("Ingen bilder funnet");
             }  
 
 
@@ -81,7 +81,7 @@ namespace InstagramMVC.Controllers{
                 //Henter brukerens ID og setter den som eier. 
                 bilde.BrukerId = int.Parse(User.Identity.Name);
                 //Lagrer det nye bildet i databasen ved hjelp av Repo
-                await _bildeRepository.Lag(hentAlleBilder);
+                await _bildeRepository.Create(bilde);
                 // Omdirigerer til brukeren til "BildeGalleri"- 
                 return RedirectToAction(nameof(hentAlleBilder));
             }
