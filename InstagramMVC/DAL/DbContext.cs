@@ -10,12 +10,12 @@ namespace InstagramMVC.DAL
     {
         public MediaDbContext (DbContextOptions<MediaDbContext> options) : base (options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
 
         }
     
 
-    public DbSet<Bilde> Bilder {get; set;}
+    
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
