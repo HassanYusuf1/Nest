@@ -32,6 +32,21 @@ namespace InstagramMVC.DAL
             }
         }
 
+        public async Task<bool> Opprette(Bilde bilde)
+        {
+            try
+            {
+                await _context.Bilder.AddAsync(bilde);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("[BildeRespository] Feil ved opprettelse av {@bilde}, FeilMelding: {e} ", bilde , e.Message);
+                return false;
+            }
+        }
+
 
     }
 }
