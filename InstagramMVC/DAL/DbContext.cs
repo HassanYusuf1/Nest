@@ -14,6 +14,7 @@ namespace InstagramMVC.DAL
 
         }
     
+    public DbSet<Bilde> Bilder {get; set;}
 
     
 
