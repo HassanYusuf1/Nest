@@ -6,7 +6,7 @@ public class Bruker {
     public String? Passord {get; set;}
 
 
-    public List <Innlegg>? Innlegg {get; set;} //Lager Liste over brukerens innlegg
+    public List <Bilde>? Innlegg {get; set;} //Lager Liste over brukerens innlegg
      public List <Kommentar>? Kommentarer {get; set;} // L
 
 
