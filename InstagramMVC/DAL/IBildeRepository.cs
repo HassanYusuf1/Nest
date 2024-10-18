@@ -13,7 +13,7 @@ namespace InstagramMVC.DAL
         Task<bool> Opprette(Bilde bilde);
 
         // Hente Bilde basert på ID
-        //Task<Bilde?> BildeId(int id);
+        Task<Bilde?> BildeId(int id);
 
          
 

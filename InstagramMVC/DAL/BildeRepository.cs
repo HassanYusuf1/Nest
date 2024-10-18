@@ -47,6 +47,19 @@ namespace InstagramMVC.DAL
             }
         }
 
+        public async Task<Bilde?> BildeId(int id)
+        {
+            try
+            {
+                return await _context.Bilder.FindAsync(id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[BildeRepository] Feilet ved henting av bilde med ID {id} (FindAsync), Feilmelding: {e}", id, e.Message);
+                return null;
+            }
+        }
+
 
     }
 }

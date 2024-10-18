@@ -24,6 +24,39 @@ namespace InstagramMVC.Controllers
             return Ok(bilder);
         }  
 
+        [HttpPost]
+        public async Task<IActionResult> Opprette(Bilde nyttBilde)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest("Ugyldig bilde format");
+            }
+            bool vellykket = await _bildeRepository.Opprette(nyttBilde);
+            if (vellykket)
+            {
+                return Ok( new {vellykket = true, message= "Bilde ble opprettet."});
+            }
+            else 
+            {
+                return BadRequest("Kunne ikke opprette bilde");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> BildeId(int id)
+        {
+            var bilde = await _bildeRepository.BildeId(id);
+            if (bilde == null)
+            {
+                _logger.LogWarning("Bilde med ID {ID} ikke funnet", id);
+                return NotFound();
+            }
+            return Ok(bilde);
+        }
+
+
+
+
 
 
 
