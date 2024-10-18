@@ -15,6 +15,12 @@ namespace InstagramMVC.DAL
         // Hente Bilde basert på ID
         Task<Bilde?> BildeId(int id);
 
+        // Oppdaterer en eksisterende bilde   
+        Task<bool> Oppdater(Bilde bilde);
+
+        // Sletter et bilde basert på ID.
+        Task<bool> Slett(int id);
+
          
 
     }

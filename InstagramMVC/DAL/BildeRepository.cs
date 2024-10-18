@@ -60,6 +60,43 @@ namespace InstagramMVC.DAL
             }
         }
 
+        public async  Task<bool> Oppdater(Bilde bilde)
+        {
+           try{
+            _context.Bilder.Update(bilde);
+            await _context.SaveChangesAsync();
+            return true;
+           }
+           catch(Exception e)
+           {
+            _logger.LogError("[BildeRepository] Oppdatering av bilde med ID {ID} feilet, melding {e}", bilde.Id,e.Message);
+            return false;
+           }
+        }
+
+        public async Task<bool> Slett(int id)
+        {
+            try
+            {
+                var bilde = await _context.Bilder.FindAsync(id);
+                if (bilde == null)
+                {
+                    _logger.LogError("[BildeRepository] Sletting av bilde mislyktes. Bilde med ID {id} ble ikke funnet",id);
+                    return false;
+                }
+                _context.Bilder.Remove(bilde);
+                await _context.SaveChangesAsync();
+                return true;
+
+            }
+            catch(Exception e)
+            {
+                _logger.LogError("[BildeRepository] Sletting av bilde med ID {id} feilet, melding {e}", id, e.Message);
+                return false;
+
+            }
+        }
+
 
     }
 }

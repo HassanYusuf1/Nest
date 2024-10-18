@@ -53,6 +53,43 @@ namespace InstagramMVC.Controllers
             }
             return Ok(bilde);
         }
+        
+        [HttpPut("oppdater/{id}")]
+        public async Task<IActionResult> Oppdater(int id, Bilde bilde)
+        {
+            if( id!= bilde.Id || !ModelState.IsValid )
+            {
+                return BadRequest("Ugyldig data");
+            }
+            bool vellykket = await _bildeRepository.Oppdater(bilde);
+
+            if(vellykket)
+            {
+                return Ok(new{vellykket= true, message = "Bilde oppdatert"});
+            }
+            else 
+            {
+                return BadRequest("Kunne ikke oppdatere Bilde");
+
+            }
+
+        }
+
+
+
+
+        //slette bilde bilde med Id 
+        [HttpDelete("Slett/{id}")]
+        public async Task<IActionResult> Slett(int id)
+        {
+            bool vellykket = await _bildeRepository.Slett(id);
+            
+            if(!vellykket)
+            {
+                return BadRequest("Kunne ikke slette bilde");
+            }
+            return Ok(new {vellykket = true, message = "Bilde slettet"});
+        }
 
 
 
