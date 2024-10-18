@@ -24,7 +24,7 @@ namespace InstagramMVC.Controllers
             return Ok(bilder);
         }  
 
-        [HttpPost]
+        [HttpPost("opprett")]
         public async Task<IActionResult> Opprette(Bilde nyttBilde)
         {
             if(!ModelState.IsValid)
@@ -42,7 +42,7 @@ namespace InstagramMVC.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> BildeId(int id)
         {
             var bilde = await _bildeRepository.BildeId(id);
@@ -79,7 +79,7 @@ namespace InstagramMVC.Controllers
 
 
         //slette bilde bilde med Id 
-        [HttpDelete("Slett/{id}")]
+        [HttpDelete("slett/{id}")]
         public async Task<IActionResult> Slett(int id)
         {
             bool vellykket = await _bildeRepository.Slett(id);
