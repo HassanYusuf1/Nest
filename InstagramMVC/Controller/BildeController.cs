@@ -31,6 +31,8 @@ namespace InstagramMVC.Controllers
             return View(bildeViewModel);  
         }
 
+
+
         
 
         // Show form to create a new image (Razor view)
