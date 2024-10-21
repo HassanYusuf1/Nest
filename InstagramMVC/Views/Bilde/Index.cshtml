@@ -1,0 +1,37 @@
+@model IEnumerable<InstagramMVC.Models.Bilde>
+
+<h2>Your Images</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var bilde in Model)
+            {
+                <tr>
+                    <td>@bilde.Tittel</td>
+                    <td>@bilde.Beskrivelse</td>
+                    <td>@bilde.OpprettetDato.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@bilde.Id" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@bilde.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No images available.</p>
+}
+
+<a href="@Url.Action("Create", "Bilde")" class="btn btn-primary">Upload New Image</a>
