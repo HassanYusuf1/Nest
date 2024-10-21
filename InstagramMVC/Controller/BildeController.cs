@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using InstagramMVC.Models;
 using InstagramMVC.DAL;
+using InstagramMVC.ViewModels;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -19,12 +20,12 @@ namespace InstagramMVC.Controllers
 
         // Henter alle bilende 
         [HttpGet]
-        public async Task<IActionResult> Table()
+        public async Task<IActionResult> Bilde()
         {
             // Henter alle bildene 
             var bilder = await _bildeRepository.GetAll();
             
-            var bildeViewModel = new bildeViewModel(bilder, "Tabel");
+            var bildeViewModel = new BilderViewModel(bilder, "Bilde");
 
             
             return View(bildeViewModel);  
