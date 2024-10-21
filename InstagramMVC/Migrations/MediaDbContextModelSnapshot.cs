@@ -21,6 +21,55 @@ namespace InstagramMVC.Migrations
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true);
 
+            modelBuilder.Entity("InstagramMVC.Models.Bilde", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Beskrivelse")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BildeUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("BrukerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("OpprettetDato")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tittel")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bilder");
+                });
+
+            modelBuilder.Entity("InstagramMVC.Models.Note", b =>
+                {
+                    b.Property<int>("NoteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BrukerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Innhold")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tittel")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("NoteId");
+
+                    b.ToTable("Notes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")

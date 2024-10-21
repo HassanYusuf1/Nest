@@ -51,6 +51,38 @@ namespace InstagramMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bilder",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BildeUrl = table.Column<string>(type: "TEXT", nullable: true),
+                    Tittel = table.Column<string>(type: "TEXT", nullable: true),
+                    Beskrivelse = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    OpprettetDato = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    BrukerId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bilder", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notes",
+                columns: table => new
+                {
+                    NoteId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Tittel = table.Column<string>(type: "TEXT", nullable: false),
+                    Innhold = table.Column<string>(type: "TEXT", nullable: false),
+                    BrukerId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notes", x => x.NoteId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -211,6 +243,12 @@ namespace InstagramMVC.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Bilder");
+
+            migrationBuilder.DropTable(
+                name: "Notes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
