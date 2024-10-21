@@ -1,12 +1,12 @@
 using InstagramMVC.Models;
 
 
-namespace InstagramMVC.ViewModel
+namespace InstagramMVC.ViewModels
 
 {
     public class BildeViewModel
     {
-        public IEnumerable <Bilde> Bilder;
+        public IEnumerable <Bilde> Bilder {get; set;}
 
         public string? CurrentViewName;
 

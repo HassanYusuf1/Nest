@@ -3,7 +3,7 @@ using InstagramMVC.Models;
 using InstagramMVC.DAL;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using InstagramMVC.ViewModel;
+using InstagramMVC.ViewModels;
 
 namespace InstagramMVC.Controllers
 {
@@ -20,12 +20,12 @@ namespace InstagramMVC.Controllers
 
         // Henter alle bilende 
     
-        public async Task<IActionResult> Table()
+        public async Task<IActionResult> BildeTable()
         {
             // Henter alle bildene 
             var bilder = await _bildeRepository.GetAll();
             
-            var bildeViewModel = new BildeViewModel(bilder, "Table");
+            var bildeViewModel = new BildeViewModel(bilder, "BildeTable");
 
             
             return View(bildeViewModel);  
