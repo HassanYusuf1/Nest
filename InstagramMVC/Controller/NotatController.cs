@@ -22,7 +22,7 @@ public class NotatController : Controller
         _logger = logger;
     }
 
-    public async Task<IActionResult> Notes()
+    public async Task<IActionResult> Notat()
     {
         _logger.LogInformation("This is notes");
         _logger.LogWarning("This is a warning");
@@ -61,7 +61,7 @@ public class NotatController : Controller
         }
         await _notatRepository.DeleteConfirmed(id);
         
-        return RedirectToAction(nameof(Notes));
+        return RedirectToAction(nameof(Notat));
     }
 
     [HttpGet]
@@ -77,7 +77,7 @@ public class NotatController : Controller
         {
             await _notatRepository.Create(note);
             
-            return RedirectToAction(nameof(Notes));
+            return RedirectToAction(nameof(Notat));
         }
         return View(note);
     }
@@ -100,7 +100,7 @@ public class NotatController : Controller
         {
             await _notatRepository.Update(note);
             
-            return RedirectToAction(nameof(Notes));
+            return RedirectToAction(nameof(Notat));
         }
         return View(note);
     }

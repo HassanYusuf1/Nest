@@ -1,0 +1,29 @@
+@model IEnumerable<InstagramMVC.Models.Note>
+
+    <div class="container">
+        <p>
+        <a class="btn btn-secondary"
+           asp-controller="Feed"
+           asp-action="Create">Create New Note</a>
+        </p>    
+        <div class="row">
+            @foreach (var note in Model)
+            {
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-notes">
+                            <p class="text-center">@note.Innhold</p>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">Title: @note.Tittel</h4>
+                            <p class="card-text">@note.Innhold</p>
+                        </div>
+                        <div>
+                            <a asp-action="Update" asp-route-id="@note.NoteId">Update</a>
+                            <a asp-action="Delete" asp-route-id="@note.NoteId">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
