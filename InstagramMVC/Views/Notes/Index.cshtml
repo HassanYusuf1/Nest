@@ -3,7 +3,7 @@
 <h2>Notat Feed</h2>
 
 <div>
-    <a asp-action="Create">Opprett nytt notat</a>
+    <a>Opprett nytt notat</a>
 </div>
 
 <hr />
@@ -12,11 +12,11 @@
     @foreach (var notat in Model)
     {
         <li>
-            <strong>@notat.Bruker.BrukerNavn:</strong> @notat.Innhold
-            <em>(@notat.PostetTid.ToString("g"))</em>
+            <strong></strong>
+            <em></em>
             <div>
-                <a asp-action="Update" asp-route-id="@notat.Id">Rediger</a> |
-                <a asp-action="Delete" asp-route-id="@notat.Id">Slett</a>
+                <a asp-action="Update" >Rediger</a> |
+                <a asp-action="Delete" >Slett</a>
             </div>
         </li>
     }

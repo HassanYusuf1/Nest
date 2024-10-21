@@ -4,7 +4,7 @@ using InstagramMVC.DAL;
 using InstagramMVC.ViewModels;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using InstagramMVC.ViewModels;
+
 
 namespace InstagramMVC.Controllers
 {
@@ -20,33 +20,19 @@ namespace InstagramMVC.Controllers
         }
 
         // Henter alle bilende 
-<<<<<<< HEAD
         [HttpGet]
         public async Task<IActionResult> Bilde()
-=======
-    
-        public async Task<IActionResult> BildeTable()
->>>>>>> 23b1a6f343591f368ebd9d0d7d1323309ec0f9b4
         {
             // Henter alle bildene 
             var bilder = await _bildeRepository.GetAll();
-<<<<<<< HEAD
-            
-<<<<<<< HEAD
             var bildeViewModel = new BilderViewModel(bilder, "Bilde");
-=======
-            var bildeViewModel = new BildeViewModel(bilder, "BildeTable");
-=======
->>>>>>> 57366d08ae16bce6b1caae5f657f5f2499ac020c
->>>>>>> 23b1a6f343591f368ebd9d0d7d1323309ec0f9b4
 
-            if (bilder == null){
+            if (bilder == null) {
                 
                 _logger.LogError("[BildeController] Bilde liste, ble ikke funnet.");
-                return NotFound("Bildene ble ikke funnet");
+                // return NotFound("Bildene ble ikke funnet"); HVA FAEN ER DENNE KODEN HER????!!!! 
 
             }
-            var bildeViewModel = new BildeViewModel(bilder, "Table");
         
             return View(bildeViewModel);  
         }
@@ -55,14 +41,13 @@ namespace InstagramMVC.Controllers
         {
              // Henter alle bildene 
             var bilder = await _bildeRepository.GetAll();
+            var bildeViewModel = new BilderViewModel(bilder, "Bilde");
 
             if (bilder == null){
                 
                 _logger.LogError("[BildeController] Bilde liste, ble ikke funnet.");
                 return NotFound("Bildene ble ikke funnet");
-
             }
-            var bildeViewModel = new BildeViewModel(bilder, "Table");
         
             return View(bildeViewModel);
         }
@@ -84,7 +69,7 @@ namespace InstagramMVC.Controllers
             bool vellykket = await _bildeRepository.Opprette(nyttBilde);
             if (vellykket)
             {
-                return RedirectToAction(nameof(Table));  
+                return RedirectToAction(nameof(Bilde));  
             }
             else
             {
@@ -162,7 +147,7 @@ namespace InstagramMVC.Controllers
                 _logger.LogError("[BildeController] bilde ble ikke slettet med {Id} ", id);
                 return BadRequest("Bilde ble ikke slettet");
             }
-            return RedirectToAction(nameof(Table));
+            return RedirectToAction(nameof(Bilde));
             
         }
     }
