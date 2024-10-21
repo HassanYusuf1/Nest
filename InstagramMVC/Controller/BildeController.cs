@@ -17,85 +17,114 @@ namespace InstagramMVC.Controllers
             _logger = logger;
         }
 
+        // Show all images (Razor View for Index)
         [HttpGet]
-        public async Task<IActionResult> HentAlle()
+        public async Task<IActionResult> Index()
         {
             var bilder = await _bildeRepository.HentAlle();
-            return Ok(bilder);
-        }  
+            return View(bilder);  // Pass images to the Index.cshtml view
+        }
 
-        [HttpPost("opprett")]
-        public async Task<IActionResult> Opprette(Bilde nyttBilde)
+        // Show form to create a new image (Razor view)
+        [HttpGet]
+        public IActionResult Create()
         {
-            if(!ModelState.IsValid)
+            return View();  // This will return Create.cshtml
+        }
+
+        // Handle form submission to create a new image
+        [HttpPost]
+        public async Task<IActionResult> Create(Bilde nyttBilde)
+        {
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Ugyldig bilde format");
+                return View(nyttBilde);  // Re-render form with validation errors
             }
+
             bool vellykket = await _bildeRepository.Opprette(nyttBilde);
             if (vellykket)
             {
-                return Ok( new {vellykket = true, message= "Bilde ble opprettet."});
+                return RedirectToAction("Index");  // Redirect to Index after successful creation
             }
-            else 
+            else
             {
-                return BadRequest("Kunne ikke opprette bilde");
+                ModelState.AddModelError("", "Kunne ikke opprette bilde.");
+                return View(nyttBilde);  // Show form again if creation failed
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> BildeId(int id)
+        // Display details of a specific image (Razor view)
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
         {
             var bilde = await _bildeRepository.BildeId(id);
             if (bilde == null)
             {
-                _logger.LogWarning("Bilde med ID {ID} ikke funnet", id);
-                return NotFound();
+                return NotFound();  // Return 404 if the image is not found
             }
-            return Ok(bilde);
+            return View(bilde);  // Pass the image to the Details.cshtml view
         }
-        
-        [HttpPut("oppdater/{id}")]
-        public async Task<IActionResult> Oppdater(int id, Bilde bilde)
+
+        // Show form to update an image (Razor view)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
-            if( id!= bilde.Id || !ModelState.IsValid )
+            var bilde = await _bildeRepository.BildeId(id);
+            if (bilde == null)
             {
-                return BadRequest("Ugyldig data");
+                return NotFound();  // Return 404 if the image is not found
             }
-            bool vellykket = await _bildeRepository.Oppdater(bilde);
-
-            if(vellykket)
-            {
-                return Ok(new{vellykket= true, message = "Bilde oppdatert"});
-            }
-            else 
-            {
-                return BadRequest("Kunne ikke oppdatere Bilde");
-
-            }
-
+            return View(bilde);  // Return the Edit form with the image details
         }
 
+        // Handle form submission to update an image
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Bilde bilde)
+        {
+            if (id != bilde.Id || !ModelState.IsValid)
+            {
+                return View(bilde);  // Re-render the form with validation errors
+            }
 
+            bool vellykket = await _bildeRepository.Oppdater(bilde);
+            if (vellykket)
+            {
+                return RedirectToAction("Index");  // Redirect to Index after successful update
+            }
+            else
+            {
+                ModelState.AddModelError("", "Kunne ikke oppdatere bilde.");
+                return View(bilde);  // Show form again if update failed
+            }
+        }
 
+        // Show form to confirm deletion (Razor view)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var bilde = await _bildeRepository.BildeId(id);
+            if (bilde == null)
+            {
+                return NotFound();  // Return 404 if the image is not found
+            }
+            return View(bilde);  // Return Delete confirmation page
+        }
 
-        //slette bilde bilde med Id 
-        [HttpDelete("slett/{id}")]
-        public async Task<IActionResult> Slett(int id)
+        // Handle the image deletion
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             bool vellykket = await _bildeRepository.Slett(id);
-            
-            if(!vellykket)
+            if (vellykket)
             {
-                return BadRequest("Kunne ikke slette bilde");
+                return RedirectToAction("Index");  // Redirect to Index after successful deletion
             }
-            return Ok(new {vellykket = true, message = "Bilde slettet"});
+            else
+            {
+                ModelState.AddModelError("", "Kunne ikke slette bilde.");
+                var bilde = await _bildeRepository.BildeId(id);
+                return View(bilde);  // Show the form again if deletion failed
+            }
         }
-
-
-
-
-
-
-
     }
 }
