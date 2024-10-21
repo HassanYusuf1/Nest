@@ -1,18 +1,19 @@
-using InstgarmMVC.Models;
+using InstagramMVC.Models;
+
 
 namespace InstagramMVC.ViewModel
 
 {
     public class BildeViewModel
     {
-        public IEnumerable <Bilde> Bilder { get; set;}
+        public IEnumerable <Bilde> Bilder;
 
-        public string? CurrentViewName {get; set;}
+        public string? CurrentViewName;
 
         public BildeViewModel(IEnumerable <Bilde> bilder, string? currentViewName)
         {
             Bilder = bilder;
-            CurrentViewName = currentViewName
+            CurrentViewName = currentViewName;
         }
     }
 }

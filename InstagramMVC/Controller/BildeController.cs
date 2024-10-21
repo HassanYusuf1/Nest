@@ -3,6 +3,7 @@ using InstagramMVC.Models;
 using InstagramMVC.DAL;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using InstagramMVC.ViewModel;
 
 namespace InstagramMVC.Controllers
 {
@@ -18,17 +19,19 @@ namespace InstagramMVC.Controllers
         }
 
         // Henter alle bilende 
-        [HttpGet]
+    
         public async Task<IActionResult> Table()
         {
             // Henter alle bildene 
             var bilder = await _bildeRepository.GetAll();
             
-            var bildeViewModel = new BildeViewModel(bilder, "Tabel");
+            var bildeViewModel = new BildeViewModel(bilder, "Table");
 
             
             return View(bildeViewModel);  
         }
+
+        
 
         // Show form to create a new image (Razor view)
         [HttpGet]
@@ -52,7 +55,7 @@ namespace InstagramMVC.Controllers
             }
             else
             {
-                _logger.LogWarning("[BildeController] ")
+                _logger.LogWarning("[BildeController] ");
                 return View(nyttBilde);  // Show form again if creation failed
             }
         }
