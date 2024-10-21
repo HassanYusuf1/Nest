@@ -24,25 +24,46 @@ namespace InstagramMVC.Controllers
         {
             // Henter alle bildene 
             var bilder = await _bildeRepository.GetAll();
+<<<<<<< HEAD
             
             var bildeViewModel = new BildeViewModel(bilder, "BildeTable");
+=======
+>>>>>>> 57366d08ae16bce6b1caae5f657f5f2499ac020c
 
-            
+            if (bilder == null){
+                
+                _logger.LogError("[BildeController] Bilde liste, ble ikke funnet.");
+                return NotFound("Bildene ble ikke funnet");
+
+            }
+            var bildeViewModel = new BildeViewModel(bilder, "Table");
+        
             return View(bildeViewModel);  
         }
 
+        public async Task<IActionResult> Grid()
+        {
+             // Henter alle bildene 
+            var bilder = await _bildeRepository.GetAll();
 
+            if (bilder == null){
+                
+                _logger.LogError("[BildeController] Bilde liste, ble ikke funnet.");
+                return NotFound("Bildene ble ikke funnet");
 
+            }
+            var bildeViewModel = new BildeViewModel(bilder, "Table");
         
+            return View(bildeViewModel);
+        }
 
-        // Show form to create a new image (Razor view)
         [HttpGet]
         public IActionResult Create()
         {
-            return View();  // This will return Create.cshtml
+            return View();  
         }
 
-        // Handle form submission to create a new image
+        
         [HttpPost]
         public async Task<IActionResult> Create(Bilde nyttBilde)
         {
@@ -53,28 +74,28 @@ namespace InstagramMVC.Controllers
             bool vellykket = await _bildeRepository.Opprette(nyttBilde);
             if (vellykket)
             {
-                return RedirectToAction("Index");  
+                return RedirectToAction(nameof(Table));  
             }
             else
             {
-                _logger.LogWarning("[BildeController] ");
+                _logger.LogWarning("[BildeController] kunne ikke opprett nytt bilde ");
                 return View(nyttBilde);  // Show form again if creation failed
             }
         }
 
-        // Display details of a specific image (Razor view)
+        
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var bilde = await _bildeRepository.BildeId(id);
             if (bilde == null)
             {
+                _logger.LogError(" [BildeController] bilde sin id ble ikke funnet");
                 return NotFound();  // Return 404 if the image is not found
             }
-            return View(bilde);  // Pass the image to the Details.cshtml view
+            return View(bilde);  
         }
 
-        // Show form to update an image (Razor view)
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -114,26 +135,25 @@ namespace InstagramMVC.Controllers
             var bilde = await _bildeRepository.BildeId(id);
             if (bilde == null)
             {
+                _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
                 return NotFound();  // Return 404 if the image is not found
             }
             return View(bilde);  // Return Delete confirmation page
         }
 
-        // Handle the image deletion
-        [HttpPost, ActionName("Delete")]
+        
+        [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            bool vellykket = await _bildeRepository.Slett(id);
-            if (vellykket)
+            bool vellykket = await _bildeRepository.Delete(id);
+
+            if (!vellykket)
             {
-                return RedirectToAction("Index");  // Redirect to Index after successful deletion
+                _logger.LogError("[BildeController] bilde ble ikke slettet med {Id} ", id);
+                return BadRequest("Bilde ble ikke slettet");
             }
-            else
-            {
-                ModelState.AddModelError("", "Kunne ikke slette bilde.");
-                var bilde = await _bildeRepository.BildeId(id);
-                return View(bilde);  // Show the form again if deletion failed
-            }
+            return RedirectToAction(nameof(Table));
+            
         }
     }
 }

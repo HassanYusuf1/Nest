@@ -1,0 +1,14 @@
+@model InstagramMVC.Models.Note
+
+<h2>Rediger Notat</h2>
+
+<form asp-action="Update" method="post">
+    <input type="hidden" asp-for="Id" />
+    <textarea asp-for="Innhold" rows="4" cols="50"></textarea>
+    <br />
+    <button type="submit">Oppdater Notat</button>
+</form>
+
+<div>
+    <a asp-action="Index">Tilbake til notat-feed</a>
+</div>

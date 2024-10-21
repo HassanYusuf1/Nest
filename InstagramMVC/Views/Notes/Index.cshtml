@@ -1,0 +1,23 @@
+@model IEnumerable<InstagramMVC.Models.Note>
+
+<h2>Notat Feed</h2>
+
+<div>
+    <a asp-action="Create">Opprett nytt notat</a>
+</div>
+
+<hr />
+
+<ul>
+    @foreach (var notat in Model)
+    {
+        <li>
+            <strong>@notat.Bruker.BrukerNavn:</strong> @notat.Innhold
+            <em>(@notat.PostetTid.ToString("g"))</em>
+            <div>
+                <a asp-action="Update" asp-route-id="@notat.Id">Rediger</a> |
+                <a asp-action="Delete" asp-route-id="@notat.Id">Slett</a>
+            </div>
+        </li>
+    }
+</ul>
