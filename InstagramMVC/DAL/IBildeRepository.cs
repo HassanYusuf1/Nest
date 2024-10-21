@@ -7,7 +7,7 @@ namespace InstagramMVC.DAL
     public interface IBildeRepository 
     {
         //Henter Alle bilder fra databasen
-        Task<IEnumerable<Bilde>?> HentAlle();
+        Task<IEnumerable<Bilde>?> GetAll();
 
         //Opprette et nytt bilde
         Task<bool> Opprette(Bilde bilde);
