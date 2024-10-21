@@ -19,7 +19,7 @@ namespace InstagramMVC.DAL
         Task<bool> Oppdater(Bilde bilde);
 
         // Sletter et bilde basert på ID.
-        Task<bool> Slett(int id);
+        Task<bool> Delete(int id);
 
          
 

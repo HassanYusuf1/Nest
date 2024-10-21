@@ -74,7 +74,7 @@ namespace InstagramMVC.DAL
            }
         }
 
-        public async Task<bool> Slett(int id)
+        public async Task<bool> Delete(int id)
         {
             try
             {
