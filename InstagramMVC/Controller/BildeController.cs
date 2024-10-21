@@ -24,7 +24,7 @@ namespace InstagramMVC.Controllers
             // Henter alle bildene 
             var bilder = await _bildeRepository.GetAll();
             
-            var bildeViewModel = new bildeViewModel(bilder, "Tabel");
+            var bildeViewModel = new BildeViewModel(bilder, "Tabel");
 
             
             return View(bildeViewModel);  
@@ -43,17 +43,16 @@ namespace InstagramMVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(nyttBilde);  // Re-render form with validation errors
+                return View(nyttBilde);  
             }
-
             bool vellykket = await _bildeRepository.Opprette(nyttBilde);
             if (vellykket)
             {
-                return RedirectToAction("Index");  // Redirect to Index after successful creation
+                return RedirectToAction("Index");  
             }
             else
             {
-                ModelState.AddModelError("", "Kunne ikke opprette bilde.");
+                _logger.LogWarning("[BildeController] ")
                 return View(nyttBilde);  // Show form again if creation failed
             }
         }
