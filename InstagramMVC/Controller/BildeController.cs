@@ -17,12 +17,17 @@ namespace InstagramMVC.Controllers
             _logger = logger;
         }
 
-        // Show all images (Razor View for Index)
+        // Henter alle bilende 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Table()
         {
-            var bilder = await _bildeRepository.HentAlle();
-            return View(bilder);  // Pass images to the Index.cshtml view
+            // Henter alle bildene 
+            var bilder = await _bildeRepository.GetAll();
+            
+            var bildeViewModel = new bildeViewModel(bilder, "Tabel");
+
+            
+            return View(bildeViewModel);  
         }
 
         // Show form to create a new image (Razor view)

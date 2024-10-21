@@ -19,7 +19,7 @@ namespace InstagramMVC.DAL
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Bilde>?> HentAlle()
+        public async Task<IEnumerable<Bilde>?> GetAll()
         {
             try
             {
@@ -27,7 +27,7 @@ namespace InstagramMVC.DAL
             }
             catch (Exception e)
             {
-                _logger.LogError("[BildeRepository] HentAlle feilet ved henting av alle bilder. Feilmelding: {e}", e.Message);
+                _logger.LogError("[BildeRepository] index feilet ved henting av alle bilder. Feilmelding: {e}", e.Message);
                 return null;
             }
         }
