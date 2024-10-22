@@ -69,7 +69,7 @@ namespace InstagramMVC.Controllers
             bool vellykket = await _bildeRepository.Opprette(nyttBilde);
             if (vellykket)
             {
-                return RedirectToAction(nameof(Bilde));  
+                return RedirectToAction(nameof(Grid));  
             }
             else
             {
@@ -147,7 +147,7 @@ namespace InstagramMVC.Controllers
                 _logger.LogError("[BildeController] bilde ble ikke slettet med {Id} ", id);
                 return BadRequest("Bilde ble ikke slettet");
             }
-            return RedirectToAction(nameof(Bilde));
+            return RedirectToAction(nameof(Grid));
             
         }
     }
