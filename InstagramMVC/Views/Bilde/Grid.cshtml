@@ -1,0 +1,10 @@
+@model BilderViewModel
+
+<h1>List of Shop Items (@Model.CurrentViewName View)</h1>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var bilde in Model.Bilder)
+    {
+        <partial name="_BildeCard" model="bilde" />
+    }
+</div>
