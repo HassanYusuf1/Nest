@@ -60,12 +60,24 @@ namespace InstagramMVC.Controllers
 
         //bildeLAGRE
         [HttpPost]
-        public async Task<IActionResult> Create(Bilde nyttBilde)
+        public async Task<IActionResult> Create(Bilde nyttBilde, IFormFile bildeFil)
         {    
             if (!ModelState.IsValid)
             {
                 return View(nyttBilde);  
             }
+            if (bildeFil != null && bildeFil.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    // Kopier filen til en MemoryStream
+                    await bildeFil.CopyToAsync(memoryStream);  
+                    // Konverter til byte array og lagre i modellen
+                }
+                    nyttBilde.BildeData = memoryStream.ToArray(); 
+            }
+
+
             bool vellykket = await _bildeRepository.Opprette(nyttBilde);
             if (vellykket)
             {
