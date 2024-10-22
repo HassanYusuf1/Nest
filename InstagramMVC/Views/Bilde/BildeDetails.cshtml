@@ -1,0 +1,34 @@
+@model InstagramMVC.Models.Bilde
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <img src="@Model.BildeUrl" class="img-fluid" alt="@Model.Tittel" />
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>@Model.Tittel</h2>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <p>@Model.Beskrivelse</p>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <p><strong>Uploaded on:</strong> @Model.OpprettetDato.ToString("yyyy-MM-dd")</p>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+</div>
