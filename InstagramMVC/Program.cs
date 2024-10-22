@@ -18,7 +18,7 @@ builder.Services.AddDbContext<MediaDbContext>(options =>
 
 // Register IBildeRepository with its concrete implementation BildeRepository
 builder.Services.AddScoped<IBildeRepository, BildeRepository>();
-
+builder.Services.AddScoped<INotatRepository, NotatRepository>();
 
 
 var app = builder.Build();
