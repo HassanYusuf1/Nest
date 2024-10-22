@@ -4,17 +4,18 @@
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
+    
     <div>
         <label>Title</label>
         <input type="text" asp-for="Tittel" class="form-control" />
     </div>
+
     <div>
         <label>Description</label>
         <textarea asp-for="Beskrivelse" class="form-control"></textarea>
     </div>
-    <div>
-        <label>Image URL</label>
-        <input type="text" asp-for="BildeUrl" readonly class="form-control" />
-    </div>
+
+
+
     <button type="submit" class="btn btn-primary">Save Changes</button>
 </form>

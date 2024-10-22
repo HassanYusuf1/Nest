@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace InstagramMVC.Models {
     public class Bilde {
         public int Id {get; set;}  
+        public string? BildeUrl {get; set;}  // Lagrer filstien til bilde
         public string? Tittel {get; set;} // Bildetekst
 
 
@@ -12,9 +13,7 @@ namespace InstagramMVC.Models {
 
         public DateTime OpprettetDato {get; set;} // dato innlegget ble opprettet
 
-        public byte[] BildeData {get; set;} // Dato bildet ble lastet opp
-
-        public int BrukerId {get; set;} 
+        public int BrukerId {get; set;} // Forhold til brukeren som eier innlegget 
 
 
     
