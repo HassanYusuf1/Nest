@@ -22,7 +22,13 @@ builder.Services.AddScoped<IBildeRepository, BildeRepository>();
 
 
 var app = builder.Build();
+// Autentisering i program cs 
+/*builder.Services.AddDefaultIdentity<IdentityUser>(options => 
+    options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<DbContext>();
 
+app.UseAuthentication(); 
+app.UseAuthorization(); */ 
 
 if (app.Environment.IsDevelopment())
 {
