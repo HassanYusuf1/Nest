@@ -70,9 +70,11 @@ namespace InstagramMVC.Controllers
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    await bildeFil.CopyToAsync(memoryStream);  // Kopier filen til en MemoryStream
-                    nyttBilde.BildeData = memoryStream.ToArray();  // Konverter til byte array og lagre i modellen
+                    // Kopier filen til en MemoryStream
+                    await bildeFil.CopyToAsync(memoryStream);  
+                    // Konverter til byte array og lagre i modellen
                 }
+                    nyttBilde.BildeData = memoryStream.ToArray(); 
             }
 
 
