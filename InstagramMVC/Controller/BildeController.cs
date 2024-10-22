@@ -58,10 +58,10 @@ namespace InstagramMVC.Controllers
             return View();  
         }
 
-        
+        //bildeLAGRE
         [HttpPost]
         public async Task<IActionResult> Create(Bilde nyttBilde)
-        {
+        {    
             if (!ModelState.IsValid)
             {
                 return View(nyttBilde);  
