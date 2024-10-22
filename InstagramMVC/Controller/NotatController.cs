@@ -61,7 +61,7 @@ public class NotatController : Controller
         }
         await _notatRepository.DeleteConfirmed(id);
         
-        return RedirectToAction(nameof(Notat));
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpGet]
@@ -77,7 +77,7 @@ public class NotatController : Controller
         {
             await _notatRepository.Create(note);
             
-            return RedirectToAction(nameof(Notat));
+            return RedirectToAction(nameof(Index));
         }
         return View(note);
     }
@@ -100,7 +100,7 @@ public class NotatController : Controller
         {
             await _notatRepository.Update(note);
             
-            return RedirectToAction(nameof(Notat));
+            return RedirectToAction(nameof(Index));
         }
         return View(note);
     }
