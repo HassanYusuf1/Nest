@@ -114,7 +114,7 @@ namespace InstagramMVC.Controllers
             bool vellykket = await _bildeRepository.Oppdater(bilde);
             if (vellykket)
             {
-                return RedirectToAction("Bilde");  // Redirect to Index after successful update
+                return RedirectToAction("Grid");  // Redirect to Index after successful update
             }
             else
             {
