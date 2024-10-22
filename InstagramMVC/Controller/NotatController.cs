@@ -22,7 +22,7 @@ public class NotatController : Controller
         _logger = logger;
     }
 
-    public async Task<IActionResult> Notat()
+    public async Task<IActionResult> Index()
     {
         _logger.LogInformation("This is notes");
         _logger.LogWarning("This is a warning");
