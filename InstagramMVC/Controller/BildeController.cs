@@ -19,88 +19,89 @@ namespace InstagramMVC.Controllers
             _logger = logger;
         }
 
-        // Henter alle bilende 
         [HttpGet]
         public async Task<IActionResult> Bilde()
         {
-            // Henter alle bildene 
             var bilder = await _bildeRepository.GetAll();
             var bildeViewModel = new BilderViewModel(bilder, "Bilde");
 
-            if (bilder == null) {
-                
+            if (bilder == null)
+            {
                 _logger.LogError("[BildeController] Bilde liste, ble ikke funnet.");
-                // return NotFound("Bildene ble ikke funnet"); HVA FAEN ER DENNE KODEN HER????!!!! 
-
             }
-        
-            return View(bildeViewModel);  
+
+            return View(bildeViewModel);
         }
 
         public async Task<IActionResult> Grid()
         {
-             // Henter alle bildene 
             var bilder = await _bildeRepository.GetAll();
             var bildeViewModel = new BilderViewModel(bilder, "Bilde");
 
-            if (bilder == null){
-                
+            if (bilder == null)
+            {
                 _logger.LogError("[BildeController] Bilde liste, ble ikke funnet.");
                 return NotFound("Bildene ble ikke funnet");
             }
-        
+
             return View(bildeViewModel);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View();  
+            return View();
         }
 
-        //bildeLAGRE
         [HttpPost]
-        public async Task<IActionResult> Create(Bilde nyttBilde, IFormFile bildeFil)
-        {    
+        public async Task<IActionResult> Create(Bilde nyttBilde, IFormFile BildeUrl)
+        {
             if (!ModelState.IsValid)
             {
-                return View(nyttBilde);  
-            }
-            if (bildeFil != null && bildeFil.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    // Kopier filen til en MemoryStream
-                    await bildeFil.CopyToAsync(memoryStream);  
-                    // Konverter til byte array og lagre i modellen
-                }
-                    nyttBilde.BildeData = memoryStream.ToArray(); 
+                return View(nyttBilde);
             }
 
+            if (BildeUrl != null && BildeUrl.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(BildeUrl.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await BildeUrl.CopyToAsync(fileStream);
+                }
+
+                nyttBilde.BildeUrl = "/images/" + uniqueFileName;
+            }
 
             bool vellykket = await _bildeRepository.Opprette(nyttBilde);
             if (vellykket)
             {
-                return RedirectToAction(nameof(Grid));  
+                return RedirectToAction(nameof(Grid));
             }
             else
             {
-                _logger.LogWarning("[BildeController] kunne ikke opprett nytt bilde ");
-                return View(nyttBilde);  // Show form again if creation failed
+                _logger.LogWarning("[BildeController] Could not create new image.");
+                return View(nyttBilde);
             }
         }
 
-        
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var bilde = await _bildeRepository.BildeId(id);
             if (bilde == null)
             {
-                _logger.LogError(" [BildeController] bilde sin id ble ikke funnet");
-                return NotFound();  // Return 404 if the image is not found
+                _logger.LogError("[BildeController] bilde sin id ble ikke funnet");
+                return NotFound();
             }
-            return View(bilde);  
+            return View("BildeDetails", bilde);
         }
 
         [HttpGet]
@@ -109,33 +110,31 @@ namespace InstagramMVC.Controllers
             var bilde = await _bildeRepository.BildeId(id);
             if (bilde == null)
             {
-                return NotFound();  // Return 404 if the image is not found
+                return NotFound();
             }
-            return View(bilde);  // Return the Edit form with the image details
+            return View(bilde);
         }
 
-        // Handle form submission to update an image
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Bilde bilde)
         {
             if (id != bilde.Id || !ModelState.IsValid)
             {
-                return View(bilde);  // Re-render the form with validation errors
+                return View(bilde);
             }
 
             bool vellykket = await _bildeRepository.Oppdater(bilde);
             if (vellykket)
             {
-                return RedirectToAction("Grid");  // Redirect to Index after successful update
+                return RedirectToAction("Grid");
             }
             else
             {
                 ModelState.AddModelError("", "Kunne ikke oppdatere bilde.");
-                return View(bilde);  // Show form again if update failed
+                return View(bilde);
             }
         }
 
-        // Show form to confirm deletion (Razor view)
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -143,15 +142,32 @@ namespace InstagramMVC.Controllers
             if (bilde == null)
             {
                 _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
-                return NotFound();  // Return 404 if the image is not found
+                return NotFound();
             }
-            return View(bilde);  // Return Delete confirmation page
+            return View(bilde);
         }
 
-        
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var bilde = await _bildeRepository.BildeId(id);
+
+            if (bilde == null)
+            {
+                _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
+                return NotFound();
+            }
+
+            if (!string.IsNullOrEmpty(bilde.BildeUrl))
+            {
+                string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", bilde.BildeUrl.TrimStart('/'));
+
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
+            }
+
             bool vellykket = await _bildeRepository.Delete(id);
 
             if (!vellykket)
@@ -159,8 +175,8 @@ namespace InstagramMVC.Controllers
                 _logger.LogError("[BildeController] bilde ble ikke slettet med {Id} ", id);
                 return BadRequest("Bilde ble ikke slettet");
             }
+
             return RedirectToAction(nameof(Grid));
-            
         }
     }
 }
