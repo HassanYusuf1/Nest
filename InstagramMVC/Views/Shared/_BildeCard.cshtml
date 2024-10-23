@@ -1,31 +1,15 @@
 @model InstagramMVC.Models.Bilde
 
-
 <div class="col">
     <div class="card h-100">
-        <img src="@Model.BildeUrl" class="card-img-top" alt="@Model.Tittel" />
-        <div class="card-body">
-            <div class="d-flex justify-content-between mt-2">
-                <h5 class="text-start">
-                    <a asp-controller="Bilde"
-                       asp-action="Details"
-                       asp-route-id="@Model.Id">
-                        @Model.Tittel
-                    </a>
-                </h5>
-                <h5 class="text-nowrap">
-                    @Model.OpprettetDato.ToString("yyyy-MM-dd")
-                </h5>
-            </div>
-            <p class="card-text">
-                @Model.Beskrivelse
-            </p>
-        </div>
+        <a asp-controller="Bilde"
+           asp-action="Details"
+           asp-route-id="@Model.Id">
+            <img src="@Model.BildeUrl" class="card-img-top" alt="@Model.Tittel" />
+        </a>
         <div class="card-footer">
             <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
             <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
         </div>
     </div>
 </div>
-
-
