@@ -59,3 +59,71 @@ body {
   color: #fff;
   border-color: #333;
 }
+
+/* home.css */
+
+.login-register-box {
+  background: #fdf5e6; /* Lys beige bakgrunn for å skape kontrast */
+  padding: 30px; /* Mer padding for et luftigere utseende */
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Dypere skygge for bedre dybdeeffekt */
+  width: 100%;
+  max-width: 500px; /* Økt maksimal bredde til 500px for mer rom */
+  margin: 0 auto; /* Sørger for at boksen er sentrert */
+  border-color: #5d4037;
+}
+
+.btn-toggle {
+  flex: 1;
+  background-color: #3b2f2f;
+  border-color: #5d4037;
+  padding: 10px 0;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-toggle:hover {
+  background-color: #d2b48c;
+}
+
+.btn-toggle.active {
+  background-color: #d2b48c;
+  color: #fff;
+}
+
+.form-container {
+  display: none;
+}
+
+.form-container.active {
+  display: block;
+}
+
+.btn-primary-home {
+  color: #fff;
+  background-color: #4b3832; /* Mørk rødbrun for primærknappen */
+  border-color: #3a302c; /* Mørkere kant for knappen */
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary-home:hover,
+.btn-primary-home:focus,
+.btn-primary-home:active,
+.btn-primary-home:focus-visible {
+  color: #fff;
+  background-color: #d2b48c;
+  border-color: #5d4037;
+  outline: none;
+  box-shadow: none;
+}
+
+.btn-primary-home:active {
+  background-color: #5d4037;
+  color: #fff;
+  border-color: #5d4037;
+}
