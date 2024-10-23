@@ -37,7 +37,7 @@ public class NotatController : Controller
         var note = await _notatRepository.GetNoteById(id);
         if (note == null)
             return NotFound();
-        return View(note);
+        return View("NotatDetails", note);
     }
 
     [HttpGet]
