@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 namespace InstagramMVC.Models {
     public class Bilde {
-        public int Id {get; set;}  
+        public int BildeId { get; set; }  
         public string? BildeUrl {get; set;}  // Lagrer filstien til bilde
         public string? Tittel {get; set;} // Bildetekst
 

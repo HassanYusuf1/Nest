@@ -4,12 +4,12 @@
     <div class="card h-100">
         <a asp-controller="Bilde"
            asp-action="Details"
-           asp-route-id="@Model.Id">
+           asp-route-id="@Model.BildeId">
             <img src="@Model.BildeUrl" class="card-img-top" alt="@Model.Tittel" />
         </a>
         <div class="card-footer">
-            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+            <a asp-action="Edit" asp-route-id="@Model.BildeId" class="btn btn-warning">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.BildeId" class="btn btn-danger">Delete</a>
         </div>
     </div>
 </div>

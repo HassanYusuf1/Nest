@@ -80,7 +80,7 @@ namespace InstagramMVC.Controllers
                 nyttBilde.BildeUrl = "/images/" + uniqueFileName;
             }
 
-            bool vellykket = await _bildeRepository.Opprette(nyttBilde);
+            bool vellykket = await _bildeRepository.Create(nyttBilde);
             if (vellykket)
             {
                 return RedirectToAction(nameof(Grid));
@@ -118,7 +118,7 @@ namespace InstagramMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Bilde bilde)
         {
-            if (id != bilde.Id || !ModelState.IsValid)
+            if (id != bilde.BildeId || !ModelState.IsValid)
             {
                 return View(bilde);
             }
