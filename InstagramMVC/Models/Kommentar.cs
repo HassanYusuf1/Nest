@@ -3,7 +3,7 @@ public class Kommentar {
 
     public int KommentarId {get; set;}  // PK
     // Bilde sin id
-    public int id {get; set;} //FK
+    public int BildeId{get; set;} //FK
 
     //Kommentar innehold
     public string?  KommentarBeskrivelse  {get;set;}  
