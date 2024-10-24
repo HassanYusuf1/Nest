@@ -20,7 +20,7 @@
         <link href="~/css/Layout.css" rel="stylesheet" />
     }
 </head>
-<body>
+<body class="@(ViewData["Title"]?.ToString() == "Home Page" ? "home-page" : "")">
     @if (ViewData["Title"]?.ToString() != "Home Page") {
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -40,7 +40,6 @@
                             <li class="nav-item">
                                  <a class="nav-link text-dark" asp-controller="Notat" asp-action="Index">Notater</a>
                             </li>
-
                         </ul>
                     </div>
                 </div>
