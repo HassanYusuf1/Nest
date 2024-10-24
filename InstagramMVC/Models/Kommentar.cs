@@ -1,14 +1,19 @@
 namespace InstagramMVC.Models{
 public class Kommentar {
 
-    public int Id {get; set;}
-    public string? Innehold {get;set;}  //Kommentarens innehold
-    public DateTime OppretteDato{get; set ;} //Dato Kommentarer ble opprettet
+    public int KommentarId {get; set;}  // PK
+    // Bilde sin id
+    public int id {get; set;} //FK
 
-    public  int InnleggId {get; set;}
-    public Bilde? innlegg {get; set; }  //Forhold til Innlegget;
+    //Kommentar innehold
+    public string?  KommentarBeskrivelse  {get;set;}  
 
-    public Bruker? Bruker {get; set;}  //Forhold til brukeren som la til kommentaren ss
+    public DateTime KommentarTid {get; set;}
 
+    // Relasjon til Bilde
+    public virtual Bilde? Bilde {get; set;} 
+
+    //public virtual IdentityUser? Bruker // legger til dette når vi har lagt inn identityuser
+    
 }
 }
