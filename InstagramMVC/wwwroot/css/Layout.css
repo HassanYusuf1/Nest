@@ -62,21 +62,75 @@ body {
 
 /* home.css */
 
+body.home-page {
+  background: linear-gradient(
+    45deg,
+    #feda75,
+    #feda75,
+    #fa7e1e,
+    #d62976,
+    #962fbf,
+    #4f5bd5,
+    #4f5bd5,
+    #2a9df4
+  );
+  background-size: 200% 200%;
+  animation: smoothPulse 4s ease-in-out infinite;
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  color: #ffffff;
+}
+
 .login-register-box {
-  background: #fdf5e6; /* Lys beige bakgrunn for å skape kontrast */
-  padding: 30px; /* Mer padding for et luftigere utseende */
+  background: #fdf5e6;
+  padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Dypere skygge for bedre dybdeeffekt */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 500px; /* Økt maksimal bredde til 500px for mer rom */
-  margin: 0 auto; /* Sørger for at boksen er sentrert */
+  max-width: 500px;
+  margin: 0 auto;
   border-color: #5d4037;
+}
+
+@keyframes smoothPulse {
+  0% {
+    background-size: 150% 150%;
+    background-position: 0% 50%;
+  }
+  25% {
+    background-size: 160% 160%;
+    background-position: 50% 50%;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: 100% 50%;
+  }
+  75% {
+    background-size: 160% 160%;
+    background-position: 50% 50%;
+  }
+  100% {
+    background-size: 150% 150%;
+    background-position: 0% 50%;
+  }
+}
+
+.login-register-box {
+  background: rgba(255, 255, 255, 0.6); /* Gjennomsiktig hvit */
+  backdrop-filter: blur(10px); /* "Glassmorfisme"-effekt */
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  border-color: rgba(255, 255, 255, 0.8); /* Lett, lys kant */
 }
 
 .btn-toggle {
   flex: 1;
-  background-color: #3b2f2f;
-  border-color: #5d4037;
+  background-color: #0f1011;
+  border-color: #fff;
   padding: 10px 0;
   font-weight: bold;
   color: #fff;
@@ -91,7 +145,7 @@ body {
 
 .btn-toggle.active {
   background-color: #d2b48c;
-  color: #fff;
+  color: transparent;
 }
 
 .form-container {
