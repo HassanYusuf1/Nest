@@ -27,12 +27,12 @@ namespace InstagramMVC.DAL
             }
             catch (Exception e)
             {
-                _logger.LogError("[BildeRepository] HentAlle feilet ved henting av alle bilder. Feilmelding: {e}", e.Message);
+                _logger.LogError("[BildeRepository] index feilet ved henting av alle bilder. Feilmelding: {e}", e.Message);
                 return null;
             }
         }
 
-        public async Task<bool> Opprette(Bilde bilde)
+        public async Task<bool> Create(Bilde bilde)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace InstagramMVC.DAL
            }
            catch(Exception e)
            {
-            _logger.LogError("[BildeRepository] Oppdatering av bilde med ID {ID} feilet, melding {e}", bilde.Id,e.Message);
+            _logger.LogError("[BildeRepository] Oppdatering av bilde med ID {BildeId} feilet, melding {e}", bilde.BildeId,e.Message);
             return false;
            }
         }
