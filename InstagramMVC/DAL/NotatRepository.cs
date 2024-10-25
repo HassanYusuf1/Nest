@@ -23,25 +23,54 @@ public class NotatRepository : INotatRepository
 
     public async Task<IEnumerable<Note>> GetAll()
     {
-        return await _db.Notes.ToListAsync();
+        try
+        {
+            return await _db.Notes.ToListAsync();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("[NoteRepository] Notes ToListAsync() failed when GetAll, error message: {e}", e.message);
+            return null;
+        }
     }
 
     public async Task<Note?> GetNoteById(int NoteId)
     {
+        try
+        {
             return _db.Notes.FirstOrDefault(n => n.NoteId == NoteId);
-
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("[NotatRepository] note FirstOrDefault() failed when GetNoteById for NoteId {NoteId:0000}, error message: {e}", id, e.message);
+            return null;
+        }
     }
 
     public async Task Create(Note note)
     {
-        await _db.Notes.AddAsync(note);
-        await _db.SaveChangesAsync();
+        try
+        {
+            await _db.Notes.AddAsync(note);
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("[NotatRepository] note creation failed for note {@note}, error message: {e}", note, e.Message)
+        }
     }
 
     public async Task Update(Note note)
     {
-        _db.Notes.Update(note);
-        await _db.SaveChangesAsync();
+        try
+        {
+            _db.Notes.Update(note);
+            await _db.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("[NotatRepository] note update failed for note {@note}, error message: {e}", note, e.Message)
+        }
     }
 
     public async Task<bool> Delete(int NoteId)
