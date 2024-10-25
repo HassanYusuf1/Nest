@@ -38,7 +38,9 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 // Optional: Use a default controller route if needed
-app.MapDefaultControllerRoute(); 
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Front}/{action=Index}/{id?}"); 
 
 // Start the app
 app.Run();

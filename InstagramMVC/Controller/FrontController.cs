@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Instagram.Controllers
 {
-    public class HomeController : Controller
+    public class FrontController : Controller
     {
-        // GET: /Home/Index
+        // GET: /Front/Index
         public IActionResult Index()
         {
             // Returnerer Hjem-siden (Index) som inneholder velkomst
