@@ -28,6 +28,11 @@ public class NotatController : Controller
         _logger.LogWarning("This is a warning");
         _logger.LogError("This is an error");
         var notater = await _notatRepository.GetAll();
+        if (notater == null)
+        {
+            _logger.LogError("[NotatController] Note List not found when running _notatRepository.GetAll()")
+            return NotFound("Note List not found.")
+        }
         var notaterViewModel = new NotaterViewModel(notater, "Notes");
         return View(notaterViewModel);
     }
@@ -36,7 +41,8 @@ public class NotatController : Controller
     {
         var note = await _notatRepository.GetNoteById(id);
         if (note == null)
-            return NotFound();
+            _logger.LogError("[NotatController] Note not found for the NoteId: {NoteId:}", id)
+            return NotFound("Note not found for the NoteId");
         return View("NotatDetails", note);
     }
 
@@ -46,7 +52,8 @@ public class NotatController : Controller
         var note = await _notatRepository.GetNoteById(id);
         if (note == null)
         {
-            return NotFound();
+            _logger.LogError("[NotatController] Note not found for the NoteId: {NoteId:}", id)
+            return BadRequest("Could not delete note.");
         }
         return View(note);
     }
@@ -57,7 +64,8 @@ public class NotatController : Controller
         var notat = await _notatRepository.GetNoteById(id);
         if (notat == null)
         {
-            return NotFound();
+            _logger.LogError("[NotatController] Note for deletion not found for the NoteId: {NoteId:}", id)
+            return BadRequest("Could not delete Note");
         }
         await _notatRepository.DeleteConfirmed(id);
         
@@ -79,6 +87,7 @@ public class NotatController : Controller
             
             return RedirectToAction(nameof(Index));
         }
+        _logger.LogWarning("[NotatController] Creating Note failed {@note}", note);
         return View(note);
     }
 
@@ -88,7 +97,8 @@ public class NotatController : Controller
         var note = await _notatRepository.GetNoteById(id);
         if (note == null)
         {
-            return NotFound();
+            _logger.LogError("[NotatController] Creating Note failed {@note}", note);
+            return BadRequest("Note not found for NoteId");
         }
         return View(note);
     }
@@ -102,6 +112,7 @@ public class NotatController : Controller
             
             return RedirectToAction(nameof(Index));
         }
+        _logger.LogWarning("[NotatController] Note update failed {@note}", note);
         return View(note);
     }
 }
