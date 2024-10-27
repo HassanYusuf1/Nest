@@ -56,7 +56,7 @@ public class NotatRepository : INotatRepository
         }
         catch (Exception e)
         {
-            _logger.LogError("[NotatRepository] note creation failed for note {@note}, error message: {e}", note, e.Message)
+            _logger.LogError("[NotatRepository] note creation failed for note {@note}, error message: {e}", note, e.Message);
         }
     }
 
@@ -69,7 +69,7 @@ public class NotatRepository : INotatRepository
         }
         catch (Exception e)
         {
-            _logger.LogError("[NotatRepository] note update failed for note {@note}, error message: {e}", note, e.Message)
+            _logger.LogError("[NotatRepository] note update failed for note {@note}, error message: {e}", note, e.Message);
         }
     }
 

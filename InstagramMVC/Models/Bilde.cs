@@ -13,6 +13,8 @@ namespace InstagramMVC.Models {
 
         public DateTime OpprettetDato {get; set;} // dato innlegget ble opprettet
 
+        public virtual ICollection<Kommentar> Kommentarer { get; set; }
+
         public int BrukerId {get; set;} // Forhold til brukeren som eier innlegget 
 
 
