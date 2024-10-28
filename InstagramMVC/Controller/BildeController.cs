@@ -95,26 +95,31 @@ namespace InstagramMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
-        {
-            var bilde = await _bildeRepository.BildeId(id);
-            if (bilde == null)
-            {
-                _logger.LogError("[BildeController] bilde sin id ble ikke funnet");
-                return NotFound();
-            }
+public async Task<IActionResult> Details(int id)
+{
+    var bilde = await _bildeRepository.BildeId(id);
+    if (bilde == null)
+    {
+        _logger.LogError("[BildeController] Bilde-ID ble ikke funnet");
+        return NotFound();
+    }
 
-             var kommentarer = await _kommentarRepository.GetAll();
-             var bildeKommentarer = kommentarer.Where(k => k.BildeId == id); 
-             var kommentarViewModel = new KommentarViewModel(bildeKommentarer, "Kommentarer for Bilde");
+    var kommentarer = await _kommentarRepository.GetAll();
+     if (kommentarer == null)
+    {
+        kommentarer = new List<Kommentar>(); // Initialiser til en tom liste om det er null
+    }
+    var bildeKommentarer = kommentarer.Where(k => k.BildeId == id);
 
-            var viewModel = new BildeKommentarViewModel
-            {
-                Bilde = bilde,
-                KommentarViewModel = kommentarViewModel
-            };
-            return View("BildeDetails", viewModel);
-        }
+    var viewModel = new BildeKommentarViewModel
+    {
+        Bilde = bilde,
+        Kommentarer = bildeKommentarer,
+        NyKommentar = new Kommentar { BildeId = id } 
+    };
+
+    return View("BildeDetails", bilde);
+}
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

@@ -48,7 +48,7 @@ namespace InstagramMVC.Controllers
                     kommentar.KommentarTid = DateTime.Now;
 
                     await _kommentarRepository.Create(kommentar);
-                    return RedirectToAction("BildeInfo", "Bilde", new { id =kommentar.BildeId});
+                    return RedirectToAction("BildeDetails", "Bilde", new { id =kommentar.BildeId});
                 }
                 _logger.LogWarning("[KommentarController] Opprettning av ny kommentar feilet, Modelstat funker ikke");
                 return View(kommentar);

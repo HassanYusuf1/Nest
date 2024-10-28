@@ -1,11 +1,5 @@
 @model IEnumerable<InstagramMVC.Models.Kommentar>
-
-<div class="container">
-    <p>
-        <a class="btn btn-secondary"
-           asp-controller="Kommentar"
-           asp-action="CreateKommentar">Legg til ny kommentar</a>
-    </p>    
+   
     <div class="row">
         @foreach (var kommentar in Model)
         {
