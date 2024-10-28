@@ -1,0 +1,29 @@
+@model IEnumerable<InstagramMVC.Models.Kommentar>
+
+<div class="container">
+    <p>
+        <a class="btn btn-secondary"
+           asp-controller="Kommentar"
+           asp-action="CreateKommentar">Legg til ny kommentar</a>
+    </p>    
+    <div class="row">
+        @foreach (var kommentar in Model)
+        {
+            <div class="col-sm-4 mb-3">
+                <a asp-action="Details" asp-route-id="@kommentar.KommentarId" class="text-decoration-none">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Kommentar til Bilde ID: @kommentar.BildeId</h5>
+                            <p class="card-text">@kommentar.KommentarBeskrivelse</p>
+                            <p class="text-muted"><small>Publisert: @kommentar.KommentarTid.ToString("yyyy-MM-dd HH:mm")</small></p>
+                        </div>
+                    </div>
+                </a>
+                <div class="mt-2">
+                    <a asp-action="UpdateKommentar" asp-route-id="@kommentar.KommentarId" class="btn btn-outline-primary btn-sm">Rediger</a>
+                    <a asp-action="DeleteKommentar" asp-route-id="@kommentar.KommentarId" class="btn btn-outline-danger btn-sm">Slett</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

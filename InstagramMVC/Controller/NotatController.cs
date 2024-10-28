@@ -30,8 +30,8 @@ public class NotatController : Controller
         var notater = await _notatRepository.GetAll();
         if (notater == null)
         {
-            _logger.LogError("[NotatController] Note List not found when running _notatRepository.GetAll()")
-            return NotFound("Note List not found.")
+            _logger.LogError("[NotatController] Note List not found when running _notatRepository.GetAll()");
+            return NotFound("Note List not found.");
         }
         var notaterViewModel = new NotaterViewModel(notater, "Notes");
         return View(notaterViewModel);
@@ -41,7 +41,7 @@ public class NotatController : Controller
     {
         var note = await _notatRepository.GetNoteById(id);
         if (note == null)
-            _logger.LogError("[NotatController] Note not found for the NoteId: {NoteId:}", id)
+            _logger.LogError("[NotatController] Note not found for the NoteId: {NoteId:}", id);
             return NotFound("Note not found for the NoteId");
         return View("NotatDetails", note);
     }
@@ -52,7 +52,7 @@ public class NotatController : Controller
         var note = await _notatRepository.GetNoteById(id);
         if (note == null)
         {
-            _logger.LogError("[NotatController] Note not found for the NoteId: {NoteId:}", id)
+            _logger.LogError("[NotatController] Note not found for the NoteId: {NoteId:}", id);
             return BadRequest("Could not delete note.");
         }
         return View(note);
@@ -64,7 +64,7 @@ public class NotatController : Controller
         var notat = await _notatRepository.GetNoteById(id);
         if (notat == null)
         {
-            _logger.LogError("[NotatController] Note for deletion not found for the NoteId: {NoteId:}", id)
+            _logger.LogError("[NotatController] Note for deletion not found for the NoteId: {NoteId:}", id);
             return BadRequest("Could not delete Note");
         }
         await _notatRepository.DeleteConfirmed(id);
