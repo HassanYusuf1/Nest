@@ -29,7 +29,7 @@ public class NotatRepository : INotatRepository
         }
         catch (Exception e)
         {
-            _logger.LogError("[NoteRepository] Notes ToListAsync() failed when GetAll, error message: {e}", e.message);
+            _logger.LogError("[NoteRepository] Notes ToListAsync() failed when GetAll, error message: {e}", e);
             return null;
         }
     }
@@ -42,7 +42,7 @@ public class NotatRepository : INotatRepository
         }
         catch (Exception e)
         {
-            _logger.LogError("[NotatRepository] note FirstOrDefault() failed when GetNoteById for NoteId {NoteId:0000}, error message: {e}", id, e.message);
+            _logger.LogError("[NotatRepository] note FirstOrDefault() failed when GetNoteById for NoteId {NoteId:0000}, error message: {e}", NoteId, e);
             return null;
         }
     }
