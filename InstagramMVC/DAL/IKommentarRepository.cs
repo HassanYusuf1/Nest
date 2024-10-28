@@ -5,7 +5,7 @@ namespace InstagramMVC.DAL
 {
     public interface IKommentarRepository
     {
-        Task<IEnumerable<Kommentar>> GetALL();
+        Task<IEnumerable<Kommentar>> GetAll();
         Task <Kommentar> GetKommentarById(int id);
 
         Task<int?> GetBildeId(int id);
