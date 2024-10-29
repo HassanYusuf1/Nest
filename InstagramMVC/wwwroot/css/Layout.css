@@ -213,10 +213,11 @@ body {
 }
 
 /* Note Page */
-.create.btn {
+.create-btn {
   background-color: transparent;
   color: #2a9df4;
 }
+
 .create-btn:hover {
   background-color: #f0f0f0;
   border-color: #2a9df4;
