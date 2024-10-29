@@ -104,15 +104,8 @@ namespace InstagramMVC.Controllers
                 return NotFound();
             }
 
-             var kommentarer = await _kommentarRepository.GetAll();
-             var bildeKommentarer = kommentarer.Where(k => k.BildeId == id); 
-             var kommentarViewModel = new KommentarViewModel(bildeKommentarer, "Kommentarer for Bilde");
-
-            var viewModel = new BildeKommentarViewModel
-            {
-                Bilde = bilde,
-                KommentarViewModel = kommentarViewModel
-            };
+             
+           
             return View("BildeDetails", bilde);
         }
 
