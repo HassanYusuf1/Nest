@@ -121,12 +121,12 @@ body.front-page {
 
 /* Home Page */
 body {
-  background-color: #fff;
+  background-color: #fafafa;
   margin: 0;
 }
 
 .navbar {
-  background-color: #d2b48c;
+  background-color: #f0f0f0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   width: 100%;
@@ -180,4 +180,26 @@ body {
   background-color: #333;
   color: #fff;
   border-color: #333;
+}
+
+.edit-btn {
+  background-color: transparent;
+  color: #2a9df4;
+  border: none;
+  padding: 8px 16px;
+}
+.edit-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #2a9df4;
+}
+
+.delete-btn {
+  background-color: transparent;
+  color: #2a9df4;
+  border: none;
+  padding: 8px 16px;
+}
+.delete-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #2a9df4;
 }

@@ -1,11 +1,7 @@
 @model IEnumerable<InstagramMVC.Models.Note>
 
 <div class="container">
-    <p>
-        <a class="btn btn-secondary"
-           asp-controller="Notat"
-           asp-action="Create">Create New Note</a>
-    </p>    
+    
     <div class="row">
         @foreach (var note in Model)
         {
@@ -29,3 +25,9 @@
         }
     </div>
 </div>
+    <p>
+         <a class="btn btn-secondary"
+            asp-controller="Notat"
+            asp-action="Create">Create New Note
+        </a>
+    </p>    

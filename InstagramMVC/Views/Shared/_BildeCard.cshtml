@@ -8,8 +8,9 @@
             <img src="@Model.BildeUrl" class="card-img-top" alt="@Model.Tittel" />
         </a>
         <div class="card-footer">
-            <a asp-action="Edit" asp-route-id="@Model.BildeId" class="btn btn-warning">Edit</a>
-            <a asp-action="Delete" asp-route-id="@Model.BildeId" class="btn btn-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@Model.BildeId" class="btn edit-btn">Edit</a>
+                <a asp-action="Delete" asp-route-id="@Model.BildeId" class="btn delete-btn">Delete</a>
+
         </div>
     </div>
 </div>
