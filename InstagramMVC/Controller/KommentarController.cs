@@ -48,7 +48,7 @@ namespace InstagramMVC.Controllers
                     kommentar.KommentarTid = DateTime.Now;
 
                     await _kommentarRepository.Create(kommentar);
-                    return RedirectToAction("CreateComment", "Bilde", new { id =kommentar.BildeId});
+                    return RedirectToAction("Details", "Bilde", new { id = kommentar.BildeId }); 
                 }
                 _logger.LogWarning("[KommentarController] Opprettning av ny kommentar feilet, Modelstat funker ikke");
                 return View(kommentar);
@@ -77,28 +77,41 @@ namespace InstagramMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateComment(Kommentar kommentar)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _logger.LogWarning("Ugylding Modeltilstand når man forsøker å oppdatere kommentar. KommentarId: {KommentarId}",kommentar.KommentarId);
+                _logger.LogWarning("Ugyldig ModelState ved oppdatering av kommentar. KommentarId: {KommentarId}", kommentar.KommentarId);
                 return View(kommentar);
             }
-
+            
             try
             {
+        // Hent den eksisterende kommentaren fra databasen for å få BildeId
+                var eksisterendeKommentar = await _kommentarRepository.GetKommentarById(kommentar.KommentarId);
+                if (eksisterendeKommentar == null)
+                {
+                    _logger.LogError("Fant ikke kommentar med ID {KommentarId}", kommentar.KommentarId);
+                    return NotFound();
+                }
+                // Behold den opprinnelige BildeId-verdien for å unngå fremmednøkkelproblemer
+                kommentar.BildeId = eksisterendeKommentar.BildeId;
+
+                // Utfør oppdateringen
                 await _kommentarRepository.Update(kommentar);
 
-            }
-            catch(Exception e)
+                // Omdiriger til bildedetaljsiden etter oppdateringen
+                return RedirectToAction("Details", "Bilde", new { id = kommentar.BildeId });
+                }
+            catch (Exception e)
             {
-                _logger.LogError("Feil oppstod under opppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
-                throw; 
+                _logger.LogError("Feil oppstod under oppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
+                throw;
             }
-
-              return RedirectToAction("BildeDetails", "Bilde", new { Id = kommentar.BildeId });
-            
         }
+
+       
+
         [HttpGet]
-        public async Task<IActionResult>  DeleteKommentar(int Id)
+        public async Task<IActionResult>  DeleteComment(int Id)
         {
             var kommentar = await _kommentarRepository.GetKommentarById(Id);
 
@@ -121,14 +134,14 @@ namespace InstagramMVC.Controllers
                 await _kommentarRepository.Delete(Id); // sletter kommentaren.
                 // Logger en melding som viser at sletting av kommentaren var vellykket
                 _logger.LogInformation("Kommentaren med Id [Kommentar Id] ble slettet", Id);
-                return RedirectToAction("BildeDetaljer", "Bilde", new {Id = BildeId});
+                return RedirectToAction("Details", "Bilde", new { id = BildeId });
             }
             catch (Exception e)
             {
                 // logger feilmelding hvis sletting ikke fungerer.
                 _logger.LogError("Feil ved sletting av kommentar med ID {Id}", Id);
                 
-                return RedirectToAction("BildeDetaljer", "Bilde" , new { Id = BildeId});
+                return RedirectToAction("Details", "Bilde", new { id = BildeId });
             }
         }
 
