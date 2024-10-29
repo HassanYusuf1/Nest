@@ -96,10 +96,10 @@ namespace InstagramMVC.Controllers
                 kommentar.BildeId = eksisterendeKommentar.BildeId;
 
                 // Utfør oppdateringen
-                await _kommentarRepository.Update(kommentar);
+                await _kommentarRepository.Update(eksisterendeKommentar);
 
                 // Omdiriger til bildedetaljsiden etter oppdateringen
-                return RedirectToAction("Details", "Bilde", new { id = kommentar.BildeId });
+                return RedirectToAction("Details", "Bilde", new { id = eksisterendeKommentar.BildeId });
                 }
             catch (Exception e)
             {
