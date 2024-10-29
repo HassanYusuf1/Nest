@@ -48,7 +48,7 @@ namespace InstagramMVC.Controllers
                     kommentar.KommentarTid = DateTime.Now;
 
                     await _kommentarRepository.Create(kommentar);
-                    return RedirectToAction("CreateComment", "Bilde", new { id =kommentar.BildeId});
+                    return RedirectToAction("Details", "Bilde", new { id = kommentar.BildeId }); 
                 }
                 _logger.LogWarning("[KommentarController] Opprettning av ny kommentar feilet, Modelstat funker ikke");
                 return View(kommentar);
@@ -94,7 +94,7 @@ namespace InstagramMVC.Controllers
                 throw; 
             }
 
-              return RedirectToAction("BildeDetails", "Bilde", new { Id = kommentar.BildeId });
+              return RedirectToAction("Details", "Bilde", new { id = kommentar.BildeId });
             
         }
         [HttpGet]
@@ -121,14 +121,14 @@ namespace InstagramMVC.Controllers
                 await _kommentarRepository.Delete(Id); // sletter kommentaren.
                 // Logger en melding som viser at sletting av kommentaren var vellykket
                 _logger.LogInformation("Kommentaren med Id [Kommentar Id] ble slettet", Id);
-                return RedirectToAction("BildeDetaljer", "Bilde", new {Id = BildeId});
+                return RedirectToAction("Details", "Bilde", new { id = BildeId });
             }
             catch (Exception e)
             {
                 // logger feilmelding hvis sletting ikke fungerer.
                 _logger.LogError("Feil ved sletting av kommentar med ID {Id}", Id);
                 
-                return RedirectToAction("BildeDetaljer", "Bilde" , new { Id = BildeId});
+                return RedirectToAction("Details", "Bilde", new { id = BildeId });
             }
         }
 
