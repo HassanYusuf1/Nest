@@ -2,18 +2,21 @@
 
 <h2>Upload New Image</h2>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" asp-action="Create">
     <div>
-        <label>Title</label>
-        <input type="text" asp-for="Tittel" class="form-control" />
+        <label for="Tittel">Title</label>
+        <input type="text" asp-for="Tittel" id="Tittel" class="form-control" />
     </div>
+
     <div>
-        <label>Description</label>
-        <textarea asp-for="Beskrivelse" class="form-control"></textarea>
+        <label for="Beskrivelse">Description</label>
+        <textarea asp-for="Beskrivelse" id="Beskrivelse" class="form-control"></textarea>
     </div>
+
     <div>
-        <label>Select Image</label>
-        <input type="file" asp-for="BildeUrl" accept="image/*" class="form-control" />
+        <label for="BildeUrl">Select Image</label>
+        <input type="file" asp-for="BildeUrl" id="BildeUrl" class="form-control" />
     </div>
+
     <button type="submit" class="btn btn-primary">Upload</button>
 </form>
