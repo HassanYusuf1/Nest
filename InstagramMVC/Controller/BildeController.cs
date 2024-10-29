@@ -16,8 +16,8 @@ namespace InstagramMVC.Controllers
 
         public BildeController(IBildeRepository bildeRepository, IKommentarRepository kommentarRepository, ILogger<BildeController> logger)
         {
-            _kommentarRepository = kommentarRepository;
             _bildeRepository = bildeRepository;
+            _kommentarRepository = kommentarRepository;
             _logger = logger;
         }
 
