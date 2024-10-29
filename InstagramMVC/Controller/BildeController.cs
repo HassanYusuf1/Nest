@@ -60,6 +60,7 @@ namespace InstagramMVC.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("[BildeController] ModelState is not valid.");
                 return View(nyttBilde);
             }
 
@@ -81,10 +82,15 @@ namespace InstagramMVC.Controllers
 
                 nyttBilde.BildeUrl = "/images/" + uniqueFileName;
             }
+            else
+            {
+                _logger.LogWarning("[BildeController] No file selected for upload.");
+            }
 
             bool vellykket = await _bildeRepository.Create(nyttBilde);
             if (vellykket)
             {
+                _logger.LogInformation("[BildeController] Image created successfully with ID: {0}", nyttBilde.BildeId);
                 return RedirectToAction(nameof(Grid));
             }
             else
@@ -94,18 +100,6 @@ namespace InstagramMVC.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Details(int id)
-        {
-            var bilde = await _bildeRepository.BildeId(id);
-            if (bilde == null)
-            {
-                _logger.LogError("[BildeController] bilde sin id ble ikke funnet");
-                return NotFound();
-            }
-            
-            return View("BildeDetails", bilde);
-        }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

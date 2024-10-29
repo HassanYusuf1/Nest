@@ -38,6 +38,7 @@ namespace InstagramMVC.DAL
             {
                 await _context.Bilder.AddAsync(bilde);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("Bilde opprettet med ID: {0}", bilde.BildeId);
                 return true;
             }
             catch(Exception e)

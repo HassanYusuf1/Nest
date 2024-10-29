@@ -26,7 +26,7 @@ public static class DBInit
                     {
                         Tittel = "Digg",
                         Beskrivelse = "Va.",
-                        BildeUrl = "Solnedgang_JPG.jpg", // Opprett en testfil her eller last opp manuelt
+                        BildeUrl = "/images/Solnedgang_JPG.jpg", 
                         OpprettetDato = DateTime.Now.AddDays(-10)
                     },
                     
