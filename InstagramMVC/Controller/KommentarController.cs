@@ -17,7 +17,7 @@ namespace InstagramMVC.Controllers
             _logger = logger;
         }
         [HttpGet]
-        public IActionResult CreateKommentar(int bildeId)
+        public IActionResult CreateComment(int bildeId)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace InstagramMVC.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> CreateKommentar(Kommentar kommentar)
+        public async Task<IActionResult> CreateComment(Kommentar kommentar)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace InstagramMVC.Controllers
                     kommentar.KommentarTid = DateTime.Now;
 
                     await _kommentarRepository.Create(kommentar);
-                    return RedirectToAction("BildeDetails", "Bilde", new { id =kommentar.BildeId});
+                    return RedirectToAction("CreateComment", "Bilde", new { id =kommentar.BildeId});
                 }
                 _logger.LogWarning("[KommentarController] Opprettning av ny kommentar feilet, Modelstat funker ikke");
                 return View(kommentar);
@@ -63,7 +63,7 @@ namespace InstagramMVC.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> UpdateKommentar(int Id)
+        public async Task<IActionResult> UpdateComment(int Id)
         {
             var kommentar = await _kommentarRepository.GetKommentarById(Id);
 
@@ -75,7 +75,7 @@ namespace InstagramMVC.Controllers
             return View(kommentar);
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateKommentar(Kommentar kommentar)
+        public async Task<IActionResult> UpdateComment(Kommentar kommentar)
         {
             if(!ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace InstagramMVC.Controllers
                 throw; 
             }
 
-              return RedirectToAction("BildeDetaljer", new { Id = kommentar.BildeId });
+              return RedirectToAction("BildeDetails", "Bilde", new { Id = kommentar.BildeId });
             
         }
         [HttpGet]
