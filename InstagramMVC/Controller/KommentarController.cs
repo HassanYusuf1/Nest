@@ -111,7 +111,7 @@ namespace InstagramMVC.Controllers
        
 
         [HttpGet]
-        public async Task<IActionResult>  DeleteKommentar(int Id)
+        public async Task<IActionResult>  DeleteComment(int Id)
         {
             var kommentar = await _kommentarRepository.GetKommentarById(Id);
 

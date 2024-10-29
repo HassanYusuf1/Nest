@@ -1,0 +1,15 @@
+@model InstagramMVC.Models.Kommentar
+
+<h2>Slett Kommentar</h2>
+
+<p>Er du sikker på at du vil slette denne kommentaren?</p>
+<div>
+    <p><strong>Kommentar:</strong> @Model.KommentarBeskrivelse</p>
+    <p><small><strong>Skrevet:</strong> @Model.KommentarTid.ToString("yyyy-MM-dd HH:mm")</small></p>
+</div>
+
+<form asp-action="DeleteConfirmedKommentar" method="post">
+    <input type="hidden" asp-for="KommentarId" />
+    <button type="submit" class="btn btn-danger">Slett</button>
+    <a href="@Url.Action("BildeDetails", "Bilde", new { id = Model.BildeId })" class="btn btn-secondary">Avbryt</a>
+</form>
