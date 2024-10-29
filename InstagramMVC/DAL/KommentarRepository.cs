@@ -49,7 +49,11 @@ namespace InstagramMVC.DAL
         public async Task<int?> GetBildeId(int id)
         {
             var kommentar = await _context.Kommentarer.FindAsync(id);
-            return kommentar?.BildeId;
+            if (kommentar == null)
+            {
+                _logger.LogWarning("Kommentar med ID [id] ble ikke funnet når man prøvde å hente BildeId",id);
+            }
+            return kommentar.BildeId;
         }
 
         public async Task Create(Kommentar kommentar)
