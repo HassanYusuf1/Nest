@@ -113,7 +113,7 @@ namespace InstagramMVC.Controllers
                 Bilde = bilde,
                 KommentarViewModel = kommentarViewModel
             };
-            return View("BildeDetails", viewModel);
+            return View("BildeDetails", bilde);
         }
 
         [HttpGet]
