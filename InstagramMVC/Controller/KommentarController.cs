@@ -85,7 +85,7 @@ namespace InstagramMVC.Controllers
             
             try
             {
-                // Hent den eksisterende kommentaren fra databasen for å få BildeId
+        // Hent den eksisterende kommentaren fra databasen for å få BildeId
                 var eksisterendeKommentar = await _kommentarRepository.GetKommentarById(kommentar.KommentarId);
                 if (eksisterendeKommentar == null)
                 {
@@ -94,7 +94,6 @@ namespace InstagramMVC.Controllers
                 }
                 // Behold den opprinnelige BildeId-verdien for å unngå fremmednøkkelproblemer
                 kommentar.BildeId = eksisterendeKommentar.BildeId;
-                eksisterendeKommentar.KommentarBeskrivelse = kommentar.KommentarBeskrivelse;
 
                 // Utfør oppdateringen
                 await _kommentarRepository.Update(eksisterendeKommentar);
@@ -128,32 +127,23 @@ namespace InstagramMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmedKommentar(int Id)
         {
-            // Hent kommentaren direkte fra databasen
-            var kommentar = await _kommentarRepository.GetKommentarById(Id);
-
-            // Sjekk at kommentaren faktisk eksisterer
-            if (kommentar == null)
-            {
-                _logger.LogError("Kommentar med ID {Id} ble ikke funnet", Id);
-                return NotFound("Kommentar ble ikke funnet.");
-            }
+            var BildeId = await _kommentarRepository.GetBildeId(Id);
 
             try
             {
-                // Slett kommentaren
-                await _kommentarRepository.Delete(Id);
-                _logger.LogInformation("Kommentaren med Id {Id} ble slettet", Id);
+                await _kommentarRepository.Delete(Id); // sletter kommentaren.
+                // Logger en melding som viser at sletting av kommentaren var vellykket
+                _logger.LogInformation("Kommentaren med Id [Kommentar Id] ble slettet", Id);
+                return RedirectToAction("Details", "Bilde", new { id = BildeId });
             }
             catch (Exception e)
             {
-                // Logg en feilmelding hvis slettingen mislykkes
-                _logger.LogError("Feil ved sletting av kommentar med ID {Id}: {Message}", Id, e.Message);
+                // logger feilmelding hvis sletting ikke fungerer.
+                _logger.LogError("Feil ved sletting av kommentar med ID {Id}", Id);
+                
+                return RedirectToAction("Details", "Bilde", new { id = BildeId });
             }
-
-            // Omdiriger til `Bilde/Details` basert på `BildeId` fra den hentede kommentaren
-            return RedirectToAction("Details", "Bilde", new { id = kommentar.BildeId });
         }
-
 
 
 

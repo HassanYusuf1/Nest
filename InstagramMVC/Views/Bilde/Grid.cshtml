@@ -1,6 +1,6 @@
 @model BilderViewModel
 
-
+<h1>List of Shop Items (@Model.CurrentViewName View)</h1>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var bilde in Model.Bilder)
@@ -10,5 +10,5 @@
 </div>
 
 <div class="mt-4">
-    <a href="@Url.Action("Create", "Bilde")" class="btn upload-btn">Upload New Image</a>
+    <a href="@Url.Action("Create", "Bilde")" class="btn btn-primary">Upload New Image</a>
 </div>

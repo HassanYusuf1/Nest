@@ -52,7 +52,6 @@ namespace InstagramMVC.DAL
             if (kommentar == null)
             {
                 _logger.LogWarning("Kommentar med ID [id] ble ikke funnet når man prøvde å hente BildeId",id);
-                return null;
             }
             return kommentar.BildeId;
         }
