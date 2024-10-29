@@ -19,7 +19,7 @@ builder.Services.AddDbContext<MediaDbContext>(options =>
 // Register IBildeRepository with its concrete implementation BildeRepository
 builder.Services.AddScoped<IBildeRepository, BildeRepository>();
 builder.Services.AddScoped<INotatRepository, NotatRepository>();
-builder.Services.AddScoped<IKommentarRepository, KommentarRepository>();
+
 
 var app = builder.Build();
 // Autentisering i program cs 

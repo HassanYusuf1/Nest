@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
  
 namespace InstagramMVC.DAL
 {
-    public class KommentarRepository : IKommentarRepository
+    public class KommentarRepository
     {
         private readonly MediaDbContext _context;
         private readonly ILogger<KommentarRepository> _logger;
