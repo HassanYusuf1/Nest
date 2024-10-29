@@ -16,8 +16,8 @@ namespace InstagramMVC.Controllers
 
         public BildeController(IBildeRepository bildeRepository, IKommentarRepository kommentarRepository, ILogger<BildeController> logger)
         {
-            _bildeRepository = bildeRepository;
             _kommentarRepository = kommentarRepository;
+            _bildeRepository = bildeRepository;
             _logger = logger;
         }
 
@@ -103,16 +103,7 @@ namespace InstagramMVC.Controllers
                 _logger.LogError("[BildeController] bilde sin id ble ikke funnet");
                 return NotFound();
             }
-
-             var kommentarer = await _kommentarRepository.GetAll();
-             var bildeKommentarer = kommentarer.Where(k => k.BildeId == id); 
-             var kommentarViewModel = new KommentarViewModel(bildeKommentarer, "Kommentarer for Bilde");
-
-            var viewModel = new BildeKommentarViewModel
-            {
-                Bilde = bilde,
-                KommentarViewModel = kommentarViewModel
-            };
+            
             return View("BildeDetails", bilde);
         }
 
