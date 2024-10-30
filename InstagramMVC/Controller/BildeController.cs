@@ -119,48 +119,48 @@ namespace InstagramMVC.Controllers
         }
 
        [HttpPost]
-public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? newBildeUrl)
-{
-    if (id != updatedBilde.BildeId || !ModelState.IsValid)
+    public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? newBildeUrl)
     {
-        return View(updatedBilde);
-    }
-
-    var eksisterendeBilde = await _bildeRepository.BildeId(id);
-    if (eksisterendeBilde == null)
-    {
-        return NotFound();
-    }
-
-    eksisterendeBilde.Tittel = updatedBilde.Tittel;
-    eksisterendeBilde.Beskrivelse = updatedBilde.Beskrivelse;
-
-    if (newBildeUrl != null && newBildeUrl.Length > 0)
-    {
-        string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newBildeUrl.FileName);
-        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        if (id != updatedBilde.BildeId || !ModelState.IsValid)
         {
-            await newBildeUrl.CopyToAsync(fileStream);
+            return View(updatedBilde);
         }
 
-        if (!string.IsNullOrEmpty(eksisterendeBilde.BildeUrl))
+        var eksisterendeBilde = await _bildeRepository.BildeId(id);
+        if (eksisterendeBilde == null)
         {
-            string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", eksisterendeBilde.BildeUrl.TrimStart('/'));
-            if (System.IO.File.Exists(oldFilePath))
+            return NotFound();
+        }
+
+        eksisterendeBilde.Tittel = updatedBilde.Tittel;
+        eksisterendeBilde.Beskrivelse = updatedBilde.Beskrivelse;
+
+        if (newBildeUrl != null && newBildeUrl.Length > 0)
+        {
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newBildeUrl.FileName);
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
-                System.IO.File.Delete(oldFilePath);
+                await newBildeUrl.CopyToAsync(fileStream);
             }
+
+            if (!string.IsNullOrEmpty(eksisterendeBilde.BildeUrl))
+            {
+                string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", eksisterendeBilde.BildeUrl.TrimStart('/'));
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
+            }
+
+            eksisterendeBilde.BildeUrl = "/images/" + uniqueFileName;
         }
 
-        eksisterendeBilde.BildeUrl = "/images/" + uniqueFileName;
+        bool vellykket = await _bildeRepository.Oppdater(eksisterendeBilde);
+        return vellykket ? RedirectToAction("Grid") : View(updatedBilde);
     }
-
-    bool vellykket = await _bildeRepository.Oppdater(eksisterendeBilde);
-    return vellykket ? RedirectToAction("Grid") : View(updatedBilde);
-}
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
