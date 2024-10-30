@@ -24,9 +24,6 @@ public class NotatController : Controller
 
     public async Task<IActionResult> Index()
     {
-        _logger.LogInformation("This is notes");
-        _logger.LogWarning("This is a warning");
-        _logger.LogError("This is an error");
         var notater = await _notatRepository.GetAll();
         if (notater == null)
         {
@@ -72,12 +69,6 @@ public class NotatController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpGet]
-    public IActionResult Create()
-    {
-        return View();
-    }
-
     [HttpPost]
     public async Task<IActionResult> Create(Note note)
     {
@@ -89,6 +80,12 @@ public class NotatController : Controller
         }
         _logger.LogWarning("[NotatController] Creating Note failed {@note}", note);
         return View(note);
+    }
+    
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View("Index");
     }
 
     [HttpGet]
