@@ -4,22 +4,21 @@ document.addEventListener("DOMContentLoaded", function() {
     var loginForm = document.getElementById('loginForm');
     var registerForm = document.getElementById('registerForm');
 
-    // Sjekk at elementene eksisterer før vi legger til event listeners
     if (loginTab && registerTab && loginForm && registerForm) {
         loginTab.addEventListener('click', function(event) {
             event.preventDefault();
-            loginForm.style.display = 'block';          // Vis logg inn-skjema
-            registerForm.style.display = 'none';        // Skjul registrer-skjema
-            loginTab.classList.add('active');           // Legg til aktiv klasse på logg inn-fanen
-            registerTab.classList.remove('active');     // Fjern aktiv klasse fra registrer-fanen
+            loginForm.style.display = 'block'; // Vis logg inn-skjemaet
+            registerForm.style.display = 'none'; // Skjul registreringsskjemaet
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
         });
 
         registerTab.addEventListener('click', function(event) {
             event.preventDefault();
-            registerForm.style.display = 'block';       // Vis registrer-skjema
-            loginForm.style.display = 'none';           // Skjul logg inn-skjema
-            registerTab.classList.add('active');        // Legg til aktiv klasse på registrer-fanen
-            loginTab.classList.remove('active');        // Fjern aktiv klasse fra logg inn-fanen
+            registerForm.style.display = 'block'; // Vis registreringsskjemaet
+            loginForm.style.display = 'none'; // Skjul logg inn-skjemaet
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
         });
     }
 });
