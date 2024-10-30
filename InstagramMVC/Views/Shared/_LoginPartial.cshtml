@@ -14,29 +14,9 @@ else
     <div class="container d-flex align-items-center justify-content-center vh-100">
         <div class="card login-register-box">
             <div class="d-flex justify-content-between mb-4">
-                <a href="#" class="btn btn-toggle active" id="loginTab">Logg inn</a>
-                <a href="#" class="btn btn-toggle " id="registerTab">Registrer deg</a>
-            </div>
-
-            <!-- Logg inn Form -->
-            <div id="loginForm" class="form-container active">
-                <h4>Logg inn</h4>
-                <a class="main-nav-link nav-cta" id="login" asp-area="Identity" asp-page="/Account/Register">register</a>
-                <div class="d-flex justify-content-between mb-4">
-                <form asp-area="Identity" id ="loginTab" asp-page="/Account/Login" method="post">
-                </form>
-                </div>
-            </div>
-
-            <!-- Registrer Form -->
-            <div id="registerForm" class="form-container" style="display: none;">
-            
-
-                <div class="d-flex justify-content-between mb-4">
-                <form asp-area="Identity" id ="registerTab" asp-page="/Account/Register" method="post">
-                <button type="submit" class="btn btn-link">Register</button>
-                </form>
-                </div>
+                <!-- Direkte lenker til Login og Register sidene -->
+                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-toggle active">Logg inn</a>
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-toggle">Registrer deg</a>
             </div>
         </div>
     </div>
