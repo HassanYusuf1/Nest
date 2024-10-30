@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using InstagramMVC.Models;
 using InstagramMVC.DAL;
 
@@ -29,7 +30,7 @@ public class NotatRepository : INotatRepository
         catch (Exception e)
         {
             _logger.LogError("[NoteRepository] Notes ToListAsync() failed when GetAll, error message: {e}", e);
-            throw new InvalidOperationException("[NotatRepository] GetAll() failed");
+            return null;
         }
     }
 
@@ -37,12 +38,12 @@ public class NotatRepository : INotatRepository
     {
         try
         {
-            return await _db.Notes.FindAsync(NoteId);
+            return _db.Notes.FirstOrDefault(n => n.NoteId == NoteId);
         }
         catch (Exception e)
         {
             _logger.LogError("[NotatRepository] note FirstOrDefault() failed when GetNoteById for NoteId {NoteId:0000}, error message: {e}", NoteId, e);
-            throw new InvalidOperationException("[NotatRepository] GetNoteById() failed and did not find note with id");
+            return null;
         }
     }
 

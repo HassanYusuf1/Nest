@@ -126,20 +126,17 @@ public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? new
         return View(updatedBilde);
     }
 
-    // Hent eksisterende objekt fra databasen
     var eksisterendeBilde = await _bildeRepository.BildeId(id);
     if (eksisterendeBilde == null)
     {
         return NotFound();
     }
 
-    // Oppdater feltene manuelt
     eksisterendeBilde.Tittel = updatedBilde.Tittel;
     eksisterendeBilde.Beskrivelse = updatedBilde.Beskrivelse;
 
     if (newBildeUrl != null && newBildeUrl.Length > 0)
     {
-        // Håndter bildefil-opplastingen som vanlig
         string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
         string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newBildeUrl.FileName);
         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
@@ -149,7 +146,6 @@ public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? new
             await newBildeUrl.CopyToAsync(fileStream);
         }
 
-        // Slett det gamle bildet hvis det finnes
         if (!string.IsNullOrEmpty(eksisterendeBilde.BildeUrl))
         {
             string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", eksisterendeBilde.BildeUrl.TrimStart('/'));
@@ -159,11 +155,9 @@ public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? new
             }
         }
 
-        // Oppdater BildeUrl til den nye filen
         eksisterendeBilde.BildeUrl = "/images/" + uniqueFileName;
     }
 
-    // Nå vil BildeUrl beholde sin verdi hvis ingen ny fil er lastet opp
     bool vellykket = await _bildeRepository.Oppdater(eksisterendeBilde);
     return vellykket ? RedirectToAction("Grid") : View(updatedBilde);
 }
