@@ -118,25 +118,55 @@ namespace InstagramMVC.Controllers
             return View(bilde);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(int id, Bilde bilde)
-        {
-            if (id != bilde.BildeId || !ModelState.IsValid)
-            {
-                return View(bilde);
-            }
+       [HttpPost]
+public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? newBildeUrl)
+{
+    if (id != updatedBilde.BildeId || !ModelState.IsValid)
+    {
+        return View(updatedBilde);
+    }
 
-            bool vellykket = await _bildeRepository.Oppdater(bilde);
-            if (vellykket)
+    // Hent eksisterende objekt fra databasen
+    var eksisterendeBilde = await _bildeRepository.BildeId(id);
+    if (eksisterendeBilde == null)
+    {
+        return NotFound();
+    }
+
+    // Oppdater feltene manuelt
+    eksisterendeBilde.Tittel = updatedBilde.Tittel;
+    eksisterendeBilde.Beskrivelse = updatedBilde.Beskrivelse;
+
+    if (newBildeUrl != null && newBildeUrl.Length > 0)
+    {
+        // Håndter bildefil-opplastingen som vanlig
+        string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newBildeUrl.FileName);
+        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            await newBildeUrl.CopyToAsync(fileStream);
+        }
+
+        // Slett det gamle bildet hvis det finnes
+        if (!string.IsNullOrEmpty(eksisterendeBilde.BildeUrl))
+        {
+            string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", eksisterendeBilde.BildeUrl.TrimStart('/'));
+            if (System.IO.File.Exists(oldFilePath))
             {
-                return RedirectToAction("Grid");
-            }
-            else
-            {
-                ModelState.AddModelError("", "Kunne ikke oppdatere bilde.");
-                return View(bilde);
+                System.IO.File.Delete(oldFilePath);
             }
         }
+
+        // Oppdater BildeUrl til den nye filen
+        eksisterendeBilde.BildeUrl = "/images/" + uniqueFileName;
+    }
+
+    // Nå vil BildeUrl beholde sin verdi hvis ingen ny fil er lastet opp
+    bool vellykket = await _bildeRepository.Oppdater(eksisterendeBilde);
+    return vellykket ? RedirectToAction("Grid") : View(updatedBilde);
+}
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
