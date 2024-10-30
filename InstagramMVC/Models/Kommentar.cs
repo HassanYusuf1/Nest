@@ -10,7 +10,7 @@ public class Kommentar {
 
     public DateTime KommentarTid {get; set;}
 
-    // Relasjon til Bilde
+    // Relasjon til Bilde.
     public virtual Bilde? Bilde {get; set;} 
 
     //public virtual IdentityUser? Bruker // legger til dette når vi har lagt inn identityuser
