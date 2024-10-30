@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Serilog;
+using Serilog.Events;
 using InstagramMVC.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +25,8 @@ builder.Services.AddScoped<IBildeRepository, BildeRepository>();
 builder.Services.AddScoped<INotatRepository, NotatRepository>();
 builder.Services.AddScoped<IKommentarRepository, KommentarRepository>();
 
-
+builder.Services.AddRazorPages();
+builder.Services.AddSession();
 
 var app = builder.Build();
 // Autentisering i program cs 
