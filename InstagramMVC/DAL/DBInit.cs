@@ -9,7 +9,7 @@ public static class DBInit
     public static void Seed(IApplicationBuilder app)
     {
         using var serviceScope = app.ApplicationServices.CreateScope();
-        var context = serviceScope.ServiceProvider.GetRequiredService<MediaDbContext>();
+        MediaDbContext context = serviceScope.ServiceProvider.GetRequiredService<MediaDbContext>();
 
         // Aktiverer sletting og reoppretting av databasen når du ønsker
         if (true) // Sett til 'true' for å aktivere seeding

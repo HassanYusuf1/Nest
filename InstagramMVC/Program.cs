@@ -16,6 +16,8 @@ builder.Services.AddDbContext<MediaDbContext>(options =>
     options.UseSqlite(connectionString);  // Use SQLite with the provided connection string
 });
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MediaDbContext>();
+
 // Register IBildeRepository with its concrete implementation BildeRepository
 builder.Services.AddScoped<IBildeRepository, BildeRepository>();
 builder.Services.AddScoped<INotatRepository, NotatRepository>();
@@ -29,7 +31,7 @@ var app = builder.Build();
     options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<DbContext>();
 
-app.UseAuthentication(); 
+
 app.UseAuthorization(); */ 
 
 if (app.Environment.IsDevelopment())
@@ -38,6 +40,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
+
+app.UseAuthentication(); 
 
 // Optional: Use a default controller route if needed
 app.MapControllerRoute(
