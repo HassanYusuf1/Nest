@@ -35,7 +35,7 @@ var app = builder.Build();
     .AddEntityFrameworkStores<DbContext>();
 
 
-app.UseAuthorization(); */ 
+ */ 
 
 if (app.Environment.IsDevelopment())
 {
@@ -45,6 +45,8 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseAuthentication(); 
+app.UseAuthorization();
+app.MapRazorPages();
 
 // Optional: Use a default controller route if needed
 app.MapControllerRoute(
