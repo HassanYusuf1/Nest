@@ -1,31 +1,27 @@
-@model IEnumerable<InstagramMVC.Models.Note>
-
 <div class="container">
-    
-    <div class="row">
-        @foreach (var note in Model)
-        {
-            <div class="col-sm-4">
-                <a asp-action="Details" asp-route-id="@note.NoteId" class="text-decoration-none">
-                    <div class="card">
-                        
-                        <div class="card-body">
-                            <h4 class="card-title">Title: @note.Tittel</h4>
-                            <p class="card-text">@note.Innhold</p>
+    <div class="notes-container">
+        <div class="row">
+            @foreach (var note in Model)
+            {
+                <div class="col-12" style="margin-bottom: 20px;">
+                    <a asp-action="Details" asp-route-id="@note.NoteId" class="text-decoration-none">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Title: @note.Tittel</h4>
+                                <p class="card-text">@note.Innhold</p>
+                            </div>
                         </div>
+                    </a>
+                    <div>
+                        <a asp-action="Update" asp-route-id="@note.NoteId">Update</a>
+                        <a asp-action="Delete" asp-route-id="@note.NoteId">Delete</a>
                     </div>
-                </a>
-                <div>
-                    <a asp-action="Update" asp-route-id="@note.NoteId">Update</a>
-                    <a asp-action="Delete" asp-route-id="@note.NoteId">Delete</a>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
+
     <p>
-         <a class="btn create-btn"
-            asp-controller="Notat"
-            asp-action="Create">Create New Note
-        </a>
-    </p>    
+        <a class="btn create-btn" asp-controller="Notat" asp-action="Create">Create New Note</a>
+    </p>
+</div>
