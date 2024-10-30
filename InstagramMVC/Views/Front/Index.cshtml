@@ -2,20 +2,10 @@
     ViewData["Title"] = "Front Page";
 }
 
-<div class="container d-flex align-items-center justify-content-center vh-100">
-    <div class="card login-register-box">
-        <div class="d-flex justify-content-between mb-4">
-            <a href="#" class="btn btn-toggle active" id="loginTab">Logg inn</a>
-            <a href="#" class="btn btn-toggle" id="registerTab">Registrer deg</a>
-        </div>
-        
-        <!-- Logg inn Form -->
-        <div id="loginForm" class="form-container active">
-    <partial name="Login" />
-</div>
 
-<div id="registerForm" class="form-container">
-    <partial name="Register" />
-</div>
+        
+        <div id="loginForm" class="form-container active">
+            @await Html.PartialAsync("_LoginPartial")
+        </div>
     </div>
 </div>
