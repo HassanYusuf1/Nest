@@ -10,5 +10,3 @@
 
 # Ignorer genererte JSON-filer
 *.sourcelink.json
-# Ignorer mediadb filen
-media.db
