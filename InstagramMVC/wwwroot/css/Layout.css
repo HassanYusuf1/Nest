@@ -160,18 +160,18 @@ body {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: gray;
-  border-color: lightgray;
+  color: #2a9df4;
+  background-color: transparent;
+  border-color: transparent;
 }
 
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
 .btn-primary:focus-visible {
-  color: #fff;
-  background-color: gray;
-  border-color: lightgray;
+  color: #0f1011;
+  background-color: #f0f0f0;
+  border-color: transparent;
   outline: none;
   box-shadow: none;
 }
@@ -207,8 +207,8 @@ body {
 /* Notater */
 
 .create-btn {
-  background-color: transparent;
   color: #2a9df4;
+  background-color: transparent;
 }
 .create-btn:hover {
   background-color: #f0f0f0;
