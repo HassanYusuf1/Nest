@@ -6,7 +6,12 @@
             <img src="@Model.BildeUrl" class="img-fluid" alt="@Model.Tittel" />
         </div>
     </div>
-
+<div class="row mt-4">
+        <div class="col-md-12">
+            <h4>Kommentarer:</h4>
+            <partial name="_CommentTable" model="Model.Kommentarer" />
+        </div>
+    </div>
     <div class="row mt-4">
         <div class="col-md-12">
             <h2>@Model.Tittel</h2>
@@ -32,13 +37,6 @@
         </div>
     </div>
 </div>
-
-   <div class="row mt-4">
-        <div class="col-md-12">
-            <h4>Kommentarer:</h4>
-            <partial name="_CommentTable" model="Model.Kommentarer" />
-        </div>
-    </div>
 
   <div class="row mt-4">
     <div class="col-md-12">
