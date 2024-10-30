@@ -8,7 +8,7 @@
     <p><small><strong>Skrevet:</strong> @Model.KommentarTid.ToString("yyyy-MM-dd HH:mm")</small></p>
 </div>
 
-<form asp-action="DeleteConfirmedKommentar" method="post">
+<form asp-action="DeleteConfirmedKommentar" asp-route-id="@Model.KommentarID" asp method="post">
     <input type="hidden" asp-for="KommentarId" />
     <button type="submit" class="btn btn-danger">Slett</button>
     <a href="@Url.Action("BildeDetails", "Bilde", new { id = Model.BildeId })" class="btn btn-secondary">Avbryt</a>
