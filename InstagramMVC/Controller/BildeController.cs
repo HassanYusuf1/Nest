@@ -119,48 +119,48 @@ namespace InstagramMVC.Controllers
         }
 
        [HttpPost]
-    public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? newBildeUrl)
+public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? newBildeUrl)
+{
+    if (id != updatedBilde.BildeId || !ModelState.IsValid)
     {
-        if (id != updatedBilde.BildeId || !ModelState.IsValid)
-        {
-            return View(updatedBilde);
-        }
-
-        var eksisterendeBilde = await _bildeRepository.BildeId(id);
-        if (eksisterendeBilde == null)
-        {
-            return NotFound();
-        }
-
-        eksisterendeBilde.Tittel = updatedBilde.Tittel;
-        eksisterendeBilde.Beskrivelse = updatedBilde.Beskrivelse;
-
-        if (newBildeUrl != null && newBildeUrl.Length > 0)
-        {
-            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-            string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newBildeUrl.FileName);
-            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await newBildeUrl.CopyToAsync(fileStream);
-            }
-
-            if (!string.IsNullOrEmpty(eksisterendeBilde.BildeUrl))
-            {
-                string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", eksisterendeBilde.BildeUrl.TrimStart('/'));
-                if (System.IO.File.Exists(oldFilePath))
-                {
-                    System.IO.File.Delete(oldFilePath);
-                }
-            }
-
-            eksisterendeBilde.BildeUrl = "/images/" + uniqueFileName;
-        }
-
-        bool vellykket = await _bildeRepository.Oppdater(eksisterendeBilde);
-        return vellykket ? RedirectToAction("Grid") : View(updatedBilde);
+        return View(updatedBilde);
     }
+
+    var eksisterendeBilde = await _bildeRepository.BildeId(id);
+    if (eksisterendeBilde == null)
+    {
+        return NotFound();
+    }
+
+    eksisterendeBilde.Tittel = updatedBilde.Tittel;
+    eksisterendeBilde.Beskrivelse = updatedBilde.Beskrivelse;
+
+    if (newBildeUrl != null && newBildeUrl.Length > 0)
+    {
+        string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newBildeUrl.FileName);
+        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        {
+            await newBildeUrl.CopyToAsync(fileStream);
+        }
+
+        if (!string.IsNullOrEmpty(eksisterendeBilde.BildeUrl))
+        {
+            string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", eksisterendeBilde.BildeUrl.TrimStart('/'));
+            if (System.IO.File.Exists(oldFilePath))
+            {
+                System.IO.File.Delete(oldFilePath);
+            }
+        }
+
+        eksisterendeBilde.BildeUrl = "/images/" + uniqueFileName;
+    }
+
+    bool vellykket = await _bildeRepository.Oppdater(eksisterendeBilde);
+    return vellykket ? RedirectToAction("Grid") : View(updatedBilde);
+}
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
