@@ -94,6 +94,9 @@ namespace InstagramMVC.Controllers
                 }
                 // Behold den opprinnelige BildeId-verdien for å unngå fremmednøkkelproblemer
                 kommentar.BildeId = eksisterendeKommentar.BildeId;
+                eksisterendeKommentar.KommentarBeskrivelse = kommentar.KommentarBeskrivelse; // Sett dette til det korrekte feltet som inneholder kommentarteksten
+                eksisterendeKommentar.KommentarTid = DateTime.Now;
+                
 
                 // Utfør oppdateringen
                 await _kommentarRepository.Update(eksisterendeKommentar);
