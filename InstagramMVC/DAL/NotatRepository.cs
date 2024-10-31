@@ -38,7 +38,7 @@ public class NotatRepository : INotatRepository
     {
         try
         {
-            return _db.Notes.FirstOrDefault(n => n.NoteId == NoteId);
+            return await _db.Notes.FindAsync(NoteId);
         }
         catch (Exception e)
         {

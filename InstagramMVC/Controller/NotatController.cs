@@ -24,9 +24,6 @@ public class NotatController : Controller
 
     public async Task<IActionResult> Index()
     {
-        _logger.LogInformation("This is notes");
-        _logger.LogWarning("This is a warning");
-        _logger.LogError("This is an error");
         var notater = await _notatRepository.GetAll();
         if (notater == null)
         {
