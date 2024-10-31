@@ -53,15 +53,15 @@ body.front-page {
 }
 
 .login-register-box {
-  background: transparent; /* Gjennomsiktig hvit */
-  backdrop-filter: blur(10px); /* "Glassmorfisme"-effekt */
+  background: transparent;
+  backdrop-filter: blur(10px);
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
-  border-color: rgba(255, 255, 255, 0.8); /* Lett, lys kant */
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .btn-toggle {
@@ -202,6 +202,49 @@ body {
 .delete-btn:hover {
   background-color: #f0f0f0;
   border-color: #2a9df4;
+}
+.feed-card {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px; /* Sørg for at kortet ikke overstiger containerens bredde */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.feed-card img {
+  width: 100%;
+  height: 300px; /* Fast høyde for å sikre at alle bilder vises likt */
+  object-fit: cover; /* Skalerer bildet og beskjærer det for å fylle rammen */
+}
+
+.feed-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment-section {
+  margin-top: 10px;
+}
+
+.comment-box {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  max-width: 50%; /* Justerer kommentarboksen til 80% av bredden */
+  margin: 0 auto; /* Sentrerer kommentarboksen under bildet */
+}
+
+.comment-box textarea {
+  width: 100%; /* Fyller hele bredden av comment-box */
+  resize: none; /* Hindrer justering av størrelsen */
+  border-radius: 4px;
+  padding: 8px;
+  border: 1px solid #ccc;
 }
 
 /* Notater */

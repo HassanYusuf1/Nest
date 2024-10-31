@@ -2,13 +2,50 @@
 
 <h1>List of Shop Items (@Model.CurrentViewName View)</h1>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<div class="feed-container">
     @foreach (var bilde in Model.Bilder)
     {
-        <partial name="_BildeCard" model="bilde" />
+        <div class="feed-card mb-4">
+            <img src="@bilde.BildeUrl" class="card-img-top" alt="@bilde.Tittel" />
+
+            <div class="feed-card-body">
+                <h2 class="card-title">@bilde.Tittel</h2>
+                <p class="card-text">@bilde.Beskrivelse</p>
+                <p class="card-text"><small class="text-muted">Uploaded on: @bilde.OpprettetDato.ToString("yyyy-MM-dd")</small></p>
+
+                <!-- Kommentarer -->
+                <div id="comments-section-@bilde.BildeId" class="comment-section">
+                    <h4>Kommentarer:</h4>
+                    <partial name="_CommentTable" model="bilde.Kommentarer.Take(3)" /> <!-- Viser kun de tre siste kommentarene -->
+
+                    @if (bilde.Kommentarer.Count() > 3)
+                    {
+                        <button class="btn btn-link see-more-comments" data-bilde-id="@bilde.BildeId">Se flere kommentarer</button>
+                    }
+                </div>
+
+                <!-- Legg til kommentar -->
+                <div class="comment-box mt-2">
+                    <form id="comment-form-@bilde.BildeId" data-bilde-id="@bilde.BildeId" class="d-flex w-100 comment-form">
+                        <input type="hidden" name="BildeId" value="@bilde.BildeId" />
+
+                        <textarea name="KommentarBeskrivelse" class="form-control" rows="1" placeholder="Skriv din kommentar her..."></textarea>
+                        
+                        <button type="button" class="btn btn-primary submit-comment">Kommenter</button>
+                    </form>
+                </div>
+
+                <!-- Rediger og Slett-knapper -->
+                <div class="mt-3 d-flex gap-2">
+                    <a asp-action="Edit" asp-route-id="@bilde.BildeId" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@bilde.BildeId" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
     }
 </div>
 
-<div class="mt-4">
+<div class="mt-4 text-center">
     <a href="@Url.Action("Create", "Bilde")" class="btn btn-primary">Upload New Image</a>
 </div>
+
