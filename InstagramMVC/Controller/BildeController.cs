@@ -127,11 +127,19 @@ namespace InstagramMVC.Controllers
             if (bilde == null)
             {
                 return NotFound();
+                _logger.LogError("The image with id {BildeId} was not found", id);
+            }
+            var currentUserName =  _userManager.GetUserName(User);
+            if(bilde.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unartorized edit attempt by user {UserId} for image {BildeId}", currentUserName,id);
+                return Forbid();
             }
             return View(bilde);
         }
 
        [HttpPost]
+       [Authorize]
     public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? newBildeUrl)
     {
         if (id != updatedBilde.BildeId || !ModelState.IsValid)
@@ -143,6 +151,13 @@ namespace InstagramMVC.Controllers
         if (eksisterendeBilde == null)
         {
             return NotFound();
+        }
+
+        var currentUserName = _userManager.GetUserName(User);
+        if(eksisterendeBilde.UserName != currentUserName)
+        {
+            _logger.LogWarning("Unaauthorized edit attempt by use {UserName} for image {BildeId}", currentUserName, id);
+            return Forbid();
         }
 
         eksisterendeBilde.Tittel = updatedBilde.Tittel;
@@ -176,6 +191,7 @@ namespace InstagramMVC.Controllers
     }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var bilde = await _bildeRepository.BildeId(id);
@@ -184,10 +200,18 @@ namespace InstagramMVC.Controllers
                 _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
                 return NotFound();
             }
+            
+            var currentUserName = _userManager.GetUserName(User);
+            if (bilde.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
+                return Forbid();
+            }
             return View(bilde);
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var bilde = await _bildeRepository.BildeId(id);
@@ -196,6 +220,13 @@ namespace InstagramMVC.Controllers
             {
                 _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
                 return NotFound();
+            }
+
+            var currentUserName = _userManager.GetUserName(User);
+            if (bilde.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
+                return Forbid();
             }
 
             if (!string.IsNullOrEmpty(bilde.BildeUrl))
