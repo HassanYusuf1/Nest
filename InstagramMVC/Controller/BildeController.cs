@@ -4,6 +4,8 @@ using InstagramMVC.DAL;
 using InstagramMVC.ViewModels;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace InstagramMVC.Controllers
@@ -13,12 +15,14 @@ namespace InstagramMVC.Controllers
         private readonly IBildeRepository _bildeRepository;
         private readonly IKommentarRepository _kommentarRepository;
         private readonly ILogger<BildeController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BildeController(IBildeRepository bildeRepository, IKommentarRepository kommentarRepository, ILogger<BildeController> logger)
+        public BildeController(IBildeRepository bildeRepository, IKommentarRepository kommentarRepository, ILogger<BildeController> logger,UserManager<IdentityUser> userManager)
         {
             _kommentarRepository = kommentarRepository;
             _bildeRepository = bildeRepository;
             _logger = logger;
+            _userManager = userManager; 
         }
 
         [HttpGet]
@@ -50,18 +54,27 @@ namespace InstagramMVC.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Bilde nyttBilde, IFormFile BildeUrl)
+        [Authorize]
+        public async Task<IActionResult> Create(Bilde newImage, IFormFile BildeUrl)
         {
+            var time = DateTime.Now;
+            newImage.OpprettetDato = time;
+            
+
             if (!ModelState.IsValid)
             {
-                return View(nyttBilde);
+                return View(newImage);
             }
+            var UserName = _userManager.GetUserName(User);
+            newImage.UserName = UserName; 
+
 
             if (BildeUrl != null && BildeUrl.Length > 0)
             {
@@ -79,10 +92,10 @@ namespace InstagramMVC.Controllers
                     await BildeUrl.CopyToAsync(fileStream);
                 }
 
-                nyttBilde.BildeUrl = "/images/" + uniqueFileName;
+                newImage.BildeUrl = "/images/" + uniqueFileName;
             }
 
-            bool vellykket = await _bildeRepository.Create(nyttBilde);
+            bool vellykket = await _bildeRepository.Create(newImage);
             if (vellykket)
             {
                 return RedirectToAction(nameof(Grid));
@@ -90,7 +103,7 @@ namespace InstagramMVC.Controllers
             else
             {
                 _logger.LogWarning("[BildeController] Could not create new image.");
-                return View(nyttBilde);
+                return View(newImage);
             }
         }
 

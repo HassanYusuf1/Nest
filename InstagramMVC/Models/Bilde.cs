@@ -15,7 +15,7 @@ namespace InstagramMVC.Models {
 
         public virtual ICollection<Kommentar> Kommentarer { get; set; } = new List<Kommentar>();
 
-        public int BrukerId {get; set;} // Forhold til brukeren som eier innlegget 
+        public string? UserName {get; set;} 
 
 
     
