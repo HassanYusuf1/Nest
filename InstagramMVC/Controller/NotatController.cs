@@ -41,8 +41,10 @@ public class NotatController : Controller
     {
         var note = await _notatRepository.GetNoteById(id);
         if (note == null)
+        {
             _logger.LogError("[NotatController] Note not found for the NoteId: {NoteId:}", id);
             return NotFound("Note not found for the NoteId");
+        }
         return View("Details", note);
     }
 
@@ -69,7 +71,7 @@ public class NotatController : Controller
         }
         await _notatRepository.DeleteConfirmed(id);
         
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Notes));
     }
 
     [HttpGet]
@@ -85,7 +87,7 @@ public class NotatController : Controller
         {
             await _notatRepository.Create(note);
             
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Notes));
         }
         _logger.LogWarning("[NotatController] Creating Note failed {@note}", note);
         return View(note);
@@ -110,7 +112,7 @@ public class NotatController : Controller
         {
             await _notatRepository.Update(note);
             
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Notes));
         }
         _logger.LogWarning("[NotatController] Note update failed {@note}", note);
         return View(note);

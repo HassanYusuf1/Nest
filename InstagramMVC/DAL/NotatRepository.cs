@@ -33,7 +33,7 @@ public class NotatRepository : INotatRepository
         }
     }
 
-    public async Task<Note?> GetNoteById(int NoteId)
+    public async Task<Note> GetNoteById(int NoteId)
     {
         try
         {
@@ -41,7 +41,7 @@ public class NotatRepository : INotatRepository
         }
         catch (Exception e)
         {
-            _logger.LogError("[NotatRepository] note FirstOrDefault() failed when GetNoteById for NoteId {NoteId:0000}, error message: {e}", NoteId, e);
+            _logger.LogError("[NotatRepository] note FirstOrDefault() failed when GetNoteById for NoteId {NoteId}, error message: {e}", NoteId, e);
             return null;
         }
     }

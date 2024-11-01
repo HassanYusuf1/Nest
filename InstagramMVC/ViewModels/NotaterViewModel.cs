@@ -4,12 +4,12 @@ namespace InstagramMVC.ViewModels
 {
     public class NotaterViewModel
     {
-        public IEnumerable<Note> Notater;
+        public IEnumerable<Note> Notes;
         public string? CurrentViewName;
 
-        public NotaterViewModel(IEnumerable<Note> notater, string? currentViewName)
+        public NotaterViewModel(IEnumerable<Note> notes, string? currentViewName)
         {
-            Notater = notater;
+            Notes = notes;
             CurrentViewName = currentViewName;
         }
     }

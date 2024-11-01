@@ -6,6 +6,7 @@
     @foreach (var bilde in Model.Bilder)
     {
         <div class="feed-card mb-4">
+
             <img src="@bilde.BildeUrl" class="card-img-top" alt="@bilde.Tittel" />
 
             <div class="feed-card-body">
@@ -39,6 +40,7 @@
                 <div class="mt-3 d-flex gap-2">
                     <a asp-action="Edit" asp-route-id="@bilde.BildeId" class="btn btn-warning">Edit</a>
                     <a asp-action="Delete" asp-route-id="@bilde.BildeId" class="btn btn-danger">Delete</a>
+                    <a asp-action="Details" asp-route-id="@bilde.BildeId" class="btn btn-danger">Details</a>
                 </div>
             </div>
         </div>
