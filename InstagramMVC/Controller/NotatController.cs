@@ -40,7 +40,7 @@ public class NotatController : Controller
         if (note == null)
             _logger.LogError("[NotatController] Note not found for the NoteId: {NoteId:}", id);
             return NotFound("Note not found for the NoteId");
-        return View("NotatDetails", note);
+        return View("Details", note);
     }
 
     [HttpGet]
