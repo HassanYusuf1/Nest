@@ -33,7 +33,7 @@ public class NotatController : Controller
             _logger.LogError("[NotatController] Note List not found when running _notatRepository.GetAll()");
             return NotFound("Note List not found.");
         }
-        var notaterViewModel = new NotaterViewModel(notater, "Notat");
+        var notaterViewModel = new NotaterViewModel(notater, "Notes");
         return View(notaterViewModel);
     }
 
