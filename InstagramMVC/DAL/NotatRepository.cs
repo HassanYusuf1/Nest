@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using InstagramMVC.Models;
 using InstagramMVC.DAL;
 
@@ -21,7 +20,7 @@ public class NotatRepository : INotatRepository
         _logger = logger;
     }
 
-    public async Task<IEnumerable<Note>> GetAll()
+    public async Task<IEnumerable<Note>?> GetAll()
     {
         try
         {

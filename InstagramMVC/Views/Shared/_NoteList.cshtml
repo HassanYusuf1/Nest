@@ -1,3 +1,5 @@
+@using System.Linq
+
 <div class="container">
     <div class="notes-container">
         <div class="row">
@@ -12,6 +14,26 @@
                             </div>
                         </div>
                     </a>
+                    <div id="comments-section-@note.NoteId" class="comment-section">
+                    <h4>Kommentarer:</h4>
+                    <partial name="_CommentTableNote" model="note.Kommentarer.Take(3)" /> <!-- Viser kun de tre siste kommentarene -->
+
+                    @if (note.Kommentarer.Count() > 3)
+                    {
+                        <button class="btn btn-link see-more-comments" data-note-id="@note.NoteId">Se flere kommentarer</button>
+                    }
+                </div>
+
+                <!-- Legg til kommentar -->
+                <div class="comment-box mt-2">
+                    <form id="comment-form-@note.NoteId" data-note-id="@note.NoteId" class="d-flex w-100 comment-form">
+                        <input type="hidden" name="NoteId" value="@note.NoteId" />
+
+                        <textarea name="KommentarBeskrivelse" class="form-control" rows="1" placeholder="Skriv din kommentar her..."></textarea>
+                        
+                        <button type="button" class="btn btn-primary submit-comment">Kommenter</button>
+                    </form>
+                </div>
                     <div>
                         <a asp-action="Update" asp-route-id="@note.NoteId">Update</a>
                         <a asp-action="Delete" asp-route-id="@note.NoteId">Delete</a>

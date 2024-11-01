@@ -1,28 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using InstagramMVC.Models;
-using InstagramMVC.ViewModels;
 using InstagramMVC.DAL;
+using InstagramMVC.ViewModels;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace InstagramMVC.Controllers;
 
 public class NotatController : Controller
 {
     private readonly ILogger<NotatController> _logger;
+    private readonly IKommentarRepository _kommentarRepository;
     private readonly INotatRepository _notatRepository;
+    private readonly UserManager<IdentityUser> _userManager;
 
 
-    public NotatController(INotatRepository notatRepository, ILogger<NotatController> logger)
+    public NotatController(INotatRepository notatRepository, IKommentarRepository kommentarRepository,ILogger<NotatController> logger, UserManager<IdentityUser> userManager)
     {
         _notatRepository = notatRepository;
+        _kommentarRepository = kommentarRepository;
         _logger = logger;
+        _userManager = userManager;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Notes()
     {
         var notater = await _notatRepository.GetAll();
         if (notater == null)
@@ -30,7 +33,7 @@ public class NotatController : Controller
             _logger.LogError("[NotatController] Note List not found when running _notatRepository.GetAll()");
             return NotFound("Note List not found.");
         }
-        var notaterViewModel = new NotaterViewModel(notater, "Notes");
+        var notaterViewModel = new NotaterViewModel(notater, "Notat");
         return View(notaterViewModel);
     }
 
