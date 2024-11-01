@@ -1,16 +1,33 @@
 @model InstagramMVC.Models.Bilde
 
-<div class="col">
-    <div class="card h-100">
-        <a asp-controller="Bilde"
-           asp-action="Details"
-           asp-route-id="@Model.BildeId">
-            <img src="@Model.BildeUrl" class="card-img-top" alt="@Model.Tittel" />
-        </a>
-        <div class="card-footer">
-                <a asp-action="Edit" asp-route-id="@Model.BildeId" class="btn edit-btn">Edit</a>
-                <a asp-action="Delete" asp-route-id="@Model.BildeId" class="btn delete-btn">Delete</a>
+<div class="card mb-4">
+    <a asp-action="Details" asp-route-id="@Model.BildeId" class="text-decoration-none">
+        <img class="card-img-top" src="@Model.BildeUrl" alt="@Model.Tittel" />
+    </a>
+    <div class="card-body">
+        <h5 class="card-title">@Model.Tittel</h5>
+        <p class="card-text">@Model.Beskrivelse</p>
+        <p class="card-text"><small class="text-muted">Lastet opp: @Model.OpprettetDato.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
+        
+        <!-- Rediger og Slett knapper, kun tilgjengelig for eieren -->
+        @if (User.Identity.Name == Model.UserName)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.BildeId" class="btn btn-warning">Rediger</a>
+            <a asp-action="Delete" asp-route-id="@Model.BildeId" class="btn btn-danger">Slett</a>
+        }
+    </div>
 
-        </div>
+    <!-- Kommentarer Seksjon -->
+    <div class="card-footer">
+        <h5>Kommentarer:</h5>
+        @await Html.PartialAsync("_CommentTable", Model.Kommentarer)
+        <!-- Legg til ny kommentar -->
+        <form asp-action="CreateComment" asp-controller="Kommentar" method="post">
+            <input type="hidden" name="BildeId" value="@Model.BildeId" />
+            <div class="form-group">
+                <textarea class="form-control" name="KommentarBeskrivelse" placeholder="Skriv en kommentar..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-sm">Kommenter</button>
+        </form>
     </div>
 </div>

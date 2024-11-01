@@ -1,0 +1,20 @@
+@model InstagramMVC.ViewModels.BilderViewModel
+
+<div class="container">
+    <h2>Mine Bilder</h2>
+    
+    <!-- Liste over mine bilder -->
+    <div class="row mt-5">
+        @foreach (var bilde in Model.Bilder)
+        {
+            <div class="col-md-4">
+                @await Html.PartialAsync("_BildeCard", bilde)
+            </div>
+        }
+    </div>
+    <!-- Knapp for å navigere til Create-siden -->
+    <div class="mt-4 text-center">
+        <a asp-action="Create" asp-controller="Bilde" class="btn btn-primary">Last opp nytt bilde</a>
+    </div>
+
+</div>

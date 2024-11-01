@@ -24,6 +24,31 @@ namespace InstagramMVC.Controllers
             _logger = logger;
             _userManager = userManager; 
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> MyPage()
+        {
+            var currentUserName = _userManager.GetUserName(User);
+            if (string.IsNullOrEmpty(currentUserName))
+            {
+                _logger.LogError("[BildeController] Current user is null or empty when accessing MyPage.");
+                return Unauthorized();
+            }
+
+            var allBilder = await _bildeRepository.GetAll();
+            if (allBilder == null)
+            {
+                _logger.LogError("[BildeController] Could not retrieve images for user {UserName}", currentUserName);
+                return NotFound();
+            }
+
+            var userBilder = allBilder.Where(b => b.UserName == currentUserName).ToList();
+
+            var bildeViewModel = new BilderViewModel(userBilder, "MyPage");
+
+            return View("MyPage", bildeViewModel);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Bilde()
