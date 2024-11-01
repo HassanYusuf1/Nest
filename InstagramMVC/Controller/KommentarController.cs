@@ -13,11 +13,14 @@ namespace InstagramMVC.Controllers
     {
         private readonly IKommentarRepository _kommentarRepository;
         private readonly ILogger<KommentarController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public KommentarController(IKommentarRepository kommentarRepository, ILogger<KommentarController> logger)
+
+        public KommentarController(IKommentarRepository kommentarRepository, ILogger<KommentarController> logger, UserManager<IdentityUser> userManager)
         {
             _kommentarRepository= kommentarRepository;
             _logger = logger;
+            _userManager = userManager; 
         }
         [HttpGet]
         public IActionResult CreateComment(int bildeId)
@@ -42,6 +45,7 @@ namespace InstagramMVC.Controllers
             }
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateComment(Kommentar kommentar)
         {
             try
@@ -51,7 +55,9 @@ namespace InstagramMVC.Controllers
                     kommentar.KommentarTid = DateTime.Now;
 
                     await _kommentarRepository.Create(kommentar);
-                    return RedirectToAction("Details", "Bilde", new { id = kommentar.BildeId }); 
+                    return RedirectToAction("Grid", "Bilde", new { id = kommentar.BildeId }); 
+                    var UserName = _userManager.GetUserName(User);
+                    kommentar.UserName = UserName; 
                 }
                 _logger.LogWarning("[KommentarController] Opprettning av ny kommentar feilet, Modelstat funker ikke");
                 return View(kommentar);
@@ -66,6 +72,7 @@ namespace InstagramMVC.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> UpdateComment(int Id)
         {
             var kommentar = await _kommentarRepository.GetKommentarById(Id);
@@ -75,9 +82,16 @@ namespace InstagramMVC.Controllers
                 _logger.LogError("[KommentarController] kunne ikke finne kommentar med id {Id}", Id);
                 return NotFound();
             }
+            var currentUserName =  _userManager.GetUserName(User);
+            if(kommentar.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unartorized edit attempt by user {UserId} for comment {KommentarId}", currentUserName,Id);
+                return Forbid();
+            }
             return View(kommentar);
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> UpdateComment(Kommentar kommentar)
         {
             if (!ModelState.IsValid)
@@ -94,6 +108,13 @@ namespace InstagramMVC.Controllers
                 {
                     _logger.LogError("Fant ikke kommentar med ID {KommentarId}", kommentar.KommentarId);
                     return NotFound();
+                }
+
+                var currentUserName = _userManager.GetUserName(User);
+                if(eksisterendeKommentar.UserName != currentUserName)
+                {
+                    _logger.LogWarning("Unaauthorized edit attempt by use {UserName} for image {BildeId}", currentUserName);
+                    return Forbid();
                 }
                 // Behold den opprinnelige BildeId-verdien for å unngå fremmednøkkelproblemer
                 kommentar.BildeId = eksisterendeKommentar.BildeId;
@@ -117,6 +138,7 @@ namespace InstagramMVC.Controllers
        
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult>  DeleteComment(int Id)
         {
             var kommentar = await _kommentarRepository.GetKommentarById(Id);
@@ -127,10 +149,16 @@ namespace InstagramMVC.Controllers
                 _logger.LogWarning("Kommentar ble ikke funnet når man prøver å slette det, kommentar ID : {KommentarId}", Id);
                 return NotFound();
             }
-            
+            var currentUserName = _userManager.GetUserName(User);
+            if (kommentar.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, Id);
+                return Forbid();
+            }
             return View(kommentar);
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmedKommentar(int Id)
         {
             var BildeId = await _kommentarRepository.GetBildeId(Id);

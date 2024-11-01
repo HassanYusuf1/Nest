@@ -14,6 +14,8 @@ public class Kommentar {
     public virtual Bilde? Bilde {get; set;} 
 
     //public virtual IdentityUser? Bruker // legger til dette når vi har lagt inn identityuser
+    public string? UserName {get; set;} 
+
     
 }
 }
