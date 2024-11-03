@@ -123,7 +123,7 @@ namespace InstagramMVC.Controllers
             bool vellykket = await _bildeRepository.Create(newImage);
             if (vellykket)
             {
-                return RedirectToAction(nameof(Grid));
+                return RedirectToAction(nameof(MyPage));
             }
             else
             {
