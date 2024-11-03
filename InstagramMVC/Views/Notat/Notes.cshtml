@@ -1,6 +1,11 @@
 @model InstagramMVC.ViewModels.NotaterViewModel
 
 <h1>Notater</h1>
-
-
-<partial name="_NoteList" model="Model.Notes" />
+<div class="row">
+        @foreach (var note in Model.Notes)
+        {
+            <div class="col-md-4">
+                @await Html.PartialAsync("_NoteList", note)
+            </div>
+        }
+    </div>

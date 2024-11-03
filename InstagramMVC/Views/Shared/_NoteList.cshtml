@@ -1,41 +1,32 @@
+@model InstagramMVC.Models.Note
 
-
-<div class="container">
-    <div class="notes-container">
-        <div class="row">
-            @foreach (var note in Model)
-            {
-                <div class="col-12" style="margin-bottom: 20px;">
-                    <a asp-action="Details" asp-route-id="@note.NoteId" class="text-decoration-none">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Title: @note.Tittel</h4>
-                                <p class="card-text">@note.Innhold</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Legg til kommentar -->
-                <div class="comment-box mt-2">
-                    <form id="comment-form-@note.NoteId" data-note-id="@note.NoteId" class="d-flex w-100 comment-form">
-                        <input type="hidden" name="NoteId" value="@note.NoteId" />
-
-                        <textarea name="KommentarBeskrivelse" class="form-control" rows="1" placeholder="Skriv din kommentar her..."></textarea>
-                        
-                        <button type="button" class="btn btn-primary submit-comment">Kommenter</button>
-                    </form>
-                </div>
-                <div>
-                    <div>
-                        <a asp-action="Update" asp-route-id="@note.NoteId">Update</a>
-                        <a asp-action="Delete" asp-route-id="@note.NoteId">Delete</a>
-                    </div>
-                </div>
-            }
+<div class="card mb-4">
+    <a asp-action="Details" asp-route-id="@Model.NoteId" class="text-decoration-none">
+        <div class="card-body">
+            <h4 class="card-title">Title: @Model.Tittel</h4>
+            <p class="card-text">@Model.Innhold</p>
+            <p class="card-text"><small class="text-muted">Opprettet: @Model.OpprettetDato.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
         </div>
+    </a>
+
+    <!-- Rediger og Slett knapper, kun tilgjengelig for eieren -->
+    @if (User.Identity.Name == Model.username)
+    {
+        <a asp-action="Update" asp-route-id="@Model.NoteId" class="btn btn-warning">Rediger</a>
+        <a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-danger">Slett</a>
+    }
+
+    <!-- Kommentarer Seksjon -->
+    <div class="card-footer">
+        <h5>Kommentarer:</h5>
+        @await Html.PartialAsync("_CommentTable", Model.Kommentarer)
+        <!-- Legg til ny kommentar -->
+        <form asp-action="CreateCommentNote" asp-controller="Kommentar" method="post">
+            <input type="hidden" name="NoteId" value="@Model.NoteId" />
+            <div class="form-group">
+                <textarea class="form-control" name="KommentarBeskrivelse" placeholder="Skriv din kommentar her..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-sm">Kommenter</button>
+        </form>
     </div>
-    <p>
-        <a class="btn create-btn" asp-controller="Notat" asp-action="Create">Create New Note</a>
-    </p>
 </div>
