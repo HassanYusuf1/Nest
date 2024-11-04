@@ -187,132 +187,159 @@ public async Task<IActionResult> DeleteConfirmedKommentar(int Id)
 }
 
         //FOR NOTATER
-        [HttpGet]
-        public IActionResult CreateCommentNote(int BildeId)
+       [HttpGet]
+[Authorize]
+public IActionResult CreateCommentNote(int noteId)
+{
+    try
+    {
+        var kommentar = new Kommentar
         {
-            try
-            {
-                var kommentar = new Kommentar
-                {
-                    BildeId = BildeId
+            NoteId = noteId
+        };
+        return View(kommentar);
+    }
+    catch (Exception e)
+    {
+        _logger.LogError("Oppretting av ny kommentar for notat feilet", e);
+        throw;
+    }
+}
 
-                };
-                return View(kommentar);
-
-
-            }
-            //Nye kommentarer return til view
-           
-            catch(Exception e)
-            {
-                _logger.LogError("Oppretting av ny kommentar feilet",e);
-                throw;
-            }
-        }
-        [HttpPost]
-        public async Task<IActionResult> CreateCommentNote(Kommentar kommentar)
+[HttpPost]
+[Authorize]
+public async Task<IActionResult> CreateCommentNote(Kommentar kommentar)
+{
+    try
+    {
+        if (ModelState.IsValid)
         {
-            try
-            {
-                if(ModelState.IsValid)
-                {
-                    kommentar.KommentarTid = DateTime.Now;
+            kommentar.KommentarTid = DateTime.Now;
+            kommentar.UserName = _userManager.GetUserName(User);
 
-                    await _kommentarRepository.Create(kommentar);
-                    return RedirectToAction("Details", "Notat", new { id = kommentar.BildeId }); 
-                }
-                _logger.LogWarning("[KommentarController] Opprettning av ny kommentar feilet, Modelstat funker ikke");
-                return View(kommentar);
-            }
-
-            catch(Exception e)
-            {
-                _logger.LogError("Feil skjedde under oppretting av kommentar", e);
-                throw;
-            }
+            await _kommentarRepository.Create(kommentar);
+            return RedirectToAction("MyPage", "Notat", new { id = kommentar.NoteId });
         }
-        [HttpGet]
-        public async Task<IActionResult> UpdateCommentNote(int Id)
+
+        _logger.LogWarning("[KommentarController] Opprettning av ny kommentar for notat feilet, ModelState er ugyldig");
+        return View(kommentar);
+    }
+    catch (Exception e)
+    {
+        _logger.LogError("Feil skjedde under oppretting av kommentar for notat", e);
+        throw;
+    }
+}
+
+[HttpGet]
+[Authorize]
+public async Task<IActionResult> UpdateCommentNote(int id)
+{
+    var kommentar = await _kommentarRepository.GetKommentarById(id);
+
+    if (kommentar == null)
+    {
+        _logger.LogError("[KommentarController] Kunne ikke finne kommentar med id {Id}", id);
+        return NotFound();
+    }
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (kommentar.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {KommentarId}", currentUserName, id);
+        return Forbid();
+    }
+
+    return View(kommentar);
+}
+
+[HttpPost]
+[Authorize]
+public async Task<IActionResult> UpdateCommentNote(Kommentar kommentar)
+{
+    if (!ModelState.IsValid)
+    {
+        _logger.LogWarning("Ugyldig ModelState ved oppdatering av kommentar. KommentarId: {KommentarId}", kommentar.KommentarId);
+        return View(kommentar);
+    }
+
+    try
+    {
+        var eksisterendeKommentar = await _kommentarRepository.GetKommentarById(kommentar.KommentarId);
+        if (eksisterendeKommentar == null)
         {
-            var kommentar = await _kommentarRepository.GetKommentarById(Id);
-
-            if(kommentar == null)
-            {
-                _logger.LogError("[KommentarController] kunne ikke finne kommentar med id {Id}", Id);
-                return NotFound();
-            }
-            return View(kommentar);
+            _logger.LogError("Fant ikke kommentar med ID {KommentarId}", kommentar.KommentarId);
+            return NotFound();
         }
-        [HttpPost]
-        public async Task<IActionResult> UpdateCommentNote(Kommentar kommentar)
+
+        var currentUserName = _userManager.GetUserName(User);
+        if (eksisterendeKommentar.UserName != currentUserName)
         {
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Ugyldig ModelState ved oppdatering av kommentar. KommentarId: {KommentarId}", kommentar.KommentarId);
-                return View(kommentar);
-            }
-            
-            try
-            {
-        // Hent den eksisterende kommentaren fra databasen for å få BildeId
-                var eksisterendeKommentar = await _kommentarRepository.GetKommentarById(kommentar.KommentarId);
-                if (eksisterendeKommentar == null)
-                {
-                    _logger.LogError("Fant ikke kommentar med ID {KommentarId}", kommentar.KommentarId);
-                    return NotFound();
-                }
-                // Behold den opprinnelige BildeId-verdien for å unngå fremmednøkkelproblemer
-                kommentar.BildeId = eksisterendeKommentar.BildeId;
-                eksisterendeKommentar.KommentarBeskrivelse = kommentar.KommentarBeskrivelse; // Sett dette til det korrekte feltet som inneholder kommentarteksten
-                eksisterendeKommentar.KommentarTid = DateTime.Now;
-                
-
-                // Utfør oppdateringen
-                await _kommentarRepository.Update(eksisterendeKommentar);
-
-                // Omdiriger til bildedetaljsiden etter oppdateringen
-                return RedirectToAction("Details", "Notat", new { id = eksisterendeKommentar.BildeId });
-                }
-            catch (Exception e)
-            {
-                _logger.LogError("Feil oppstod under oppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
-                throw;
-            }
+            _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {KommentarId}", currentUserName, kommentar.KommentarId);
+            return Forbid();
         }
-        [HttpGet]
-        public async Task<IActionResult>  DeleteCommentNote(int Id)
-        {
-            var kommentar = await _kommentarRepository.GetKommentarById(Id);
 
+        eksisterendeKommentar.KommentarBeskrivelse = kommentar.KommentarBeskrivelse;
+        eksisterendeKommentar.KommentarTid = DateTime.Now;
 
-            if(kommentar == null)
-            {
-                _logger.LogWarning("Kommentar ble ikke funnet når man prøver å slette det, kommentar ID : {KommentarId}", Id);
-                return NotFound();
-            }
-            
-            return View(kommentar);
-        }
-        [HttpPost]
-        public async Task<IActionResult> DeleteConfirmedKommentarNote(int Id)
-        {
-            var BildeId = await _kommentarRepository.GetBildeId(Id);
+        await _kommentarRepository.Update(eksisterendeKommentar);
 
-            try
-            {
-                await _kommentarRepository.Delete(Id); // sletter kommentaren.
-                // Logger en melding som viser at sletting av kommentaren var vellykket
-                _logger.LogInformation("Kommentaren med Id [Kommentar Id] ble slettet", Id);
-                return RedirectToAction("Details", "Notat", new { id = BildeId });
-            }
-            catch (Exception e)
-            {
-                // logger feilmelding hvis sletting ikke fungerer.
-                _logger.LogError("Feil ved sletting av kommentar med ID {Id}", Id);
-                
-                return RedirectToAction("Details", "Notat", new { id = BildeId });
-            }
-        }
+        return RedirectToAction("Details", "Notat", new { id = eksisterendeKommentar.NoteId });
+    }
+    catch (Exception e)
+    {
+        _logger.LogError("Feil oppstod under oppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
+        throw;
+    }
+}
+
+[HttpGet]
+[Authorize]
+public async Task<IActionResult> DeleteCommentNote(int id)
+{
+    var kommentar = await _kommentarRepository.GetKommentarById(id);
+
+    if (kommentar == null)
+    {
+        _logger.LogWarning("Kommentar ble ikke funnet når man prøver å slette den, kommentar ID : {KommentarId}", id);
+        return NotFound();
+    }
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (kommentar.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for comment {KommentarId}", currentUserName, id);
+        return Forbid();
+    }
+
+    return View(kommentar);
+}
+
+[HttpPost]
+[Authorize]
+public async Task<IActionResult> DeleteConfirmedKommentarNote(int id)
+{
+    var kommentar = await _kommentarRepository.GetKommentarById(id);
+    if (kommentar == null)
+    {
+        _logger.LogWarning("Kommentar ble ikke funnet når man prøver å slette den, kommentar ID : {KommentarId}", id);
+        return NotFound();
+    }
+
+    var noteId = kommentar.NoteId;
+
+    try
+    {
+        await _kommentarRepository.Delete(id);
+        _logger.LogInformation("Kommentaren med ID {KommentarId} ble slettet", id);
+        return RedirectToAction("Details", "Notat", new { id = noteId });
+    }
+    catch (Exception e)
+    {
+        _logger.LogError("Feil ved sletting av kommentar med ID {Id}", id);
+        return RedirectToAction("Details", "Notat", new { id = noteId });
+    }
+}
         
     }
 }

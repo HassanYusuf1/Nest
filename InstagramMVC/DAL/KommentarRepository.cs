@@ -55,6 +55,16 @@ namespace InstagramMVC.DAL
             }
             return kommentar.BildeId;
         }
+        public async Task<int?> GetNoteId(int id)
+        {
+            var kommentar = await _context.Kommentarer.FindAsync(id);
+            if (kommentar == null)
+            {
+                _logger.LogWarning("Kommentar med ID {Id} ble ikke funnet når man prøvde å hente NoteId", id);
+                return null;
+            }
+            return kommentar.NoteId;
+        }
 
         public async Task Create(Kommentar kommentar)
         {
