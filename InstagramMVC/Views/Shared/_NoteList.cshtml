@@ -19,7 +19,7 @@
     <!-- Kommentarer Seksjon -->
     <div class="card-footer">
         <h5>Kommentarer:</h5>
-        @await Html.PartialAsync("_CommentTable", Model.Kommentarer)
+        @await Html.PartialAsync("_CommentTableNote", Model.Kommentarer)
         <!-- Legg til ny kommentar -->
         <form asp-action="CreateCommentNote" asp-controller="Kommentar" method="post">
             <input type="hidden" name="NoteId" value="@Model.NoteId" />

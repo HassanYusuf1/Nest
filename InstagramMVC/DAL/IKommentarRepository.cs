@@ -9,6 +9,7 @@ namespace InstagramMVC.DAL
         Task <Kommentar> GetKommentarById(int id);
 
         Task<int?> GetBildeId(int id);
+        Task<int?> GetNoteId(int id);
         
         Task Create(Kommentar kommentar);
         Task Update(Kommentar kommentar);

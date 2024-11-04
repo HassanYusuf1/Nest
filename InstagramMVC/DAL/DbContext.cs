@@ -24,6 +24,26 @@ namespace InstagramMVC.DAL
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseLazyLoadingProxies();
+        
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // Configure the relationship between Kommentar and Note
+        modelBuilder.Entity<Kommentar>()
+            .HasOne(k => k.Note)
+            .WithMany(n => n.Kommentarer) // Assuming Note has a collection of Kommentar
+            .HasForeignKey(k => k.NoteId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Configure the relationship between Kommentar and Bilde
+        modelBuilder.Entity<Kommentar>()
+            .HasOne(k => k.Bilde)
+            .WithMany(b => b.Kommentarer) // Assuming Bilde has a collection of Kommentar
+            .HasForeignKey(k => k.BildeId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
     }
 }
