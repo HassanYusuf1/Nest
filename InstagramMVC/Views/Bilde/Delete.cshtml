@@ -9,6 +9,7 @@
 </div>
 
 <form asp-action="DeleteConfirmed" asp-route-id="@Model.BildeId" method="post">
+    <input type="hidden" name="returnUrl" value="@TempData["ReturnUrl"]" />
     <button type="submit" class="btn btn-danger">Delete</button>
-    <a href="@Url.Action("Index", "Bilde")" class="btn btn-secondary">Cancel</a>
+    <a href="@TempData["ReturnUrl"]" class="btn btn-secondary">Cancel</a>
 </form>

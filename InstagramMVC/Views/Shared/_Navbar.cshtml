@@ -1,7 +1,11 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container-fluid">
-        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-            <ul class="navbar-nav flex-grow-1">   
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarNav">
+            <ul class="navbar-nav flex-grow-1">
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-controller="Bilde" asp-action="Grid">Bilder</a>
                 </li>
@@ -14,6 +18,26 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-controller="Notat" asp-action="MyPage">MyPageNotes</a>
                 </li>
+
+                <!-- Hvis brukeren er logget inn, vis Logout -->
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Front")" class="form-inline">
+                            <button type="submit" class="btn btn-link nav-link">Logout</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <!-- Hvis brukeren ikke er logget inn, vis Login og Register lenker -->
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logg inn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Registrer deg</a>
+                    </li>
+                }
             </ul>
         </div>
     </div>

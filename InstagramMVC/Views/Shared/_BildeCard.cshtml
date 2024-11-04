@@ -1,5 +1,9 @@
 @model InstagramMVC.Models.Bilde
 
+@{
+    var returnUrl = ViewData["returnUrl"] as string ?? Url.Action("Grid"); // Standard til Grid hvis returnUrl ikke finnes
+}
+
 <div class="card mb-4">
     <a asp-action="Details" asp-route-id="@Model.BildeId" class="text-decoration-none">
         <img class="card-img-top" src="@Model.BildeUrl" alt="@Model.Tittel" />
@@ -13,7 +17,7 @@
         @if (User.Identity.Name == Model.UserName)
         {
             <a asp-action="Edit" asp-route-id="@Model.BildeId" class="btn btn-warning">Rediger</a>
-            <a asp-action="Delete" asp-route-id="@Model.BildeId" class="btn btn-danger">Slett</a>
+            <a asp-action="Delete" asp-route-id="@Model.BildeId" asp-route-returnUrl="@returnUrl" class="btn btn-danger">Slett</a>
         }
     </div>
 

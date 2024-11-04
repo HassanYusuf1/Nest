@@ -4,9 +4,8 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <p>Welcome, @UserManager.GetUserName(User)!</p>
-    <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Front")">
-        <button type="submit" class="btn btn-link">Logout</button>
+    <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Front")" class="form-inline">
+        <button type="submit" class="btn btn-link nav-link">Logout</button>
     </form>
 }
 else

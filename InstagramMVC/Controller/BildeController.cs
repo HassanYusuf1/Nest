@@ -215,64 +215,74 @@ namespace InstagramMVC.Controllers
         return vellykket ? RedirectToAction("Grid") : View(updatedBilde);
     }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Delete(int id)
+   [HttpGet]
+[Authorize]
+public async Task<IActionResult> Delete(int id, string returnUrl = null)
+{
+    var bilde = await _bildeRepository.BildeId(id);
+    if (bilde == null)
+    {
+        _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
+        return NotFound();
+    }
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (bilde.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
+        return Forbid();
+    }
+
+    // Store the returnUrl in ViewBag so we can pass it to the Delete view.
+    TempData["ReturnUrl"] = returnUrl ?? Url.Action("Grid"); // Lagre returnUrl i TempData
+
+    return View(bilde);
+}
+
+
+[HttpPost]
+[Authorize]
+public async Task<IActionResult> DeleteConfirmed(int id, string returnUrl = null)
+{
+    var bilde = await _bildeRepository.BildeId(id);
+    if (bilde == null)
+    {
+        _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
+        return NotFound();
+    }
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (bilde.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
+        return Forbid();
+    }
+
+    if (!string.IsNullOrEmpty(bilde.BildeUrl))
+    {
+        string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", bilde.BildeUrl.TrimStart('/'));
+
+        if (System.IO.File.Exists(fullPath))
         {
-            var bilde = await _bildeRepository.BildeId(id);
-            if (bilde == null)
-            {
-                _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
-                return NotFound();
-            }
-            
-            var currentUserName = _userManager.GetUserName(User);
-            if (bilde.UserName != currentUserName)
-            {
-                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
-                return Forbid();
-            }
-            return View(bilde);
+            System.IO.File.Delete(fullPath);
         }
+    }
 
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var bilde = await _bildeRepository.BildeId(id);
+    bool vellykket = await _bildeRepository.Delete(id);
 
-            if (bilde == null)
-            {
-                _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
-                return NotFound();
-            }
+    if (!vellykket)
+    {
+        _logger.LogError("[BildeController] bilde ble ikke slettet med {Id}", id);
+        return BadRequest("Bilde ble ikke slettet");
+    }
 
-            var currentUserName = _userManager.GetUserName(User);
-            if (bilde.UserName != currentUserName)
-            {
-                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
-                return Forbid();
-            }
+    // Redirect to the specified returnUrl or to Grid if returnUrl is null.
+   
 
-            if (!string.IsNullOrEmpty(bilde.BildeUrl))
-            {
-                string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", bilde.BildeUrl.TrimStart('/'));
+    return Redirect(returnUrl ?? Url.Action("Grid"));
+}
 
-                if (System.IO.File.Exists(fullPath))
-                {
-                    System.IO.File.Delete(fullPath);
-                }
-            }
 
-            bool vellykket = await _bildeRepository.Delete(id);
 
-            if (!vellykket)
-            {
-                _logger.LogError("[BildeController] bilde ble ikke slettet med {Id} ", id);
-                return BadRequest("Bilde ble ikke slettet");
-            }
-
-            return RedirectToAction(nameof(Grid));
-        }
     }
 }
