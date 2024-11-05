@@ -25,8 +25,8 @@ namespace InstagramMVC.DAL
             }
             catch(Exception e)
             {
-                _logger.LogError("[KommentarRepository] Kommentar ToListAsync Feilet, Når GetAll() ble brukt, error Melding", e.Message);
-                return null;
+                _logger.LogError(e, "[KommentarRepository] Kommentar ToListAsync Feilet, Når GetAll() ble brukt. Feilmelding: {ErrorMessage}", e.Message);
+                 return Enumerable.Empty<Kommentar>();
             }
         }
 
@@ -40,7 +40,7 @@ namespace InstagramMVC.DAL
             }
             catch(Exception e)
             {
-                _logger.LogError("[KommentarRepository] Feilet når man bruker GetKommentarById for KommentarId {KommentarId:0000}, error melding: {e}", e.Message);
+                _logger.LogError(e, "[KommentarRepository] Feilet når man bruker GetKommentarById for KommentarId {KommentarId:0000}. Feilmelding: {ErrorMessage}", id, e.Message);
                 return null;
 
             }
@@ -51,7 +51,8 @@ namespace InstagramMVC.DAL
             var kommentar = await _context.Kommentarer.FindAsync(id);
             if (kommentar == null)
             {
-                _logger.LogWarning("Kommentar med ID [id] ble ikke funnet når man prøvde å hente BildeId",id);
+                _logger.LogWarning("Kommentar med ID {KommentarId} ble ikke funnet når man prøvde å hente BildeId", id);
+                return null;
             }
             return kommentar.BildeId;
         }
@@ -60,7 +61,7 @@ namespace InstagramMVC.DAL
             var kommentar = await _context.Kommentarer.FindAsync(id);
             if (kommentar == null)
             {
-                _logger.LogWarning("Kommentar med ID {Id} ble ikke funnet når man prøvde å hente NoteId", id);
+                _logger.LogWarning("Kommentar med ID {KommentarId} ble ikke funnet når man prøvde å hente NoteId", id);
                 return null;
             }
             return kommentar.NoteId;
@@ -76,7 +77,7 @@ namespace InstagramMVC.DAL
             }
             catch(Exception e)
             {
-                _logger.LogError("[KommentarRepository] feil ved oppretning av kommentar med id {@kommentar}, error melding", kommentar, e.Message);
+                _logger.LogError(e, "[KommentarRepository] Feil ved opprettelse av kommentar med id {@Kommentar}. Feilmelding: {ErrorMessage}", kommentar, e.Message);
             }
         }
 
@@ -105,7 +106,7 @@ namespace InstagramMVC.DAL
             
             catch(Exception e)
             {
-                _logger.LogError("[KommentarRepository] feilet ved sletting av kommentar med ID {KommentarId:0000}, error Melding:", id, e.Message);
+                _logger.LogError(e, "[KommentarRepository] feilet ved sletting av kommentar med ID {KommentarId:0000}. Feilmelding: {ErrorMessage}", id, e.Message);
                 return false;
             }
                 

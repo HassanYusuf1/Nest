@@ -33,7 +33,7 @@ public class NotatRepository : INotatRepository
         }
     }
 
-    public async Task<Note> GetNoteById(int NoteId)
+    public async Task<Note?> GetNoteById(int NoteId)
     {
         try
         {

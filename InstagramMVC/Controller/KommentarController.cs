@@ -40,7 +40,7 @@ namespace InstagramMVC.Controllers
            
             catch(Exception e)
             {
-                _logger.LogError("Oppretting av ny kommentar feilet",e);
+                _logger.LogError(e, "Oppretting av ny kommentar feilet");
                 throw;
             }
         }
@@ -64,7 +64,7 @@ public async Task<IActionResult> CreateComment(Kommentar kommentar)
     }
     catch (Exception e)
     {
-        _logger.LogError("Feil skjedde under oppretting av kommentar", e);
+        _logger.LogError(e, "Feil skjedde under oppretting av kommentar");
         throw;
     }
 }
@@ -126,7 +126,7 @@ public async Task<IActionResult> UpdateComment(Kommentar kommentar)
     }
     catch (Exception e)
     {
-        _logger.LogError("Feil oppstod under oppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
+        _logger.LogError(e, "Feil oppstod under oppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
         throw;
     }
 }
@@ -181,7 +181,7 @@ public async Task<IActionResult> DeleteConfirmedKommentar(int Id)
     }
     catch (Exception e)
     {
-        _logger.LogError("Feil ved sletting av kommentar med ID {Id}", Id);
+        _logger.LogError(e, "Feil ved sletting av kommentar med ID {Id}", Id);
         return RedirectToAction("Details", "Bilde", new { id = BildeId });
     }
 }
@@ -201,7 +201,7 @@ public IActionResult CreateCommentNote(int noteId)
     }
     catch (Exception e)
     {
-        _logger.LogError("Oppretting av ny kommentar for notat feilet", e);
+        _logger.LogError(e, "Oppretting av ny kommentar feilet");
         throw;
     }
 }
@@ -226,7 +226,7 @@ public async Task<IActionResult> CreateCommentNote(Kommentar kommentar)
     }
     catch (Exception e)
     {
-        _logger.LogError("Feil skjedde under oppretting av kommentar for notat", e);
+        _logger.LogError(e, "Feil skjedde under oppretting av kommentar");
         throw;
     }
 }
@@ -288,7 +288,7 @@ public async Task<IActionResult> UpdateCommentNote(Kommentar kommentar)
     }
     catch (Exception e)
     {
-        _logger.LogError("Feil oppstod under oppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
+        _logger.LogError(e, "Feil oppstod under oppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
         throw;
     }
 }
@@ -336,7 +336,7 @@ public async Task<IActionResult> DeleteConfirmedKommentarNote(int id)
     }
     catch (Exception e)
     {
-        _logger.LogError("Feil ved sletting av kommentar med ID {Id}", id);
+        _logger.LogError(e, "Feil ved sletting av kommentar med ID {Id}", id);
         return RedirectToAction("Details", "Notat", new { id = noteId });
     }
 }
