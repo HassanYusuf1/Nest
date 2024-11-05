@@ -39,7 +39,7 @@ namespace InstagramMVC.Controllers
             if (allBilder == null)
             {
                 _logger.LogError("[BildeController] Could not retrieve images for user {UserName}", currentUserName);
-                return NotFound();
+                allBilder = Enumerable.Empty<Bilde>();
             }
 
             var userBilder = allBilder.Where(b => b.UserName == currentUserName).ToList();
@@ -151,8 +151,8 @@ namespace InstagramMVC.Controllers
             var bilde = await _bildeRepository.BildeId(id);
             if (bilde == null)
             {
-                return NotFound();
                 _logger.LogError("The image with id {BildeId} was not found", id);
+                return NotFound();
             }
             var currentUserName =  _userManager.GetUserName(User);
             if(bilde.UserName != currentUserName)
@@ -217,7 +217,7 @@ namespace InstagramMVC.Controllers
 
    [HttpGet]
 [Authorize]
-public async Task<IActionResult> Delete(int id, string returnUrl = null)
+public async Task<IActionResult> Delete(int id, string? returnUrl = null)
 {
     var bilde = await _bildeRepository.BildeId(id);
     if (bilde == null)
@@ -233,16 +233,17 @@ public async Task<IActionResult> Delete(int id, string returnUrl = null)
         return Forbid();
     }
 
-    // Store the returnUrl in ViewBag so we can pass it to the Delete view.
+    // Store the returnUrl in TempData so we can pass it to the Delete view.
     TempData["ReturnUrl"] = returnUrl ?? Url.Action("Grid"); // Lagre returnUrl i TempData
 
     return View(bilde);
 }
 
 
+
 [HttpPost]
 [Authorize]
-public async Task<IActionResult> DeleteConfirmed(int id, string returnUrl = null)
+public async Task<IActionResult> DeleteConfirmed(int id, string? returnUrl = null)
 {
     var bilde = await _bildeRepository.BildeId(id);
     if (bilde == null)
@@ -276,11 +277,9 @@ public async Task<IActionResult> DeleteConfirmed(int id, string returnUrl = null
         return BadRequest("Bilde ble ikke slettet");
     }
 
-    // Redirect to the specified returnUrl or to Grid if returnUrl is null.
-   
-
-    return Redirect(returnUrl ?? Url.Action("Grid"));
+    return Redirect(returnUrl ?? Url.Action("Grid")); // Endret: Sikrer at `Redirect` får en ikke-null verdi
 }
+
 
 
 

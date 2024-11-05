@@ -13,7 +13,7 @@
             </div>
         </a>
         <div class="mt-2">
-            @if (User.Identity.Name == kommentar.UserName)
+            @if (User.Identity?.Name == kommentar.UserName)
             {
                 <a asp-action="UpdateComment" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="btn btn-outline-primary btn-sm">Rediger</a>
                 <a asp-action="DeleteComment" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="btn btn-outline-danger btn-sm">Slett</a>

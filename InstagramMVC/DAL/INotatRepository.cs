@@ -6,7 +6,7 @@ namespace InstagramMVC.DAL;
 
 public interface INotatRepository
 {
-    Task<IEnumerable<Note>> GetAll();
+    Task<IEnumerable<Note>?> GetAll();
     Task<Note?> GetNoteById(int id);
     Task Create(Note note);
     Task Update(Note note);

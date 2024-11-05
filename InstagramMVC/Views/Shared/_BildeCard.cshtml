@@ -14,7 +14,7 @@
         <p class="card-text"><small class="text-muted">Lastet opp: @Model.OpprettetDato.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
         
         <!-- Rediger og Slett knapper, kun tilgjengelig for eieren -->
-        @if (User.Identity.Name == Model.UserName)
+        @if (User.Identity?.Name == Model.UserName)
         {
             <a asp-action="Edit" asp-route-id="@Model.BildeId" class="btn btn-warning">Rediger</a>
             <a asp-action="Delete" asp-route-id="@Model.BildeId" asp-route-returnUrl="@returnUrl" class="btn btn-danger">Slett</a>
