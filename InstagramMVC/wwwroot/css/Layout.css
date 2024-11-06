@@ -20,13 +20,14 @@ body.home-page {
 
 .login-register-box {
   background: #fdf5e6;
-  padding: 30px;
-  border-radius: 8px;
+  padding: 50px; /* Økt padding */
+  border-radius: 12px; /* Litt større avrunding */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 650px; /* Økt bredde */
+  margin: 30px auto;
   border-color: #5d4037;
+  backdrop-filter: blur(10px);
 }
 
 @keyframes smoothPulse {
@@ -68,8 +69,9 @@ body.home-page {
   flex: 1;
   background-color: transparent;
   border-color: #fff;
-  padding: 10px 0;
+  padding: 15px 0; /* Økt padding for høyere knapp */
   font-weight: bold;
+  font-size: 1.2em; /* Økt fontstørrelse */
   color: #fff;
   text-align: center;
   text-decoration: none;
@@ -196,64 +198,71 @@ body {
   border-color: #2a9df4;
 }
 
+/* Feed Card - Enda litt større */
 .feed-card {
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 500px; /* Redusert maks bredde */
-  margin: 10px auto;
+  max-width: 600px; /* Økt bredde på kortet */
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
 }
 
 .feed-card img {
   width: 100%;
-  height: 250px; /* Redusert høyde for bildet */
+  height: 280px; /* Økt høyde for bildet */
   object-fit: cover;
 }
 
+/* Tekst i kortet - Enda litt større */
 .feed-card-body {
-  padding: 12px; /* Redusert padding */
+  padding: 16px; /* Økt padding */
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px; /* Økt avstand mellom tekstene */
 }
 
 .feed-card-body h5 {
-  font-size: 1.1em; /* Mindre tittelstørrelse */
+  font-size: 1.4em; /* Større tittelstørrelse */
   color: #333;
 }
 
 .feed-card-body p {
-  font-size: 0.95em; /* Mindre tekststørrelse */
+  font-size: 1.1em; /* Større tekststørrelse */
   color: #555;
 }
 
-/* Kommentarseksjon */
-.comment-section {
-  margin-top: 8px;
+/* Kommentar Seksjon - Justert til enda større kort */
+.card-footer {
+  padding: 16px; /* Økt padding for kommentarseksjonen */
 }
 
 .comment-box {
   display: flex;
-  gap: 8px;
+  gap: 12px; /* Økt avstand mellom elementer */
   align-items: center;
-  max-width: 80%;
+  max-width: 80%; /* Større bredde for å matche kortets størrelse */
   margin: 0 auto;
 }
 
 .comment-box textarea {
   width: 100%;
   resize: none;
-  border-radius: 4px;
-  padding: 6px; /* Mindre padding i tekstboksen */
+  border-radius: 6px;
+  padding: 10px; /* Økt padding i tekstboksen */
   border: 1px solid #ccc;
-  font-size: 0.9em; /* Mindre fontstørrelse */
+  font-size: 1.1em; /* Større fontstørrelse */
+}
+
+.comment-box button {
+  font-size: 1.1em; /* Justert fontstørrelse for kommentarknappen */
+  padding: 10px 14px; /* Økt padding for kommentarknappen */
 }
 
 /* Generelle knapper */
 .btn {
   font-size: 0.85em; /* Redusert fontstørrelse for knappene */
-  padding: 6px 12px; /* Redusert padding */
+  padding: 4px 12px; /* Redusert padding */
 }
