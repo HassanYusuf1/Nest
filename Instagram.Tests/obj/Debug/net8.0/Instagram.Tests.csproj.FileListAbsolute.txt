@@ -1,7 +1,0 @@
-C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\Instagram.Tests\bin\Debug\net8.0\CoverletSourceRootsMapping_Instagram.Tests
-C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\Instagram.Tests\obj\Debug\net8.0\Instagram.Tests.csproj.AssemblyReference.cache
-C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\Instagram.Tests\obj\Debug\net8.0\Instagram.Tests.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\Instagram.Tests\obj\Debug\net8.0\Instagram.Tests.AssemblyInfoInputs.cache
-C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\Instagram.Tests\obj\Debug\net8.0\Instagram.Tests.AssemblyInfo.cs
-C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\Instagram.Tests\obj\Debug\net8.0\Instagram.Tests.csproj.CoreCompileInputs.cache
-C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\Instagram.Tests\obj\Debug\net8.0\Instagram.Tests.sourcelink.json
