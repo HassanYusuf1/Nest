@@ -10,3 +10,16 @@
 
 # Ignorer genererte JSON-filer
 *.sourcelink.json
+
+# Ignore specific build and debugging files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.json
+*.csproj.user
+*.suo
+*.vscode/
+*.ncrunchsolution
+*.ncrunchproject
+*.sourcefiles
