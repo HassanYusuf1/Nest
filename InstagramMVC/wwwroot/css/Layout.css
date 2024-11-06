@@ -1,4 +1,3 @@
-/* Home Page */
 body.home-page {
   background: linear-gradient(
     45deg,
@@ -12,25 +11,37 @@ body.home-page {
     #2a9df4
   );
   background-size: 200% 200%;
-  animation: smoothPulse 4s ease-in-out infinite;
+  animation: homepage-smoothPulse 4s ease-in-out infinite;
   margin: 0;
   font-family: "Arial", sans-serif;
   color: #ffffff;
 }
 
-.login-register-box {
-  background: #fdf5e6;
-  padding: 50px; /* Økt padding */
-  border-radius: 12px; /* Litt større avrunding */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  max-width: 650px; /* Økt bredde */
-  margin: 30px auto;
-  border-color: #5d4037;
-  backdrop-filter: blur(10px);
+.welcome-text {
+  display: flex;
+  justify-content: center;
+  padding-top: 10vh; /* Flytter teksten litt ned på siden */
+  margin-bottom: 1px; /* Avstand til login-boksen */
 }
 
-@keyframes smoothPulse {
+.welcome-text h1 {
+  font-size: 2.5em;
+  color: #ffffff;
+}
+
+.homepage-login-register-box {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 650px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  color: #fff;
+}
+
+@keyframes homepage-smoothPulse {
   0% {
     background-size: 150% 150%;
     background-position: 0% 50%;
@@ -53,49 +64,37 @@ body.home-page {
   }
 }
 
-.login-register-box {
-  background: transparent;
-  backdrop-filter: blur(10px);
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  border-color: rgba(255, 255, 255, 0.8);
-}
-
-.btn-toggle {
+.homepage-btn-toggle {
   flex: 1;
   background-color: transparent;
   border-color: #fff;
-  padding: 15px 0; /* Økt padding for høyere knapp */
+  padding: 15px 0;
   font-weight: bold;
-  font-size: 1.2em; /* Økt fontstørrelse */
+  font-size: 1.2em;
   color: #fff;
   text-align: center;
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-toggle:hover {
+.homepage-btn-toggle:hover {
   background-color: rgba(255, 255, 255, 0.6);
 }
 
-.btn-toggle.active {
-  background-color: rgba(255, 255, 255, 0.6);
-  color: #0f1011;
+.homepage-btn-toggle.active {
+  border-color: transparent;
+  color: #fff;
 }
 
-.form-container {
+.homepage-form-container {
   display: none;
 }
 
-.form-container.active {
+.homepage-form-container.active {
   display: block;
 }
 
-.btn-primary-home {
+.homepage-btn-primary {
   color: #fff;
   background-color: transparent;
   border-color: rgba(255, 255, 255, 0.6);
@@ -104,10 +103,10 @@ body.home-page {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-primary-home:hover,
-.btn-primary-home:focus,
-.btn-primary-home:active,
-.btn-primary-home:focus-visible {
+.homepage-btn-primary:hover,
+.homepage-btn-primary:focus,
+.homepage-btn-primary:active,
+.homepage-btn-primary:focus-visible {
   color: #0f1011;
   background-color: rgba(255, 255, 255, 0.6);
   border-color: rgba(255, 255, 255, 0.6);
@@ -115,26 +114,26 @@ body.home-page {
   box-shadow: none;
 }
 
-.btn-primary-home:active {
+.homepage-btn-primary:active {
   background-color: #5d4037;
   color: #fff;
   border-color: #5d4037;
 }
 
-/* Page */
-body {
+/* Picture Page */
+body.picture {
   background-color: #fafafa;
   margin: 0;
 }
 
-.navbar {
+.picture-navbar {
   background-color: #f0f0f0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   width: 100%;
 }
 
-.navbar-brand {
+.picture-navbar-brand {
   font-weight: bold;
   font-size: 1.5rem;
   text-transform: uppercase;
@@ -142,11 +141,11 @@ body {
   transition: color 0.3s ease;
 }
 
-.navbar-brand:hover {
+.picture-navbar-brand:hover {
   color: #0f1011;
 }
 
-.navbar-nav .nav-link {
+.picture-navbar-nav .picture-nav-link {
   color: #333;
   font-weight: 500;
   margin: 0 10px;
@@ -155,22 +154,22 @@ body {
   border-radius: 5px;
 }
 
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active {
+.picture-navbar-nav .picture-nav-link:hover,
+.picture-navbar-nav .picture-nav-link.active {
   color: #ffffff;
   background-color: lightgray;
 }
 
-.btn-primary {
+.picture-btn-primary {
   color: #2a9df4;
   background-color: transparent;
   border-color: transparent;
 }
 
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary:focus-visible {
+.picture-btn-primary:hover,
+.picture-btn-primary:focus,
+.picture-btn-primary:active,
+.picture-btn-primary:focus-visible {
   color: #0f1011;
   background-color: #f0f0f0;
   border-color: transparent;
@@ -178,91 +177,195 @@ body {
   box-shadow: none;
 }
 
-.btn-primary:active {
+.picture-btn-primary:active {
   background-color: #333;
   color: #fff;
   border-color: #333;
 }
 
-.edit-btn,
-.delete-btn {
+.picture-edit-btn,
+.picture-delete-btn {
   background-color: transparent;
   color: #2a9df4;
   border: none;
-  padding: 6px 12px; /* Mindre padding */
+  padding: 6px 12px;
 }
 
-.edit-btn:hover,
-.delete-btn:hover {
+.picture-edit-btn:hover,
+.picture-delete-btn:hover {
   background-color: #f0f0f0;
   border-color: #2a9df4;
 }
 
-/* Feed Card - Enda litt større */
-.feed-card {
+.picture-feed-card {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 600px; /* Økt bredde på kortet */
+  max-width: 600px;
   margin: 20px auto;
   display: flex;
   flex-direction: column;
 }
 
-.feed-card img {
+.picture-feed-card img {
   width: 100%;
-  height: 280px; /* Økt høyde for bildet */
+  height: 280px;
   object-fit: cover;
 }
 
-/* Tekst i kortet - Enda litt større */
-.feed-card-body {
-  padding: 16px; /* Økt padding */
+.picture-feed-card-body {
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Økt avstand mellom tekstene */
+  gap: 12px;
 }
 
-.feed-card-body h5 {
-  font-size: 1.4em; /* Større tittelstørrelse */
+.picture-feed-card-body h5 {
+  font-size: 1.4em;
   color: #333;
 }
 
-.feed-card-body p {
-  font-size: 1.1em; /* Større tekststørrelse */
+.picture-feed-card-body p {
+  font-size: 1.1em;
   color: #555;
 }
 
-/* Kommentar Seksjon - Justert til enda større kort */
-.card-footer {
-  padding: 16px; /* Økt padding for kommentarseksjonen */
+.picture-card-footer {
+  padding: 16px;
 }
 
-.comment-box {
+.picture-comment-box {
   display: flex;
-  gap: 12px; /* Økt avstand mellom elementer */
+  gap: 12px;
   align-items: center;
-  max-width: 80%; /* Større bredde for å matche kortets størrelse */
+  max-width: 80%;
   margin: 0 auto;
 }
 
-.comment-box textarea {
+.picture-comment-box textarea {
   width: 100%;
   resize: none;
   border-radius: 6px;
-  padding: 10px; /* Økt padding i tekstboksen */
+  padding: 10px;
   border: 1px solid #ccc;
-  font-size: 1.1em; /* Større fontstørrelse */
+  font-size: 1.1em;
 }
 
-.comment-box button {
-  font-size: 1.1em; /* Justert fontstørrelse for kommentarknappen */
-  padding: 10px 14px; /* Økt padding for kommentarknappen */
+.picturep-comment-box button {
+  font-size: 1.1em;
+  padding: 10px 14px;
 }
 
-/* Generelle knapper */
-.btn {
-  font-size: 0.85em; /* Redusert fontstørrelse for knappene */
-  padding: 4px 12px; /* Redusert padding */
+.picture-btn {
+  font-size: 0.85em;
+  padding: 4px 12px;
+}
+
+/* Notes Page */
+
+.notes-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.notes-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.notes-card-body {
+  padding: 16px;
+}
+
+.notes-card-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.notes-card-text {
+  font-size: 1em;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.notes-card-meta {
+  font-size: 0.85em;
+  color: #777;
+}
+
+/* Knapper for redigering og sletting */
+.notes-btn {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: bold;
+  margin-right: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.notes-btn-edit {
+  background-color: #ffc107;
+  color: #fff;
+}
+
+.notes-btn-edit:hover {
+  background-color: #e0a800;
+}
+
+.notes-btn-delete {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.notes-btn-delete:hover {
+  background-color: #c82333;
+}
+
+/* Footer for kommentarer */
+.notes-card-footer {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+.notes-comments-title {
+  font-size: 1.2em;
+  margin-bottom: 12px;
+}
+
+/* Kommentarform og input-grupper */
+.notes-comment-form {
+  margin-top: 12px;
+}
+
+.notes-comment-input-group {
+  margin-bottom: 8px;
+}
+
+.notes-comment-textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  font-size: 1em;
+}
+
+.notes-btn-submit {
+  background-color: #28a745;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.notes-btn-submit:hover {
+  background-color: #218838;
 }
