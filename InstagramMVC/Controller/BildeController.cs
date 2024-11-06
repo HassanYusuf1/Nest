@@ -264,9 +264,9 @@ public async Task<IActionResult> DeleteConfirmed(int id, string? returnUrl = nul
     {
         string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", bilde.BildeUrl.TrimStart('/'));
 
-        if (System.IO.File.Exists(fullPath))
+        if (FileUtil.FileExists(fullPath))
         {
-            System.IO.File.Delete(fullPath);
+            FileUtil.FileDelete(fullPath);
         }
     }
 

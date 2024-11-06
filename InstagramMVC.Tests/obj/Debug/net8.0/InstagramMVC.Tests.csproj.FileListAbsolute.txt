@@ -349,3 +349,5 @@ C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\InstagramMVC.Tests\obj\Debug\
 C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\InstagramMVC.Tests\bin\Debug\net8.0\System.IO.Abstractions.dll
 C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\InstagramMVC.Tests\bin\Debug\net8.0\TestableIO.System.IO.Abstractions.dll
 C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\InstagramMVC.Tests\bin\Debug\net8.0\TestableIO.System.IO.Abstractions.Wrappers.dll
+C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\InstagramMVC.Tests\bin\Debug\net8.0\package-lock.json
+C:\Users\Andyt\OneDrive\Documents\GitHub\Instagram\InstagramMVC.Tests\bin\Debug\net8.0\package.json
