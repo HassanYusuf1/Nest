@@ -196,5 +196,59 @@ public class BildeControllerTests
         FileUtil.FileDelete = System.IO.File.Delete;
     }
 
+    [Fact]
+    public async Task Edit_image_ReturnsToGrid_WhenUpdateIsOk()
+    {
+        // Arrange
+        var imageId = 50;
+        var currentUserName = "testUser";
+        var existingTitle = "Old Title";
+        var existingDescription = "Old Description";
+        var newTitle = "New Title";
+        var newDescription = "New Description";
+
+        // Set up the existing image in the repository
+        var existingBilde = new Bilde
+        {
+            BildeId = imageId,
+            UserName = currentUserName,
+            Tittel = existingTitle,
+            Beskrivelse = existingDescription,
+            BildeUrl = "/images/oldImage.jpg"
+        };
+
+        // Set up the updated image details
+        var updatedBilde = new Bilde
+        {
+            BildeId = imageId, // Ensure the IDs match to pass the ID check
+            Tittel = newTitle,
+            Beskrivelse = newDescription
+        };
+
+        // Mock repository to return the existing image and confirm successful update
+        _bildeRepositoryMock.Setup(repo => repo.BildeId(imageId)).ReturnsAsync(existingBilde);
+        _bildeRepositoryMock.Setup(repo => repo.Oppdater(existingBilde)).ReturnsAsync(true);
+
+        // Mock user identity to match the image owner
+        _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
+
+        // Ensure ModelState is valid
+        _controller.ModelState.Clear();
+
+        // Act
+        var result = await _controller.Edit(imageId, updatedBilde, null);
+
+        // Assert
+        var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Grid", redirectResult.ActionName); // Ensure redirection to the "Grid" action
+
+        // Verify that the Tittel and Beskrivelse have been updated in the existing image
+        Assert.Equal(newTitle, existingBilde.Tittel);
+        Assert.Equal(newDescription, existingBilde.Beskrivelse);
+
+        // Verify that Oppdater was called on the repository
+        _bildeRepositoryMock.Verify(repo => repo.Oppdater(existingBilde), Times.Once);
+    }
+
 }
 
