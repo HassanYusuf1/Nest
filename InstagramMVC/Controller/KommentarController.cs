@@ -218,7 +218,7 @@ public async Task<IActionResult> CreateCommentNote(Kommentar kommentar)
             kommentar.UserName = _userManager.GetUserName(User);
 
             await _kommentarRepository.Create(kommentar);
-            return RedirectToAction("Notes", "Notat");
+            return RedirectToAction("Details", "Notat", new { id = kommentar.NoteId });
         }
 
         _logger.LogWarning("[KommentarController] Opprettning av ny kommentar for notat feilet, ModelState er ugyldig");
