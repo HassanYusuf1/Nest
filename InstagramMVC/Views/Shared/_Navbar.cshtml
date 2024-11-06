@@ -2,10 +2,18 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container-fluid">
-        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarNav">
-            <ul class="navbar-nav flex-grow-1">
+        <!-- Logo eller brand -->
+
+        <!-- Hamburger toggle button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-controller="Bilde" asp-action="Grid">Bilder</a>
                 </li>
@@ -19,7 +27,6 @@
                     <a class="nav-link text-dark" asp-controller="Notat" asp-action="MyPage">MyPageNotes</a>
                 </li>
 
-                <!-- Hvis brukeren er logget inn, vis Logout -->
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="nav-item">
@@ -30,7 +37,6 @@
                 }
                 else
                 {
-                    <!-- Hvis brukeren ikke er logget inn, vis Login og Register lenker -->
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logg inn</a>
                     </li>

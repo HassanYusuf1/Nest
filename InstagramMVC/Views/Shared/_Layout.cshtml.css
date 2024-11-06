@@ -1,46 +1,45 @@
-/* _content/InstagramMVC/Views/Shared/_Layout.cshtml.rz.scp.css */
 /* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand[b-afvbbtr849] {
+a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
   }
   
-  a[b-afvbbtr849] {
+  a {
     color: #0077cc;
   }
   
-  .btn-primary[b-afvbbtr849] {
+  .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
   }
   
-  .nav-pills .nav-link.active[b-afvbbtr849], .nav-pills .show > .nav-link[b-afvbbtr849] {
+  .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
   }
   
-  .border-top[b-afvbbtr849] {
+  .border-top {
     border-top: 1px solid #e5e5e5;
   }
-  .border-bottom[b-afvbbtr849] {
+  .border-bottom {
     border-bottom: 1px solid #e5e5e5;
   }
   
-  .box-shadow[b-afvbbtr849] {
+  .box-shadow {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
   }
   
-  button.accept-policy[b-afvbbtr849] {
+  button.accept-policy {
     font-size: 1rem;
     line-height: inherit;
   }
   
-  .footer[b-afvbbtr849] {
+  .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
