@@ -119,7 +119,7 @@ body.home-page {
   border-color: #5d4037;
 }
 
-/*  Page */
+/* Page */
 body {
   background-color: #fafafa;
   margin: 0;
@@ -182,77 +182,78 @@ body {
   border-color: #333;
 }
 
-.edit-btn {
-  background-color: transparent;
-  color: #2a9df4;
-  border: none;
-  padding: 8px 16px;
-}
-.edit-btn:hover {
-  background-color: #f0f0f0;
-  border-color: #2a9df4;
-}
-
+.edit-btn,
 .delete-btn {
   background-color: transparent;
   color: #2a9df4;
   border: none;
-  padding: 8px 16px;
+  padding: 6px 12px; /* Mindre padding */
 }
+
+.edit-btn:hover,
 .delete-btn:hover {
   background-color: #f0f0f0;
   border-color: #2a9df4;
 }
+
 .feed-card {
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 600px; /* Sørg for at kortet ikke overstiger containerens bredde */
-  margin: 0 auto;
+  max-width: 500px; /* Redusert maks bredde */
+  margin: 10px auto;
   display: flex;
   flex-direction: column;
 }
 
 .feed-card img {
   width: 100%;
-  height: 300px; /* Fast høyde for å sikre at alle bilder vises likt */
-  object-fit: cover; /* Skalerer bildet og beskjærer det for å fylle rammen */
+  height: 250px; /* Redusert høyde for bildet */
+  object-fit: cover;
 }
 
 .feed-card-body {
-  padding: 16px;
+  padding: 12px; /* Redusert padding */
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
+.feed-card-body h5 {
+  font-size: 1.1em; /* Mindre tittelstørrelse */
+  color: #333;
+}
+
+.feed-card-body p {
+  font-size: 0.95em; /* Mindre tekststørrelse */
+  color: #555;
+}
+
+/* Kommentarseksjon */
 .comment-section {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .comment-box {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
-  max-width: 50%; /* Justerer kommentarboksen til 80% av bredden */
-  margin: 0 auto; /* Sentrerer kommentarboksen under bildet */
+  max-width: 80%;
+  margin: 0 auto;
 }
 
 .comment-box textarea {
-  width: 100%; /* Fyller hele bredden av comment-box */
-  resize: none; /* Hindrer justering av størrelsen */
+  width: 100%;
+  resize: none;
   border-radius: 4px;
-  padding: 8px;
+  padding: 6px; /* Mindre padding i tekstboksen */
   border: 1px solid #ccc;
+  font-size: 0.9em; /* Mindre fontstørrelse */
 }
 
-/* Notater */
-
-.create-btn {
-  color: #2a9df4;
-  background-color: transparent;
-}
-.create-btn:hover {
-  background-color: #f0f0f0;
+/* Generelle knapper */
+.btn {
+  font-size: 0.85em; /* Redusert fontstørrelse for knappene */
+  padding: 6px 12px; /* Redusert padding */
 }
