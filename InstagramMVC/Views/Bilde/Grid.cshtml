@@ -2,10 +2,10 @@
 
 <div class="container">
     <h1>Alle Bilder</h1>
-    <div class="row">
+    <div class="row flex-column align-items-center"> <!-- Endret for å bruke flex og plassere elementene under hverandre -->
         @foreach (var bilde in Model.Bilder)
         {
-            <div class="col-md-4">
+            <div class="col-12 mb-4"> <!-- Endret til col-12 for å sikre at hvert element tar opp hele bredden -->
                 @await Html.PartialAsync("_BildeCard", bilde)
             </div>
         }
