@@ -166,125 +166,122 @@ namespace InstagramMVC.Controllers
             return View(bilde);
         }
 
-       [HttpPost]
-       [Authorize]
-    public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? newBildeUrl)
-    {
-        if (id != updatedBilde.BildeId || !ModelState.IsValid)
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, Bilde updatedBilde, IFormFile? newBildeUrl)
         {
-            return View(updatedBilde);
-        }
-
-        var eksisterendeBilde = await _bildeRepository.BildeId(id);
-        if (eksisterendeBilde == null)
-        {
-            return NotFound();
-        }
-
-        var currentUserName = _userManager.GetUserName(User);
-        if(eksisterendeBilde.UserName != currentUserName)
-        {
-            _logger.LogWarning("Unaauthorized edit attempt by use {UserName} for image {BildeId}", currentUserName, id);
-            return Forbid();
-        }
-
-        eksisterendeBilde.Tittel = updatedBilde.Tittel;
-        eksisterendeBilde.Beskrivelse = updatedBilde.Beskrivelse;
-
-        if (newBildeUrl != null && newBildeUrl.Length > 0)
-        {
-            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-            string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newBildeUrl.FileName);
-            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            if (id != updatedBilde.BildeId || !ModelState.IsValid)
             {
-                await newBildeUrl.CopyToAsync(fileStream);
+                return View(updatedBilde);
             }
 
-            if (!string.IsNullOrEmpty(eksisterendeBilde.BildeUrl))
+            var eksisterendeBilde = await _bildeRepository.BildeId(id);
+            if (eksisterendeBilde == null)
             {
-                string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", eksisterendeBilde.BildeUrl.TrimStart('/'));
-                if (FileUtil.FileExists(oldFilePath))
+                return NotFound();
+            }
+
+            var currentUserName = _userManager.GetUserName(User);
+            if(eksisterendeBilde.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unaauthorized edit attempt by use {UserName} for image {BildeId}", currentUserName, id);
+                return Forbid();
+            }
+
+            eksisterendeBilde.Tittel = updatedBilde.Tittel;
+            eksisterendeBilde.Beskrivelse = updatedBilde.Beskrivelse;
+
+            if (newBildeUrl != null && newBildeUrl.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newBildeUrl.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    FileUtil.FileDelete(oldFilePath);
+                    await newBildeUrl.CopyToAsync(fileStream);
                 }
-            }   
 
-            eksisterendeBilde.BildeUrl = "/images/" + uniqueFileName;
+                if (!string.IsNullOrEmpty(eksisterendeBilde.BildeUrl))
+                {
+                    string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", eksisterendeBilde.BildeUrl.TrimStart('/'));
+                    if (FileUtil.FileExists(oldFilePath))
+                    {
+                        FileUtil.FileDelete(oldFilePath);
+                    }
+                }   
+
+                eksisterendeBilde.BildeUrl = "/images/" + uniqueFileName;
+            }
+
+            bool vellykket = await _bildeRepository.Oppdater(eksisterendeBilde);
+            return vellykket ? RedirectToAction("Grid") : View(updatedBilde);
         }
 
-        bool vellykket = await _bildeRepository.Oppdater(eksisterendeBilde);
-        return vellykket ? RedirectToAction("Grid") : View(updatedBilde);
-    }
-
-   [HttpGet]
-[Authorize]
-public async Task<IActionResult> Delete(int id, string? returnUrl = null)
-{
-    var bilde = await _bildeRepository.BildeId(id);
-    if (bilde == null)
-    {
-        _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
-        return NotFound();
-    }
-
-    var currentUserName = _userManager.GetUserName(User);
-    if (bilde.UserName != currentUserName)
-    {
-        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
-        return Forbid();
-    }
-
-    // Store the returnUrl in TempData so we can pass it to the Delete view.
-    TempData["ReturnUrl"] = returnUrl ?? Url.Action("Grid"); // Lagre returnUrl i TempData
-
-    return View(bilde);
-}
-
-
-
-[HttpPost]
-[Authorize]
-public async Task<IActionResult> DeleteConfirmed(int id, string? returnUrl = null)
-{
-    var bilde = await _bildeRepository.BildeId(id);
-    if (bilde == null)
-    {
-        _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
-        return NotFound();
-    }
-
-    var currentUserName = _userManager.GetUserName(User);
-    if (bilde.UserName != currentUserName)
-    {
-        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
-        return Forbid();
-    }
-
-    if (!string.IsNullOrEmpty(bilde.BildeUrl))
-    {
-        string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", bilde.BildeUrl.TrimStart('/'));
-
-        if (FileUtil.FileExists(fullPath))
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id, string? returnUrl = null)
         {
-            FileUtil.FileDelete(fullPath);
+            var bilde = await _bildeRepository.BildeId(id);
+            if (bilde == null)
+            {
+                _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
+                return NotFound();
+            }
+
+            var currentUserName = _userManager.GetUserName(User);
+            if (bilde.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
+                return Forbid();
+            }
+
+            // Store the returnUrl in TempData so we can pass it to the Delete view.
+            TempData["ReturnUrl"] = returnUrl ?? Url.Action("Grid"); // Lagre returnUrl i TempData
+
+            return View(bilde);
         }
-    }
-
-    bool vellykket = await _bildeRepository.Delete(id);
-
-    if (!vellykket)
-    {
-        _logger.LogError("[BildeController] bilde ble ikke slettet med {Id}", id);
-        return BadRequest("Bilde ble ikke slettet");
-    }
-
-    return Redirect(returnUrl ?? Url.Action("Grid")); // Endret: Sikrer at `Redirect` får en ikke-null verdi
-}
 
 
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirmed(int id, string? returnUrl = null)
+        {
+            var bilde = await _bildeRepository.BildeId(id);
+            if (bilde == null)
+            {
+                _logger.LogError("[BildeController] bilde med Id ble ikke funnet {id}", id);
+                return NotFound();
+            }
+
+            var currentUserName = _userManager.GetUserName(User);
+            if (bilde.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {BildeId}", currentUserName, id);
+                return Forbid();
+            }
+
+            if (!string.IsNullOrEmpty(bilde.BildeUrl))
+            {
+                string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", bilde.BildeUrl.TrimStart('/'));
+
+                if (FileUtil.FileExists(fullPath))
+                {
+                    FileUtil.FileDelete(fullPath);
+                }
+            }
+
+            bool vellykket = await _bildeRepository.Delete(id);
+
+            if (!vellykket)
+            {
+                _logger.LogError("[BildeController] bilde ble ikke slettet med {Id}", id);
+                return BadRequest("Bilde ble ikke slettet");
+            }
+
+            return Redirect(returnUrl ?? Url.Action("Grid")); // Endret: Sikrer at `Redirect` får en ikke-null verdi
+        }
 
     }
 }

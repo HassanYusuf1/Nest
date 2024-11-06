@@ -44,81 +44,81 @@ namespace InstagramMVC.Controllers
                 throw;
             }
         }
-        [HttpPost]
-[Authorize]
-public async Task<IActionResult> CreateComment(Kommentar kommentar)
-{
-    try
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> CreateComment(Kommentar kommentar)
     {
-        if (ModelState.IsValid)
+        try
         {
-            kommentar.KommentarTid = DateTime.Now;
-            kommentar.UserName = _userManager.GetUserName(User);
-            await _kommentarRepository.Create(kommentar);
+            if (ModelState.IsValid)
+            {
+                kommentar.KommentarTid = DateTime.Now;
+                kommentar.UserName = _userManager.GetUserName(User);
+                await _kommentarRepository.Create(kommentar);
 
-            return RedirectToAction("Grid", "Bilde", new { id = kommentar.BildeId });
+                return RedirectToAction("Grid", "Bilde", new { id = kommentar.BildeId });
+            }
+
+            _logger.LogWarning("[KommentarController] Opprettning av ny kommentar feilet, ModelState funker ikke");
+            return View(kommentar);
         }
-
-        _logger.LogWarning("[KommentarController] Opprettning av ny kommentar feilet, ModelState funker ikke");
-        return View(kommentar);
-    }
-    catch (Exception e)
-    {
-        _logger.LogError(e, "Feil skjedde under oppretting av kommentar");
-        throw;
-    }
-}
-
-[HttpGet]
-[Authorize]
-public async Task<IActionResult> UpdateComment(int Id)
-{
-    var kommentar = await _kommentarRepository.GetKommentarById(Id);
-
-    if (kommentar == null)
-    {
-        _logger.LogError("[KommentarController] kunne ikke finne kommentar med id {Id}", Id);
-        return NotFound();
-    }
-
-    var currentUserName = _userManager.GetUserName(User);
-    if (kommentar.UserName != currentUserName)
-    {
-        _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {KommentarId}", currentUserName, Id);
-        return Forbid();
-    }
-
-    return View(kommentar);
-}
-
-[HttpPost]
-[Authorize]
-public async Task<IActionResult> UpdateComment(Kommentar kommentar)
-{
-    if (!ModelState.IsValid)
-    {
-        _logger.LogWarning("Ugyldig ModelState ved oppdatering av kommentar. KommentarId: {KommentarId}", kommentar.KommentarId);
-        return View(kommentar);
-    }
-
-    try
-    {
-        var eksisterendeKommentar = await _kommentarRepository.GetKommentarById(kommentar.KommentarId);
-        if (eksisterendeKommentar == null)
+        catch (Exception e)
         {
-            _logger.LogError("Fant ikke kommentar med ID {KommentarId}", kommentar.KommentarId);
+            _logger.LogError(e, "Feil skjedde under oppretting av kommentar");
+            throw;
+        }
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> UpdateComment(int Id)
+    {
+        var kommentar = await _kommentarRepository.GetKommentarById(Id);
+
+        if (kommentar == null)
+        {
+            _logger.LogError("[KommentarController] kunne ikke finne kommentar med id {Id}", Id);
             return NotFound();
         }
 
         var currentUserName = _userManager.GetUserName(User);
-        if (eksisterendeKommentar.UserName != currentUserName)
+        if (kommentar.UserName != currentUserName)
         {
-            _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {KommentarId}", currentUserName, kommentar.KommentarId);
+            _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {KommentarId}", currentUserName, Id);
             return Forbid();
         }
 
-        eksisterendeKommentar.KommentarBeskrivelse = kommentar.KommentarBeskrivelse;
-        eksisterendeKommentar.KommentarTid = DateTime.Now;
+        return View(kommentar);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> UpdateComment(Kommentar kommentar)
+    {
+        if (!ModelState.IsValid)
+        {
+            _logger.LogWarning("Ugyldig ModelState ved oppdatering av kommentar. KommentarId: {KommentarId}", kommentar.KommentarId);
+            return View(kommentar);
+        }
+
+        try
+        {
+            var eksisterendeKommentar = await _kommentarRepository.GetKommentarById(kommentar.KommentarId);
+            if (eksisterendeKommentar == null)
+            {
+                _logger.LogError("Fant ikke kommentar med ID {KommentarId}", kommentar.KommentarId);
+                return NotFound();
+            }
+
+            var currentUserName = _userManager.GetUserName(User);
+            if (eksisterendeKommentar.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {KommentarId}", currentUserName, kommentar.KommentarId);
+                return Forbid();
+            }
+
+            eksisterendeKommentar.KommentarBeskrivelse = kommentar.KommentarBeskrivelse;
+            eksisterendeKommentar.KommentarTid = DateTime.Now;
 
         await _kommentarRepository.Update(eksisterendeKommentar);
 
