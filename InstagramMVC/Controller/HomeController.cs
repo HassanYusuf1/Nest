@@ -7,7 +7,14 @@ namespace Instagram.Controllers
         // GET: /Home/Index
         public IActionResult Index()
         {
-            // Returnerer Hjem-siden (Index) som inneholder velkomst
+            // Check if the user is logged in
+            if (User.Identity.IsAuthenticated)
+            {
+                // If logged in, redirect to the user's main page
+                return Redirect("~/Bilde/MyPage"); 
+            }
+
+            // Show the default welcome page for users who aren’t logged in
             return View();
         }
     }

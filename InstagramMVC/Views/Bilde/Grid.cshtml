@@ -1,13 +1,22 @@
 @model InstagramMVC.ViewModels.BilderViewModel
 
-<div class="container">
-    <h1>Alle Bilder</h1>
-    <div class="row flex-column align-items-center"> <!-- Endret for å bruke flex og plassere elementene under hverandre -->
-        @foreach (var bilde in Model.Bilder)
-        {
-            <div class="col-12 mb-4"> <!-- Endret til col-12 for å sikre at hvert element tar opp hele bredden -->
-                @await Html.PartialAsync("_BildeCard", bilde)
-            </div>
-        }
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alle Bilder</title>
+    <link rel="stylesheet" href="~/css/layout.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Alle Bilder</h1>
+        <div class="row flex-column align-items-center">
+            @foreach (var bilde in Model.Bilder)
+            {
+                <div class="col-12 mb-4">
+                    @await Html.PartialAsync("_BildeCard", bilde)
+                </div>
+            }
+        </div>
     </div>
-</div>
+</body>
+</html>
