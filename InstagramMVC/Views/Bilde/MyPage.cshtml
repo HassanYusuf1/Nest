@@ -8,7 +8,7 @@
 <div class="container">
     @if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(userName))
     {
-        <h2>Velkommen, @userName!</h2>
+        <h2> @userName</h2>
     }
     else
     {

@@ -1,6 +1,15 @@
 @model InstagramMVC.ViewModels.NotaterViewModel
 
+@{
+    var userName = User.Identity.Name?.Split('@')[0]; // Henter gjeldende URL som returnUrl
+}
+
 <div class="container">
+    @if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(userName))
+    {
+        <h2>@userName</h2>
+    }
+
     <h2>Mine Notater</h2>
     
     <!-- Liste over mine notater -->
