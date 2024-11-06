@@ -37,7 +37,7 @@ var app = builder.Build();
 
  */ 
  // DBInit.cs
- await DBInit.SeedAsync(app);
+ //await DBInit.SeedAsync(app);
 
 if (app.Environment.IsDevelopment())
 {
