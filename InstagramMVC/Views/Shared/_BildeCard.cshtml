@@ -6,7 +6,8 @@
 }
 
 <div class="picture-feed-card mb-4">
-    <a asp-action="Details" asp-route-id="@Model.BildeId" class="text-decoration-none">
+    <!-- Legg til asp-route-source for å sende source til Details-siden -->
+    <a asp-action="Details" asp-route-id="@Model.BildeId" asp-route-source="@(returnUrl == Url.Action("MyPage") ? "MyPage" : "Grid")" class="text-decoration-none">
         <img class="picture-feed-card-img" src="@Model.BildeUrl" alt="@Model.Tittel" />
     </a>
     <div class="picture-feed-card-body">
