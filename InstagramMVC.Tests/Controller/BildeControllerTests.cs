@@ -49,6 +49,38 @@ public class BildeControllerTests
     }
 
     [Fact]
+    public async Task Details_GoIntoDetailedView_FromGrid()
+    {
+    // Arrange
+    var imageId = 50;
+    var source = "Grid";
+    var expectedBilde = new Bilde
+    {
+        BildeId = imageId,
+        Tittel = "Test Title",
+        Beskrivelse = "Test Description",
+        BildeUrl = "/images/testImage.jpg"
+    };
+
+    // Set up the repository to return the expected Bilde
+    _bildeRepositoryMock.Setup(repo => repo.BildeId(imageId)).ReturnsAsync(expectedBilde);
+
+    // Act
+    var result = await _controller.Details(imageId, source);
+
+    // Assert
+    var viewResult = Assert.IsType<ViewResult>(result);
+    Assert.Equal("BildeDetails", viewResult.ViewName); // Check that the view name is "BildeDetails"
+    Assert.Equal(expectedBilde, viewResult.Model); // Verify that the model is the expected Bilde
+
+    // Check that ViewBag.Source is set correctly
+    Assert.Equal(source, _controller.ViewBag.Source);
+
+    // Verify that BildeId was called on the repository with the correct id
+    _bildeRepositoryMock.Verify(repo => repo.BildeId(imageId), Times.Once);
+    }
+
+    [Fact]
     public async Task Create_ReturnsView_WhenModelStateIsInvalid()
     {
         // Arrange
