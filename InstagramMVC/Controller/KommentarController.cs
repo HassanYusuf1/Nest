@@ -219,8 +219,8 @@ public async Task<IActionResult> CreateCommentNote(Kommentar kommentar)
             kommentar.UserName = _userManager.GetUserName(User);
 
             await _kommentarRepository.Create(kommentar);
-            return RedirectToAction("Details", "Notat", new { id = kommentar.NoteId });
-            return RedirectToAction("Notes", "Notat", new {id = kommentar.NoteId});
+            return RedirectToAction("Notes", "Notat", new { id = kommentar.NoteId });
+            
         }
 
         _logger.LogWarning("[KommentarController] Opprettning av ny kommentar for notat feilet, ModelState er ugyldig");
@@ -286,7 +286,7 @@ public async Task<IActionResult> UpdateCommentNote(Kommentar kommentar)
 
         await _kommentarRepository.Update(eksisterendeKommentar);
 
-        return RedirectToAction("Details", "Notat", new { id = eksisterendeKommentar.NoteId });
+        return RedirectToAction("Notes", "Notat", new { id = eksisterendeKommentar.NoteId });
     }
     catch (Exception e)
     {
@@ -334,12 +334,12 @@ public async Task<IActionResult> DeleteConfirmedKommentarNote(int id)
     {
         await _kommentarRepository.Delete(id);
         _logger.LogInformation("Kommentaren med ID {KommentarId} ble slettet", id);
-        return RedirectToAction("Details", "Notat", new { id = noteId });
+        return RedirectToAction("Notes", "Notat", new { id = noteId });
     }
     catch (Exception e)
     {
         _logger.LogError(e, "Feil ved sletting av kommentar med ID {Id}", id);
-        return RedirectToAction("Details", "Notat", new { id = noteId });
+        return RedirectToAction("Notes", "Notat", new { id = noteId });
     }
 }
         
