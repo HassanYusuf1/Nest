@@ -120,16 +120,16 @@ namespace InstagramMVC.Controllers
             eksisterendeKommentar.KommentarBeskrivelse = kommentar.KommentarBeskrivelse;
             eksisterendeKommentar.KommentarTid = DateTime.Now;
 
-        await _kommentarRepository.Update(eksisterendeKommentar);
+            await _kommentarRepository.Update(eksisterendeKommentar);
 
-        return RedirectToAction("Details", "Bilde", new { id = eksisterendeKommentar.BildeId });
+            return RedirectToAction("Details", "Bilde", new { id = eksisterendeKommentar.BildeId });
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Feil oppstod under oppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
+            throw;
+        }
     }
-    catch (Exception e)
-    {
-        _logger.LogError(e, "Feil oppstod under oppdatering av kommentar med ID {KommentarId}", kommentar.KommentarId);
-        throw;
-    }
-}
 
 [HttpGet]
 [Authorize]
@@ -187,24 +187,24 @@ public async Task<IActionResult> DeleteConfirmedKommentar(int Id)
 }
 
         //FOR NOTATER
-       [HttpGet]
-[Authorize]
-public IActionResult CreateCommentNote(int noteId)
-{
-    try
+    [HttpGet]
+    [Authorize]
+    public IActionResult CreateCommentNote(int noteId)
     {
-        var kommentar = new Kommentar
+        try
         {
-            NoteId = noteId
-        };
-        return View(kommentar);
+            var kommentar = new Kommentar
+            {
+                NoteId = noteId
+            };
+            return View(kommentar);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Oppretting av ny kommentar feilet");
+            throw;
+        }
     }
-    catch (Exception e)
-    {
-        _logger.LogError(e, "Oppretting av ny kommentar feilet");
-        throw;
-    }
-}
 
 [HttpPost]
 [Authorize]
