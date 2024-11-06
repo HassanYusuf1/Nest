@@ -23,7 +23,7 @@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="nav-item">
-                        <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Front")" class="form-inline">
+                        <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" class="form-inline">
                             <button type="submit" class="btn btn-link nav-link">Logout</button>
                         </form>
                     </li>
