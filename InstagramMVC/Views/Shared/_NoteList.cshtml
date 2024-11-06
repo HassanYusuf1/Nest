@@ -1,7 +1,7 @@
 @model InstagramMVC.Models.Note
 
 <div class="card mb-4 shadow-sm">
-    <a asp-action="Details" asp-route-id="@Model.NoteId" class="text-decoration-none">
+    <a asp-action="Details" asp-route-id="@Model.NoteId" asp-route-source="MyPage" class="text-decoration-none">
         <div class="card-body">
             <h4 class="card-title">@Model.Tittel</h4>
             <p class="card-text"><small class="text-muted">Skrevet av: @(Model.username?.Contains("@") == true ? Model.username.Split('@')[0] : Model.username)</small></p>
