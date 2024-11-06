@@ -4,11 +4,11 @@
     var returnUrl = ViewData["returnUrl"] as string ?? Url.Action("Grid");
 }
 
-<div class="feed-card mb-4"> <!-- Bruker feed-card-klassen -->
+<div class="picture-feed-card mb-4">
     <a asp-action="Details" asp-route-id="@Model.BildeId" class="text-decoration-none">
-        <img class="feed-card-img" src="@Model.BildeUrl" alt="@Model.Tittel" /> <!-- Bruker feed-card-img-klassen -->
+        <img class="picture-feed-card-img" src="@Model.BildeUrl" alt="@Model.Tittel" />
     </a>
-    <div class="feed-card-body"> <!-- Bruker feed-card-body-klassen -->
+    <div class="picture-feed-card-body">
         <h5 class="card-title">@Model.Tittel</h5>
         <p class="card-text">@Model.Beskrivelse</p>
         <p class="card-text"><small class="text-muted">Lastet opp: @Model.OpprettetDato.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
@@ -21,7 +21,7 @@
     </div>
 
     <!-- Kommentarer Seksjon -->
-    <div class="card-footer">
+    <div class="picture-card-footer">
         <h5>Kommentarer:</h5>
         @await Html.PartialAsync("_CommentTable", Model.Kommentarer)
         <form asp-action="CreateComment" asp-controller="Kommentar" method="post">
