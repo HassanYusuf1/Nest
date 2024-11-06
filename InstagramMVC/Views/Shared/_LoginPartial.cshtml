@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Register</title>
-    <link href="~/css/layout.css" rel="stylesheet" asp-append-version="true" /> <!-- Lenke til CSS-filen -->
+    <link href="~/css/layout.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
     @if (SignInManager.IsSignedIn(User))
@@ -19,12 +19,17 @@
     }
     else
     {
+        <!-- Plassering av Welcome-teksten -->
+        <div class="welcome-text">
+            <h1>Welcome!</h1>
+        </div>
+
+        <!-- Login/Register boksen -->
         <div class="container d-flex align-items-center justify-content-center vh-100">
-            <div class="card login-register-box">
+            <div class="card homepage-login-register-box">
                 <div class="d-flex justify-content-between mb-4">
-                    <!-- Direkte lenker til Login og Register sidene -->
-                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-toggle active">Logg inn</a>
-                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-toggle">Registrer deg</a>
+                    <a asp-area="Identity" asp-page="/Account/Login" class="homepage-btn-toggle active">Logg inn</a>
+                    <a asp-area="Identity" asp-page="/Account/Register" class="homepage-btn-toggle active">Registrer deg</a>
                 </div>
             </div>
         </div>

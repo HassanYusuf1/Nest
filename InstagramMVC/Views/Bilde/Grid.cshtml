@@ -8,12 +8,15 @@
 </head>
 <body>
     <div class="container">
-        <h1>Alle Bilder</h1>
+        <h1>Bilder</h1>
         <div class="row flex-column align-items-center">
             @foreach (var bilde in Model.Bilder)
             {
                 <div class="col-12 mb-4">
-                    @await Html.PartialAsync("_BildeCard", bilde)
+                    @{
+                        ViewData["returnUrl"] = Url.Action("Grid");
+                    }
+                    @await Html.PartialAsync("_BildeCard", bilde, ViewData)
                 </div>
             }
         </div>
