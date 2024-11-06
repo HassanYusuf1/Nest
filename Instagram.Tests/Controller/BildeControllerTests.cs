@@ -11,7 +11,7 @@ using InstagramMVC.Models;
 
 namespace InstagramMVC.Tests.Controller
 {
-public class BildeControllerTests : Controller
+public class BildeControllerTests : 
 {
     private readonly Mock<IBildeRepository> _bildeRepositoryMock;
     private readonly Mock<ILogger<BildeController>> _loggerMock;
