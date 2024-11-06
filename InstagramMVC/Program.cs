@@ -51,7 +51,7 @@ app.MapRazorPages();
 // Optional: Use a default controller route if needed
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Front}/{action=Index}/{id?}"); 
+    pattern: "{controller=Home}/{action=Index}/{id?}"); 
 
 // Start the app
 app.Run();
