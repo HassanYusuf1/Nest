@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using InstagramMVC.Utilities;
 
 
 namespace InstagramMVC.Controllers
@@ -202,9 +203,9 @@ namespace InstagramMVC.Controllers
             if (!string.IsNullOrEmpty(eksisterendeBilde.BildeUrl))
             {
                 string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", eksisterendeBilde.BildeUrl.TrimStart('/'));
-                if (System.IO.File.Exists(oldFilePath))
+                if (FileUtil.FileExists(oldFilePath))
                 {
-                    System.IO.File.Delete(oldFilePath);
+                    FileUtil.FileDelete(oldFilePath);
                 }
             }   
 
