@@ -1,23 +1,22 @@
 @model IEnumerable<InstagramMVC.Models.Kommentar>
 
-@foreach (var kommentar in Model)
-{
-    <div class="col-sm-4 mb-3">
-        <a asp-action="Details" asp-route-id="@kommentar.KommentarId" class="text-decoration-none">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Kommentar til Bilde ID: @kommentar.BildeId</h5>
-                    <p class="card-text">@kommentar.KommentarBeskrivelse</p>
-                    <p class="text-muted"><small>Publisert: @kommentar.KommentarTid.ToString("yyyy-MM-dd HH:mm")</small></p>
-                </div>
+<div class="comments-section">
+    @foreach (var kommentar in Model)
+    {
+        <div class="comment mb-3 pb-2" style="border-bottom: 1px solid #e0e0e0;">
+            <strong>@(kommentar.UserName?.Contains("@") == true ? kommentar.UserName.Split('@')[0] : kommentar.UserName):</strong>
+            <span>@kommentar.KommentarBeskrivelse</span>
+            <div class="text-muted">
+                <small>@kommentar.KommentarTid.ToString("yyyy-MM-dd HH:mm")</small>
+
+                @if (User.Identity?.Name == kommentar.UserName)
+                {
+                    <span class="comment-actions ms-3">
+                        <a asp-action="UpdateComment" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="text-decoration-none text-primary me-2">Rediger</a>
+                        <a asp-action="DeleteComment" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="text-decoration-none text-danger">Slett</a>
+                    </span>
+                }
             </div>
-        </a>
-        <div class="mt-2">
-            @if (User.Identity?.Name == kommentar.UserName)
-            {
-                <a asp-action="UpdateComment" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="btn btn-outline-primary btn-sm">Rediger</a>
-                <a asp-action="DeleteComment" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="btn btn-outline-danger btn-sm">Slett</a>
-            }
         </div>
-    </div>
-}
+    }
+</div>

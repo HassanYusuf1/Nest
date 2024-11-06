@@ -2,6 +2,7 @@
 
 @{
     var returnUrl = ViewData["returnUrl"] as string ?? Url.Action("Grid");
+    var userNameBeforeAt = Model.UserName?.Split('@')[0];
 }
 
 <div class="picture-feed-card mb-4">
@@ -11,6 +12,11 @@
     <div class="picture-feed-card-body">
         <h5 class="card-title">@Model.Tittel</h5>
         <p class="card-text">@Model.Beskrivelse</p>
+        <p class="card-text">
+            <small class="text-muted">
+                Lastet opp av: @userNameBeforeAt 
+            </small>
+        </p>
         <p class="card-text"><small class="text-muted">Lastet opp: @Model.OpprettetDato.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
         
         @if (User.Identity?.Name == Model.UserName)
