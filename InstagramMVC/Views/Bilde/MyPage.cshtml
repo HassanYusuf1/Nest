@@ -1,14 +1,14 @@
 @model InstagramMVC.ViewModels.BilderViewModel
 
 @{
-    var returnUrl = ViewContext.HttpContext.Request.Path;
-    var userName = User.Identity.Name?.Split('@')[0]; // Henter gjeldende URL som returnUrl
+    var returnUrl = Url.Action("MyPage");
+    var userName = User.Identity.Name?.Split('@')[0];
 }
 
 <div class="container">
     @if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(userName))
     {
-        <h2> @userName</h2>
+        <h2>@userName</h2>
     }
     else
     {
@@ -22,6 +22,7 @@
         @foreach (var bilde in Model.Bilder)
         {
             <div class="col-md-4">
+                <!-- Bruk partialen for å vise hele bildet og detaljene -->
                 @await Html.PartialAsync("_BildeCard", bilde, new ViewDataDictionary(ViewData) { { "returnUrl", returnUrl } })
             </div>
         }
