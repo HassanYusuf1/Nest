@@ -1,5 +1,5 @@
-/* Front Page */
-body.front-page {
+/* Home Page */
+body.home-page {
   background: linear-gradient(
     45deg,
     #feda75,
@@ -93,7 +93,7 @@ body.front-page {
   display: block;
 }
 
-.btn-primary-front {
+.btn-primary-home {
   color: #fff;
   background-color: transparent;
   border-color: rgba(255, 255, 255, 0.6);
@@ -102,10 +102,10 @@ body.front-page {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-primary-front:hover,
-.btn-primary-front:focus,
-.btn-primary-front:active,
-.btn-primary-front:focus-visible {
+.btn-primary-home:hover,
+.btn-primary-home:focus,
+.btn-primary-home:active,
+.btn-primary-home:focus-visible {
   color: #0f1011;
   background-color: rgba(255, 255, 255, 0.6);
   border-color: rgba(255, 255, 255, 0.6);
@@ -113,13 +113,13 @@ body.front-page {
   box-shadow: none;
 }
 
-.btn-primary-front:active {
+.btn-primary-home:active {
   background-color: #5d4037;
   color: #fff;
   border-color: #5d4037;
 }
 
-/* Home Page */
+/*  Page */
 body {
   background-color: #fafafa;
   margin: 0;
