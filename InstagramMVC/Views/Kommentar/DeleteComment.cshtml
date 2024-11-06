@@ -11,5 +11,5 @@
 <form asp-action="DeleteConfirmedKommentar" asp-route-id="@Model.KommentarId" method="post">
     <input type="hidden" asp-for="KommentarId" />
     <button type="submit" class="btn btn-danger">Slett</button>
-    <a href="@Url.Action("BildeDetails", "Bilde", new { id = Model.BildeId })" class="btn btn-secondary">Avbryt</a>
+    <a href="@Url.Action("Grid", "Bilde", new { id = Model.BildeId })" class="btn btn-secondary">Avbryt</a>
 </form>
