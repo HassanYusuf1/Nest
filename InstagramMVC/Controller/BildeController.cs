@@ -133,7 +133,7 @@ namespace InstagramMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string source = "Grid")
         {
             var bilde = await _bildeRepository.BildeId(id);
             if (bilde == null)
@@ -141,9 +141,11 @@ namespace InstagramMVC.Controllers
                 _logger.LogError("[BildeController] bilde sin id ble ikke funnet");
                 return NotFound();
             }
-            
+    
+            ViewBag.Source = source; // Lagre source i ViewBag
             return View("BildeDetails", bilde);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

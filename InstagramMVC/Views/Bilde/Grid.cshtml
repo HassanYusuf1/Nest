@@ -13,10 +13,8 @@
             @foreach (var bilde in Model.Bilder)
             {
                 <div class="col-12 mb-4">
-                    @{
-                        ViewData["returnUrl"] = Url.Action("Grid");
-                    }
-                    @await Html.PartialAsync("_BildeCard", bilde, ViewData)
+                    <!-- Bruk partialen for å vise hele bildet og detaljene -->
+                    @await Html.PartialAsync("_BildeCard", bilde, new ViewDataDictionary(ViewData) { { "returnUrl", Url.Action("Grid") } })
                 </div>
             }
         </div>
