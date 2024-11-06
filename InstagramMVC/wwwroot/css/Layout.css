@@ -20,13 +20,14 @@ body.home-page {
 
 .login-register-box {
   background: #fdf5e6;
-  padding: 30px;
-  border-radius: 8px;
+  padding: 50px; /* Økt padding */
+  border-radius: 12px; /* Litt større avrunding */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 650px; /* Økt bredde */
+  margin: 30px auto;
   border-color: #5d4037;
+  backdrop-filter: blur(10px);
 }
 
 @keyframes smoothPulse {
@@ -68,8 +69,9 @@ body.home-page {
   flex: 1;
   background-color: transparent;
   border-color: #fff;
-  padding: 10px 0;
+  padding: 15px 0; /* Økt padding for høyere knapp */
   font-weight: bold;
+  font-size: 1.2em; /* Økt fontstørrelse */
   color: #fff;
   text-align: center;
   text-decoration: none;
@@ -119,7 +121,7 @@ body.home-page {
   border-color: #5d4037;
 }
 
-/*  Page */
+/* Page */
 body {
   background-color: #fafafa;
   margin: 0;
@@ -182,77 +184,85 @@ body {
   border-color: #333;
 }
 
-.edit-btn {
-  background-color: transparent;
-  color: #2a9df4;
-  border: none;
-  padding: 8px 16px;
-}
-.edit-btn:hover {
-  background-color: #f0f0f0;
-  border-color: #2a9df4;
-}
-
+.edit-btn,
 .delete-btn {
   background-color: transparent;
   color: #2a9df4;
   border: none;
-  padding: 8px 16px;
+  padding: 6px 12px; /* Mindre padding */
 }
+
+.edit-btn:hover,
 .delete-btn:hover {
   background-color: #f0f0f0;
   border-color: #2a9df4;
 }
+
+/* Feed Card - Enda litt større */
 .feed-card {
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   width: 100%;
-  max-width: 600px; /* Sørg for at kortet ikke overstiger containerens bredde */
-  margin: 0 auto;
+  max-width: 600px; /* Økt bredde på kortet */
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
 }
 
 .feed-card img {
   width: 100%;
-  height: 300px; /* Fast høyde for å sikre at alle bilder vises likt */
-  object-fit: cover; /* Skalerer bildet og beskjærer det for å fylle rammen */
+  height: 280px; /* Økt høyde for bildet */
+  object-fit: cover;
 }
 
+/* Tekst i kortet - Enda litt større */
 .feed-card-body {
-  padding: 16px;
+  padding: 16px; /* Økt padding */
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px; /* Økt avstand mellom tekstene */
 }
 
-.comment-section {
-  margin-top: 10px;
+.feed-card-body h5 {
+  font-size: 1.4em; /* Større tittelstørrelse */
+  color: #333;
+}
+
+.feed-card-body p {
+  font-size: 1.1em; /* Større tekststørrelse */
+  color: #555;
+}
+
+/* Kommentar Seksjon - Justert til enda større kort */
+.card-footer {
+  padding: 16px; /* Økt padding for kommentarseksjonen */
 }
 
 .comment-box {
   display: flex;
-  gap: 10px;
+  gap: 12px; /* Økt avstand mellom elementer */
   align-items: center;
-  max-width: 50%; /* Justerer kommentarboksen til 80% av bredden */
-  margin: 0 auto; /* Sentrerer kommentarboksen under bildet */
+  max-width: 80%; /* Større bredde for å matche kortets størrelse */
+  margin: 0 auto;
 }
 
 .comment-box textarea {
-  width: 100%; /* Fyller hele bredden av comment-box */
-  resize: none; /* Hindrer justering av størrelsen */
-  border-radius: 4px;
-  padding: 8px;
+  width: 100%;
+  resize: none;
+  border-radius: 6px;
+  padding: 10px; /* Økt padding i tekstboksen */
   border: 1px solid #ccc;
+  font-size: 1.1em; /* Større fontstørrelse */
 }
 
-/* Notater */
-
-.create-btn {
-  color: #2a9df4;
-  background-color: transparent;
+.comment-box button {
+  font-size: 1.1em; /* Justert fontstørrelse for kommentarknappen */
+  padding: 10px 14px; /* Økt padding for kommentarknappen */
 }
-.create-btn:hover {
-  background-color: #f0f0f0;
+
+/* Generelle knapper */
+.btn {
+  font-size: 0.85em; /* Redusert fontstørrelse for knappene */
+  padding: 4px 12px; /* Redusert padding */
 }

@@ -1,19 +1,18 @@
 @model InstagramMVC.Models.Bilde
 
 @{
-    var returnUrl = ViewData["returnUrl"] as string ?? Url.Action("Grid"); // Standard til Grid hvis returnUrl ikke finnes
+    var returnUrl = ViewData["returnUrl"] as string ?? Url.Action("Grid");
 }
 
-<div class="card mb-4">
+<div class="feed-card mb-4"> <!-- Bruker feed-card-klassen -->
     <a asp-action="Details" asp-route-id="@Model.BildeId" class="text-decoration-none">
-        <img class="card-img-top" src="@Model.BildeUrl" alt="@Model.Tittel" />
+        <img class="feed-card-img" src="@Model.BildeUrl" alt="@Model.Tittel" /> <!-- Bruker feed-card-img-klassen -->
     </a>
-    <div class="card-body">
+    <div class="feed-card-body"> <!-- Bruker feed-card-body-klassen -->
         <h5 class="card-title">@Model.Tittel</h5>
         <p class="card-text">@Model.Beskrivelse</p>
         <p class="card-text"><small class="text-muted">Lastet opp: @Model.OpprettetDato.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
         
-        <!-- Rediger og Slett knapper, kun tilgjengelig for eieren -->
         @if (User.Identity?.Name == Model.UserName)
         {
             <a asp-action="Edit" asp-route-id="@Model.BildeId" class="btn btn-warning">Rediger</a>
@@ -25,7 +24,6 @@
     <div class="card-footer">
         <h5>Kommentarer:</h5>
         @await Html.PartialAsync("_CommentTable", Model.Kommentarer)
-        <!-- Legg til ny kommentar -->
         <form asp-action="CreateComment" asp-controller="Kommentar" method="post">
             <input type="hidden" name="BildeId" value="@Model.BildeId" />
             <div class="form-group">
