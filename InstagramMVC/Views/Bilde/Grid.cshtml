@@ -1,11 +1,12 @@
 @model InstagramMVC.ViewModels.BilderViewModel
+<link rel="stylesheet" href="~/css/layout.css" />
 
+<h1>Alle Bilder</h1>
 <div class="container">
-    <h1>Alle Bilder</h1>
     <div class="row">
         @foreach (var bilde in Model.Bilder)
         {
-            <div class="col-md-4">
+            <div class="col-12 mb-4">
                 @await Html.PartialAsync("_BildeCard", bilde)
             </div>
         }
