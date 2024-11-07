@@ -269,7 +269,12 @@ body.picture {
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  width: 100%; /* Bruk hele bredden av kolonnen */
+  max-width: 600px; /* Satt til 600px for konsistent bredde */
   margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .notes-link {

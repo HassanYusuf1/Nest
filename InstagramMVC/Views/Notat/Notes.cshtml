@@ -6,13 +6,13 @@
     <title>Alle Notater</title>
     <link rel="stylesheet" href="~/css/layout.css" />
 </head>
-<body class="notes">
-    <div class="container">
+<body class="notes-page">
+    <div class="notes-container">
         <h1>Notater</h1>
-        <div class="row flex-column align-items-center">
+        <div class="notes-column">
             @foreach (var note in Model.Notes)
             {
-                <div class="col-12 mb-4 notes-card">
+                <div class="note-card">
                     @{
                         ViewData["returnUrl"] = Url.Action("Notater");
                     }
