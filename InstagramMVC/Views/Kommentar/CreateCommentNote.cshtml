@@ -3,7 +3,7 @@
 <div class="container mt-4">
     <h4>Legg til kommentar</h4>
     <form asp-action="CreateCommentNote" method="post" class="d-flex align-items-center">
-        <input type="hidden" asp-for="BildeId" />
+        <input type="hidden" asp-for="NoteId" />
         
         <div class="form-group flex-grow-1 mr-2">
             <textarea asp-for="KommentarBeskrivelse" class="form-control" rows="1" placeholder="Skriv din kommentar her..."></textarea>

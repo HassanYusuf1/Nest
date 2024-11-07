@@ -2,15 +2,22 @@
 
 @{
     var returnUrl = ViewData["returnUrl"] as string ?? Url.Action("Grid");
+    var userNameBeforeAt = Model.UserName?.Split('@')[0];
 }
 
 <div class="picture-feed-card mb-4">
-    <a asp-action="Details" asp-route-id="@Model.BildeId" class="text-decoration-none">
+    <!-- Legg til asp-route-source for å sende source til Details-siden -->
+    <a asp-action="Details" asp-route-id="@Model.BildeId" asp-route-source="@(returnUrl == Url.Action("MyPage") ? "MyPage" : "Grid")" class="text-decoration-none">
         <img class="picture-feed-card-img" src="@Model.BildeUrl" alt="@Model.Tittel" />
     </a>
     <div class="picture-feed-card-body">
         <h5 class="card-title">@Model.Tittel</h5>
         <p class="card-text">@Model.Beskrivelse</p>
+        <p class="card-text">
+            <small class="text-muted">
+                Lastet opp av: @userNameBeforeAt 
+            </small>
+        </p>
         <p class="card-text"><small class="text-muted">Lastet opp: @Model.OpprettetDato.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
         
         @if (User.Identity?.Name == Model.UserName)

@@ -182,7 +182,7 @@ public class NotatController : Controller
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Details(int id)
+    public async Task<IActionResult> Details(int id, string source = "Notes")
     {
         var note = await _notatRepository.GetNoteById(id);
         if (note == null)
@@ -190,6 +190,9 @@ public class NotatController : Controller
             _logger.LogError("[NotatController] Note not found for the NoteId: {NoteId}", id);
             return NotFound("Note not found for the NoteId");
         }
+
+        ViewBag.Source = source; // Lagre source i ViewBag for bruk i visningen
         return View("Details", note);
     }
+
 }
