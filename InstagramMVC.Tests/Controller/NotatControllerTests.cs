@@ -23,6 +23,7 @@ namespace InstagramMVC.Tests.Controllers
         private readonly Mock<INotatRepository> _notatRepositoryMock;
         private readonly Mock<IKommentarRepository> _kommentarRepositoryMock;
         private readonly Mock<ILogger<NotatController>> _loggerMock;
+        private readonly Mock<IUrlHelper> _urlHelperMock;
         private readonly Mock<UserManager<IdentityUser>> _userManagerMock;
 
         public NotatControllerTests()
@@ -31,6 +32,7 @@ namespace InstagramMVC.Tests.Controllers
             _notatRepositoryMock = new Mock<INotatRepository>();
             _kommentarRepositoryMock = new Mock<IKommentarRepository>();
             _loggerMock = new Mock<ILogger<NotatController>>();
+            _urlHelperMock = new Mock<IUrlHelper>();
 
             // Set up UserManager<IdentityUser> mock with default constructor parameters
             var store = new Mock<IUserStore<IdentityUser>>();
@@ -99,6 +101,49 @@ namespace InstagramMVC.Tests.Controllers
             // Check that the result is a RedirectToActionResult, redirecting to the "Notes" or another specified page
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Notes", redirectResult.ActionName); // Change "Notes" to the appropriate action name if needed
+        }
+
+        [Fact]
+        public async Task CreateNote_ReturnsView_WhenDatabaseSaveFails()
+        {
+            // Arrange
+            var newNote = new Note();
+            _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns("testUser");
+            _notatRepositoryMock.Setup(repo => repo.Create(It.IsAny<Note>())).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.Create(newNote);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Notes", redirectResult.ActionName); // Change "Notes" to the appropriate action name if needed
+        }
+
+        [Fact]
+        public async Task DeleteConfirmed_DeletesNote_WhenNoteIdExists()
+        {
+            // Arrange
+            int noteId = 30;
+            var currentUserName = "testUser";
+            var newNote = new Note { NoteId = noteId, username = currentUserName };
+
+            // Set up the repository to return the note and confirm deletion
+            _notatRepositoryMock.Setup(repo => repo.GetNoteById(noteId)).ReturnsAsync(newNote);
+            _notatRepositoryMock.Setup(repo => repo.DeleteConfirmed(noteId)).ReturnsAsync(true);
+
+            // Mock user identity
+            _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
+
+            // Act
+            var result = await _controller.DeleteConfirmed(noteId);
+
+            // Assert
+            // Check for redirect after deletion
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Notes", redirectToActionResult.ActionName); // Assuming it redirects to "Notes"
+
+            // Verify that DeleteConfirmed was called exactly once
+            _notatRepositoryMock.Verify(repo => repo.DeleteConfirmed(noteId), Times.Once);
         }
     }
 }
