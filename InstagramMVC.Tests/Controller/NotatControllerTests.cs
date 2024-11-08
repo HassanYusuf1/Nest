@@ -145,5 +145,80 @@ namespace InstagramMVC.Tests.Controllers
             // Verify that DeleteConfirmed was called exactly once
             _notatRepositoryMock.Verify(repo => repo.DeleteConfirmed(noteId), Times.Once);
         }
+        
+        [Fact]
+        public async Task DeleteConfirmed_ReturnsForbid_WhenUserIsNotAuthorized()
+        {
+            // Arrange
+            var noteId = 50;
+            var currentUserName = "testUser";
+            var anotherUserName = "unauthorizedUser";
+            var note = new Note { NoteId = noteId, username = anotherUserName };
+
+            // Set up the repository to return the note owned by a different user
+            _notatRepositoryMock.Setup(repo => repo.GetNoteById(noteId)).ReturnsAsync(note);
+
+            // Mock the current user identity to a different user
+            _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
+
+            // Act
+            var result = await _controller.DeleteConfirmed(noteId);
+
+            // Assert
+            Assert.IsType<ForbidResult>(result);
+        }
+
+        [Fact]
+        public async Task Edit_Note_ReturnsToNotes_WhenUpdateIsOk()
+        {
+            // Arrange
+            var noteId = 50;
+            var currentUserName = "testUser";
+            var existingTitle = "Old Title";
+            var existingInnhold = "Old Innhold";
+            var newTitle = "New Title";
+            var newInnhold = "New Innhold";
+
+            // Set up the existing note in the repository
+            var existingNote = new Note
+            {
+                NoteId = noteId,
+                username = currentUserName,
+                Tittel = existingTitle,
+                Innhold = existingInnhold,
+            };
+
+            // Set up the updated note details
+            var updatedNote = new Note
+            {
+                NoteId = noteId, // Ensure the IDs match to pass the ID check
+                Tittel = newTitle,
+                Innhold = newInnhold
+            };
+
+            // Mock repository to return the existing note and confirm successful update
+            _notatRepositoryMock.Setup(repo => repo.GetNoteById(noteId)).ReturnsAsync(existingNote);
+            _notatRepositoryMock.Setup(repo => repo.Update(existingNote)).Returns(Task.CompletedTask);
+
+            // Mock user identity to match the note owner
+            _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
+
+            // Ensure ModelState is valid
+            _controller.ModelState.Clear();
+
+            // Act
+            var result = await _controller.Update(updatedNote);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Notes", redirectResult.ActionName); // Ensure redirection to the "Grid" action
+
+            // Verify that the Tittel and Beskrivelse have been updated in the existing note
+            Assert.Equal(newTitle, existingNote.Tittel);
+            Assert.Equal(newInnhold, existingNote.Innhold);
+
+            // Verify that Oppdater was called on the repository
+            _notatRepositoryMock.Verify(repo => repo.Update(existingNote), Times.Once);
+        }
     }
 }
