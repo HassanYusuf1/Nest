@@ -283,5 +283,30 @@ namespace InstagramMVC.Controllers
             return Redirect(returnUrl ?? Url.Action("Grid")); // Endret: Sikrer at `Redirect` får en ikke-null verdi
         }
 
+        public async Task<IActionResult> DownloadImage(int id)
+        {
+            // Retrieve the picture from the database
+            var picture = await _pictureRepository.PictureId(id);
+
+            if (picture == null || string.IsNullOrEmpty(picture.PictureUrl))
+            {
+                return NotFound("Picture not found.");
+            }
+
+            // Construct the full file path
+            string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picture.PictureUrl.TrimStart('/'));
+
+            if (!FileUtil.FileExists(fullPath))
+            {
+                return NotFound("File not found.");
+            }
+
+            // Read file asynchronously and return it as a download
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(fullPath);
+            var fileName = Path.GetFileName(picture.PictureUrl);
+
+            return File(fileBytes, "application/octet-stream", fileName);
+        }
+
     }
 }
