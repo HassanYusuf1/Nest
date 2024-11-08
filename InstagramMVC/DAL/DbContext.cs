@@ -15,9 +15,9 @@ namespace InstagramMVC.DAL
 
         }
     
-        public DbSet<Bilde> Bilder {get; set;}
+        public DbSet<Picture> Pictures {get; set;}
         public DbSet<Note> Notes {get; set;}
-        public DbSet<Kommentar> Kommentarer { get; set; }  
+        public DbSet<Comment> Comments { get; set; }  
     
 
 
@@ -31,18 +31,18 @@ namespace InstagramMVC.DAL
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure the relationship between Kommentar and Note
-        modelBuilder.Entity<Kommentar>()
+        // Configure the relationship between Comment and Note
+        modelBuilder.Entity<Comment>()
             .HasOne(k => k.Note)
-            .WithMany(n => n.Kommentarer) // Assuming Note has a collection of Kommentar
+            .WithMany(n => n.Comments) // Assuming Note has a collection of Comment
             .HasForeignKey(k => k.NoteId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Configure the relationship between Kommentar and Bilde
-        modelBuilder.Entity<Kommentar>()
-            .HasOne(k => k.Bilde)
-            .WithMany(b => b.Kommentarer) // Assuming Bilde has a collection of Kommentar
-            .HasForeignKey(k => k.BildeId)
+        // Configure the relationship between Comment and Picture
+        modelBuilder.Entity<Comment>()
+            .HasOne(k => k.Picture)
+            .WithMany(b => b.Comments) // Assuming Picture has a collection of Comment
+            .HasForeignKey(k => k.PictureId)
             .OnDelete(DeleteBehavior.Cascade);
     }
     }

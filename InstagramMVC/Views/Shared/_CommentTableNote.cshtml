@@ -1,23 +1,23 @@
-@model IEnumerable<InstagramMVC.Models.Kommentar>
+@model IEnumerable<InstagramMVC.Models.Comment>
    
 
-        @foreach (var kommentar in Model)
+        @foreach (var comment in Model)
         {
             <div class="col-sm-4 mb-3">
-                <a asp-action="Details" asp-route-id="@kommentar.KommentarId" class="text-decoration-none">
+                <a asp-action="Details" asp-route-id="@comment.CommentId" class="text-decoration-none">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Kommentar til Note ID: @kommentar.BildeId</h5>
-                            <p class="card-text">@kommentar.KommentarBeskrivelse</p>
-                            <p class="text-muted"><small>Publisert: @kommentar.KommentarTid.ToString("yyyy-MM-dd HH:mm")</small></p>
+                            <h5 class="card-title">Comment to Note ID: @comment.PictureId</h5>
+                            <p class="card-text">@comment.CommentDescription</p>
+                            <p class="text-muted"><small>Published: @comment.CommentTime.ToString("yyyy-MM-dd HH:mm")</small></p>
                         </div>
                     </div>
                 </a>
-                @if (User.Identity?.Name == kommentar.UserName)
+                @if (User.Identity?.Name == comment.UserName)
                 {
                 <div class="mt-2">
-                  <a asp-action="UpdateCommentNote" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="btn btn-outline-primary btn-sm">Rediger</a>
-                  <a asp-action="DeleteCommentNote" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="btn btn-outline-danger btn-sm">Slett</a>
+                  <a asp-action="EditCommentNote" asp-controller="Comment" asp-route-id="@comment.CommentId" class="btn btn-outline-primary btn-sm">Edit</a>
+                  <a asp-action="DeleteCommentNote" asp-controller="Comment" asp-route-id="@comment.CommentId" class="btn btn-outline-danger btn-sm">Delete</a>
                   
                 </div>
                 }

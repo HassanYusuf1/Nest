@@ -20,10 +20,10 @@ builder.Services.AddDbContext<MediaDbContext>(options =>
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<MediaDbContext>();
 
-// Register IBildeRepository with its concrete implementation BildeRepository
-builder.Services.AddScoped<IBildeRepository, BildeRepository>();
-builder.Services.AddScoped<INotatRepository, NotatRepository>();
-builder.Services.AddScoped<IKommentarRepository, KommentarRepository>();
+// Register IPictureRepository with its concrete implementation PictureRepository
+builder.Services.AddScoped<IPictureRepository, PictureRepository>();
+builder.Services.AddScoped<INoteRepository, NoteRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddSession();

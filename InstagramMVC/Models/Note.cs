@@ -7,12 +7,12 @@ namespace InstagramMVC.Models
     {
         public int NoteId {get; set;}
         [Required]
-        public string Tittel {get; set;} = string.Empty;
+        public string Title {get; set;} = string.Empty;
         [Required]
-        public string Innhold {get; set;} = string.Empty;
+        public string Content {get; set;} = string.Empty;
 
-        public DateTime OpprettetDato {get; set;} // dato innlegget ble opprettet
-        public virtual ICollection<Kommentar> Kommentarer { get; set; } = new List<Kommentar>();
+        public DateTime UploadDate {get; set;} // dato innlegget ble opprettet
+        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public string? username {get; set;}
 
         

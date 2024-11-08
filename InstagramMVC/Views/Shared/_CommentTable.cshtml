@@ -1,19 +1,19 @@
-@model IEnumerable<InstagramMVC.Models.Kommentar>
+@model IEnumerable<InstagramMVC.Models.Comment>
 
 <div class="comments-section">
-    @foreach (var kommentar in Model)
+    @foreach (var comment in Model)
     {
         <div class="comment mb-3 pb-2" style="border-bottom: 1px solid #e0e0e0;">
-            <strong>@(kommentar.UserName?.Contains("@") == true ? kommentar.UserName.Split('@')[0] : kommentar.UserName):</strong>
-            <span>@kommentar.KommentarBeskrivelse</span>
+            <strong>@(comment.UserName?.Contains("@") == true ? comment.UserName.Split('@')[0] : comment.UserName):</strong>
+            <span>@comment.CommentDescription</span>
             <div class="text-muted">
-                <small>@kommentar.KommentarTid.ToString("yyyy-MM-dd HH:mm")</small>
+                <small>@comment.CommentTime.ToString("yyyy-MM-dd HH:mm")</small>
 
-                @if (User.Identity?.Name == kommentar.UserName)
+                @if (User.Identity?.Name == comment.UserName)
                 {
                     <span class="comment-actions ms-3">
-                        <a asp-action="UpdateComment" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="text-decoration-none text-primary me-2">Rediger</a>
-                        <a asp-action="DeleteComment" asp-controller="Kommentar" asp-route-id="@kommentar.KommentarId" class="text-decoration-none text-danger">Slett</a>
+                        <a asp-action="EditComment" asp-controller="Comment" asp-route-id="@comment.CommentId" class="text-decoration-none text-primary me-2">Edit</a>
+                        <a asp-action="DeleteComment" asp-controller="Comment" asp-route-id="@comment.CommentId" class="text-decoration-none text-danger">Delete</a>
                     </span>
                 }
             </div>

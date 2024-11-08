@@ -1,0 +1,42 @@
+@model InstagramMVC.Models.Picture
+
+@{
+    var returnUrl = ViewData["returnUrl"] as string ?? Url.Action("Grid");
+    var userNameBeforeAt = Model.UserName?.Split('@')[0];
+}
+
+<div class="picture-feed-card mb-4">
+    <!-- Legg til asp-route-source for å sende source til Details-siden -->
+    <a asp-action="Details" asp-route-id="@Model.PictureId" asp-route-source="@(returnUrl == Url.Action("MyPage") ? "MyPage" : "Grid")" class="text-decoration-none">
+        <img class="picture-feed-card-img" src="@Model.PictureUrl" alt="@Model.Title" />
+    </a>
+    <div class="picture-feed-card-body">
+        <h5 class="card-title">@Model.Title</h5>
+        <p class="card-text">@Model.Description</p>
+        <p class="card-text">
+            <small class="text-muted">
+                Uploaded by: @userNameBeforeAt 
+            </small>
+        </p>
+        <p class="card-text"><small class="text-muted">Uploaded: @Model.UploadDate.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
+        
+        @if (User.Identity?.Name == Model.UserName)
+        {
+            <a asp-action="Edit" asp-route-id="@Model.PictureId" class="btn btn-warning">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.PictureId" asp-route-returnUrl="@returnUrl" class="btn btn-danger">Delete</a>
+        }
+    </div>
+
+    <!-- Comments Seksjon -->
+    <div class="picture-card-footer">
+        <h5>Comments:</h5>
+        @await Html.PartialAsync("_CommentTable", Model.Comments)
+        <form asp-action="CreateComment" asp-controller="Comment" method="post">
+            <input type="hidden" name="PictureId" value="@Model.PictureId" />
+            <div class="form-group">
+                <textarea class="form-control" name="CommentDescription" placeholder="Write a comment" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-sm">Comment</button>
+        </form>
+    </div>
+</div>

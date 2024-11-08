@@ -4,10 +4,10 @@
 
     <a asp-action="Details" asp-route-id="@Model.NoteId" asp-route-source="MyPage" class="text-decoration-none">
         <div class="card-body">
-            <h4 class="card-title">@Model.Tittel</h4>
-            <p class="card-text"><small class="text-muted">Skrevet av: @(Model.username?.Contains("@") == true ? Model.username.Split('@')[0] : Model.username)</small></p>
-            <p class="card-text">@Model.Innhold</p>
-            <p class="card-text"><small class="text-muted">Opprettet: @Model.OpprettetDato.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
+            <h4 class="card-title">@Model.Title</h4>
+            <p class="card-text"><small class="text-muted">Written by: @(Model.username?.Contains("@") == true ? Model.username.Split('@')[0] : Model.username)</small></p>
+            <p class="card-text">@Model.Content</p>
+            <p class="card-text"><small class="text-muted">Uploaded: @Model.UploadDate.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
         </div>
     </a>
 
@@ -15,21 +15,21 @@
         <!-- Rediger og Slett knapper, kun tilgjengelig for eieren -->
         @if (User.Identity?.Name == Model.username)
         {
-            <a asp-action="Update" asp-route-id="@Model.NoteId" class="btn btn-warning btn-sm">Rediger</a>
-            <a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-danger btn-sm">Slett</a>
+            <a asp-action="Edit" asp-route-id="@Model.NoteId" class="btn btn-warning btn-sm">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-danger btn-sm">Delete</a>
         }
 
-        <!-- Kommentarer Seksjon -->
+        <!-- Comments Seksjon -->
         <div class="mt-3">
-            <h6>Kommentarer:</h6>
-            @await Html.PartialAsync("_CommentTableNote", Model.Kommentarer)
-            <!-- Legg til ny kommentar -->
-            <form asp-action="CreateCommentNote" asp-controller="Kommentar" method="post" class="mt-2">
+            <h6>Comments:</h6>
+            @await Html.PartialAsync("_CommentTableNote", Model.Comments)
+            <!-- Legg til ny comment -->
+            <form asp-action="CreateCommentNote" asp-controller="Comment" method="post" class="mt-2">
                 <input type="hidden" name="NoteId" value="@Model.NoteId" />
                 <div class="form-group">
-                    <textarea class="form-control" name="KommentarBeskrivelse" placeholder="Skriv din kommentar her..." required></textarea>
+                    <textarea class="form-control" name="CommentDescription" placeholder="Write comment here..." required></textarea>
                 </div>
-                <button type="submit" class="btn btn-success btn-sm mt-1">Kommenter</button>
+                <button type="submit" class="btn btn-success btn-sm mt-1">Comment</button>
             </form>
         </div>
     </div>

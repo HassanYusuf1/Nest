@@ -1,0 +1,15 @@
+@model InstagramMVC.Models.Comment
+
+<h2>Edit Comment</h2>
+
+<form asp-action="EditCommentNote" method="post">
+    <input type="hidden" asp-for="CommentId" /> <!-- Skjult felt for CommentId -->
+
+    <div class="form-group">
+        <label for="CommentDescription">Comment</label>
+        <textarea asp-for="CommentDescription" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="CommentDescription" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Save changes</button>
+</form>

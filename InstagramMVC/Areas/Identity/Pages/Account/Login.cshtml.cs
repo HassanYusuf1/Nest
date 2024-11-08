@@ -103,7 +103,7 @@ namespace InstagramMVC.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/Bilde/MyPage");
+            returnUrl ??= Url.Content("~/Picture/MyPage");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 

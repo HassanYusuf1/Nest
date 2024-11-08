@@ -38,75 +38,75 @@ public static class DBInit
             await userManager.CreateAsync(defaultUser, "Bekam2305."); // Use the provided password
         }
 
-        // Seed data for images (Bilder)
-        if (!context.Bilder.Any()) 
+        // Seed data for images (Pictures)
+        if (!context.Pictures.Any()) 
         {
-            var bilder = new List<Bilde>
+            var pictures = new List<Picture>
             {
-                new Bilde
+                new Picture
                 {
-                    Tittel = "Digg", 
-                    Beskrivelse = "Va.", 
-                    BildeUrl = "/images/Solnedgang_JPG.jpg", 
-                    OpprettetDato = DateTime.Now.AddDays(-10), 
+                    Title = "Digg", 
+                    Description = "Va.", 
+                    PictureUrl = "/images/Solnedgang_JPG.jpg", 
+                    UploadDate = DateTime.Now.AddDays(-10), 
                     UserName = defaultUser.UserName 
                 }
             };
             // Add the images to the database
-            context.Bilder.AddRange(bilder);
+            context.Pictures.AddRange(pictures);
             await context.SaveChangesAsync(); // Save changes to the database
         }
 
-        // Seed data for notes (Notater)
+        // Seed data for notes (Notes)
         if (!context.Notes.Any()) 
         {
-            var notater = new List<Note>
+            var notes = new List<Note>
             {
                 new Note 
                 { 
-                    Tittel = "Dagbok - Dag 1", 
-                    Innhold = "Startet dagen med en god frokost og dro på tur.", 
-                    OpprettetDato = DateTime.Now.AddDays(-10), 
+                    Title = "Dagbok - Dag 1", 
+                    Content = "Startet dagen med en god frokost og dro på tur.", 
+                    UploadDate = DateTime.Now.AddDays(-10), 
                     username = defaultUser.UserName 
                 },
                 new Note 
                 { 
-                    Tittel = "Dagbok - Dag 2", 
-                    Innhold = "Møtte noen venner for fjelltur. Fantastisk utsikt!", 
-                    OpprettetDato = DateTime.Now.AddDays(-9), 
+                    Title = "Dagbok - Dag 2", 
+                    Content = "Møtte noen venner for fjelltur. Fantastisk utsikt!", 
+                    UploadDate = DateTime.Now.AddDays(-9), 
                     username = defaultUser.UserName 
                 }
             };
             
             // Add the notes to the database
-            context.Notes.AddRange(notater);
+            context.Notes.AddRange(notes);
             await context.SaveChangesAsync(); // Save changes to the database
         }
 
-        // Seed data for comments (Kommentarer) on images
-        if (!context.Kommentarer.Any()) 
+        // Seed data for comments (Comments) on images
+        if (!context.Comments.Any()) 
         {
-            var kommentarer = new List<Kommentar>
+            var comments = new List<Comment>
             {
-                new Kommentar { BildeId = 1, KommentarBeskrivelse = "Utrolig flott bilde!", KommentarTid = DateTime.Now.AddDays(-9) }, // Comment on the image
-                new Kommentar { BildeId = 1, KommentarBeskrivelse = "Solnedgangen er magisk!", KommentarTid = DateTime.Now.AddDays(-8) } // Comment on the image
+                new Comment { PictureId = 1, CommentDescription = "Amazing picture!", CommentTime = DateTime.Now.AddDays(-9) }, // Comment on the image
+                new Comment { PictureId = 1, CommentDescription = "Sunset is magical!", CommentTime = DateTime.Now.AddDays(-8) } // Comment on the image
             };
             // Add the comments to the database
-            context.Kommentarer.AddRange(kommentarer);
+            context.Comments.AddRange(comments);
             await context.SaveChangesAsync(); // Save changes to the database
         }
 
-        // Seed data for comments on notes (Kommentarer for Notater)
-        if (!context.Kommentarer.Any(k => k.NoteId == 1)) 
+        // Seed data for comments on notes (Comments for Notes)
+        if (!context.Comments.Any(k => k.NoteId == 1)) 
         {
-            var noteComments = new List<Kommentar>
+            var noteComments = new List<Comment>
             {
-                new Kommentar { NoteId = 1, KommentarBeskrivelse = "Dette er en flott start på dagen!", KommentarTid = DateTime.Now.AddDays(-5) }, 
-                new Kommentar { NoteId = 1, KommentarBeskrivelse = "Høres ut som en fantastisk dag!", KommentarTid = DateTime.Now.AddDays(-4) } 
+                new Comment { NoteId = 1, CommentDescription = "Great start to the day!", CommentTime = DateTime.Now.AddDays(-5) }, 
+                new Comment { NoteId = 1, CommentDescription = "Sounds amazing!", CommentTime = DateTime.Now.AddDays(-4) } 
             };
             
             // Add the comments for notes to the database
-            context.Kommentarer.AddRange(noteComments);
+            context.Comments.AddRange(noteComments);
             await context.SaveChangesAsync(); // Save changes to the database
         }
     }

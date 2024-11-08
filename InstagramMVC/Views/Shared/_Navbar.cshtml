@@ -15,16 +15,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Bilde" asp-action="Grid">Bilder</a>
+                    <a class="nav-link text-dark" asp-controller="Picture" asp-action="Grid">Pictures</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Notat" asp-action="Notes">Notater</a>
+                    <a class="nav-link text-dark" asp-controller="Note" asp-action="Notes">Notes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Bilde" asp-action="MyPage">MyPage</a>
+                    <a class="nav-link text-dark" asp-controller="Picture" asp-action="MyPage">MyPagePics</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Notat" asp-action="MyPage">MyPageNotes</a>
+                    <a class="nav-link text-dark" asp-controller="Note" asp-action="MyPage">MyPageNotes</a>
                 </li>
 
                 @if (SignInManager.IsSignedIn(User))
@@ -38,10 +38,10 @@
                 else
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logg inn</a>
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Log in</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Registrer deg</a>
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/register">Create User</a>
                     </li>
                 }
             </ul>
