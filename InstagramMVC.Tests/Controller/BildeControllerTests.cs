@@ -17,20 +17,20 @@ using InstagramMVC.Utilities;
 
 namespace InstagramMVC.Tests.Controllers;
 
-public class BildeControllerTests
+public class PictureControllerTests
 {
-    private readonly Mock<IBildeRepository> _bildeRepositoryMock;
-    private readonly Mock<IKommentarRepository> _kommentarRepositoryMock;
-    private readonly Mock<ILogger<BildeController>> _loggerMock;
+    private readonly Mock<IPictureRepository> _pictureRepositoryMock;
+    private readonly Mock<ICommentRepository> _commentRepositoryMock;
+    private readonly Mock<ILogger<PictureController>> _loggerMock;
     private readonly Mock<UserManager<IdentityUser>> _userManagerMock;
     private readonly Mock<IUrlHelper> _urlHelperMock;
-    private readonly BildeController _controller;
+    private readonly PictureController _controller;
 
-    public BildeControllerTests()
+    public PictureControllerTests()
     {
-        _bildeRepositoryMock = new Mock<IBildeRepository>();
-        _kommentarRepositoryMock = new Mock<IKommentarRepository>(); // New mock for IKommentarRepository
-        _loggerMock = new Mock<ILogger<BildeController>>();
+        _pictureRepositoryMock = new Mock<IPictureRepository>();
+        _commentRepositoryMock = new Mock<ICommentRepository>(); // New mock for ICommentRepository
+        _loggerMock = new Mock<ILogger<PictureController>>();
 
         // Set up UserManager<IdentityUser> mock with default constructor parameters
         var store = new Mock<IUserStore<IdentityUser>>();
@@ -40,10 +40,10 @@ public class BildeControllerTests
         _urlHelperMock = new Mock<IUrlHelper>();
 
 
-        // Pass all four required parameters to the BildeController constructor
-        _controller = new BildeController(
-            _bildeRepositoryMock.Object,
-            _kommentarRepositoryMock.Object, // New parameter for IKommentarRepository
+        // Pass all four required parameters to the PictureController constructor
+        _controller = new PictureController(
+            _pictureRepositoryMock.Object,
+            _commentRepositoryMock.Object, // New parameter for ICommentRepository
             _loggerMock.Object,
             _userManagerMock.Object);
     }
@@ -54,38 +54,38 @@ public class BildeControllerTests
     // Arrange
     var imageId = 50;
     var source = "Grid";
-    var expectedBilde = new Bilde
+    var expectedPicture = new Picture
     {
-        BildeId = imageId,
-        Tittel = "Test Title",
-        Beskrivelse = "Test Description",
-        BildeUrl = "/images/testImage.jpg"
+        PictureId = imageId,
+        Title = "Test Title",
+        Description = "Test Description",
+        PictureUrl = "/images/testImage.jpg"
     };
 
-    // Set up the repository to return the expected Bilde
-    _bildeRepositoryMock.Setup(repo => repo.BildeId(imageId)).ReturnsAsync(expectedBilde);
+    // Set up the repository to return the expected Picture
+    _pictureRepositoryMock.Setup(repo => repo.PictureId(imageId)).ReturnsAsync(expectedPicture);
 
     // Act
     var result = await _controller.Details(imageId, source);
 
     // Assert
     var viewResult = Assert.IsType<ViewResult>(result);
-    Assert.Equal("BildeDetails", viewResult.ViewName); // Check that the view name is "BildeDetails"
-    Assert.Equal(expectedBilde, viewResult.Model); // Verify that the model is the expected Bilde
+    Assert.Equal("PictureDetails", viewResult.ViewName); // Check that the view name is "PictureDetails"
+    Assert.Equal(expectedPicture, viewResult.Model); // Verify that the model is the expected Picture
 
     // Check that ViewBag.Source is set correctly
     Assert.Equal(source, _controller.ViewBag.Source);
 
-    // Verify that BildeId was called on the repository with the correct id
-    _bildeRepositoryMock.Verify(repo => repo.BildeId(imageId), Times.Once);
+    // Verify that PictureId was called on the repository with the correct id
+    _pictureRepositoryMock.Verify(repo => repo.PictureId(imageId), Times.Once);
     }
 
     [Fact]
     public async Task Create_ReturnsView_WhenModelStateIsInvalid()
     {
         // Arrange
-        _controller.ModelState.AddModelError("Tittel", "Required");
-        var newImage = new Bilde();
+        _controller.ModelState.AddModelError("Title", "Required");
+        var newImage = new Picture();
 
         // Act
         var result = await _controller.Create(newImage, null);
@@ -99,7 +99,7 @@ public class BildeControllerTests
     public async Task Create_SavesImageFileAndCreatesDatabaseRecord_WhenValid()
     {
         // Arrange
-        var newImage = new Bilde();
+        var newImage = new Picture();
         var mockFile = new Mock<IFormFile>();
         var fileName = "test.jpg";
         mockFile.Setup(f => f.FileName).Returns(fileName);
@@ -114,7 +114,7 @@ public class BildeControllerTests
             var userName = "testUser";
             _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(userName);
 
-            _bildeRepositoryMock.Setup(repo => repo.Create(It.IsAny<Bilde>())).ReturnsAsync(true);
+            _pictureRepositoryMock.Setup(repo => repo.Create(It.IsAny<Picture>())).ReturnsAsync(true);
 
             // Act
             var result = await _controller.Create(newImage, mockFile.Object);
@@ -122,9 +122,9 @@ public class BildeControllerTests
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("MyPage", redirectResult.ActionName);
-            Assert.StartsWith("/images/", newImage.BildeUrl);
-            Assert.EndsWith(".jpg", newImage.BildeUrl);
-            _bildeRepositoryMock.Verify(repo => repo.Create(It.Is<Bilde>(b => b == newImage)), Times.Once);
+            Assert.StartsWith("/images/", newImage.PictureUrl);
+            Assert.EndsWith(".jpg", newImage.PictureUrl);
+            _pictureRepositoryMock.Verify(repo => repo.Create(It.Is<Picture>(b => b == newImage)), Times.Once);
         }
     }
 
@@ -132,10 +132,10 @@ public class BildeControllerTests
     public async Task Create_ReturnsView_WhenDatabaseSaveFails()
     {
         // Arrange
-        var newImage = new Bilde();
+        var newImage = new Picture();
         var mockFile = new Mock<IFormFile>();
         _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns("testUser");
-        _bildeRepositoryMock.Setup(repo => repo.Create(It.IsAny<Bilde>())).ReturnsAsync(false);
+        _pictureRepositoryMock.Setup(repo => repo.Create(It.IsAny<Picture>())).ReturnsAsync(false);
 
         // Act
         var result = await _controller.Create(newImage, mockFile.Object);
@@ -150,14 +150,14 @@ public class BildeControllerTests
     {
         // Arrange
         var imageId = 50;
-        var bildeUrl = "/images/test.jpg";
+        var PictureUrl = "/images/test.jpg";
         var currentUserName = "testUser";
         var returnUrl = "https://localhost/Grid";
-        var bilde = new Bilde { BildeId = imageId, BildeUrl = bildeUrl, UserName = currentUserName };
+        var Picture = new Picture { PictureId = imageId, PictureUrl = PictureUrl, UserName = currentUserName };
         
         // Set up the repository to return the image and confirm deletion
-        _bildeRepositoryMock.Setup(repo => repo.BildeId(imageId)).ReturnsAsync(bilde);
-        _bildeRepositoryMock.Setup(repo => repo.Delete(imageId)).ReturnsAsync(true);
+        _pictureRepositoryMock.Setup(repo => repo.PictureId(imageId)).ReturnsAsync(Picture);
+        _pictureRepositoryMock.Setup(repo => repo.Delete(imageId)).ReturnsAsync(true);
         
         // Mock user identity
         _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
@@ -179,17 +179,17 @@ public class BildeControllerTests
         var redirectResult = Assert.IsType<RedirectResult>(result); // Expect RedirectResult
         Assert.Equal(returnUrl, redirectResult.Url); // Check that the URL matches the expected returnUrl
         Assert.True(fileDeleted); // Verify that the file was deleted
-        _bildeRepositoryMock.Verify(repo => repo.Delete(imageId), Times.Once);
+        _pictureRepositoryMock.Verify(repo => repo.Delete(imageId), Times.Once);
     }
 
     [Fact]
-    public async Task DeleteConfirmed_ReturnsNotFound_WhenBildeDoesNotExist()
+    public async Task DeleteConfirmed_ReturnsNotFound_WhenPictureDoesNotExist()
     {
         // Arrange
         var imageId = 100;
 
         // Set up the repository to return null for a non-existing image
-        _bildeRepositoryMock.Setup(repo => repo.BildeId(imageId)).ReturnsAsync((Bilde)null);
+        _pictureRepositoryMock.Setup(repo => repo.PictureId(imageId)).ReturnsAsync((Picture)null);
 
         // Act
         var result = await _controller.DeleteConfirmed(imageId);
@@ -203,13 +203,13 @@ public class BildeControllerTests
     {
         // Arrange
         var imageId = 50;
-        var bildeUrl = "/images/test.jpg";
+        var PictureUrl = "/images/test.jpg";
         var currentUserName = "testUser";
         var anotherUserName = "unauthorizedUser";
-        var bilde = new Bilde { BildeId = imageId, BildeUrl = bildeUrl, UserName = anotherUserName };
+        var Picture = new Picture { PictureId = imageId, PictureUrl = PictureUrl, UserName = anotherUserName };
 
         // Set up the repository to return the image owned by a different user
-        _bildeRepositoryMock.Setup(repo => repo.BildeId(imageId)).ReturnsAsync(bilde);
+        _pictureRepositoryMock.Setup(repo => repo.PictureId(imageId)).ReturnsAsync(Picture);
 
         // Mock the current user identity to a different user
         _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
@@ -229,7 +229,7 @@ public class BildeControllerTests
     }
 
     [Fact]
-    public async Task Edit_image_ReturnsToGrid_WhenUpdateIsOk()
+    public async Task Edit_image_ReturnsToGrid_WhenEditIsOk()
     {
         // Arrange
         var imageId = 50;
@@ -240,26 +240,26 @@ public class BildeControllerTests
         var newDescription = "New Description";
 
         // Set up the existing image in the repository
-        var existingBilde = new Bilde
+        var existingPicture = new Picture
         {
-            BildeId = imageId,
+            PictureId = imageId,
             UserName = currentUserName,
-            Tittel = existingTitle,
-            Beskrivelse = existingDescription,
-            BildeUrl = "/images/oldImage.jpg"
+            Title = existingTitle,
+            Description = existingDescription,
+            PictureUrl = "/images/oldImage.jpg"
         };
 
-        // Set up the updated image details
-        var updatedBilde = new Bilde
+        // Set up the Editd image details
+        var EditPicture = new Picture
         {
-            BildeId = imageId, // Ensure the IDs match to pass the ID check
-            Tittel = newTitle,
-            Beskrivelse = newDescription
+            PictureId = imageId, // Ensure the IDs match to pass the ID check
+            Title = newTitle,
+            Description = newDescription
         };
 
-        // Mock repository to return the existing image and confirm successful update
-        _bildeRepositoryMock.Setup(repo => repo.BildeId(imageId)).ReturnsAsync(existingBilde);
-        _bildeRepositoryMock.Setup(repo => repo.Oppdater(existingBilde)).ReturnsAsync(true);
+        // Mock repository to return the existing image and confirm successful Edit
+        _pictureRepositoryMock.Setup(repo => repo.PictureId(imageId)).ReturnsAsync(existingPicture);
+        _pictureRepositoryMock.Setup(repo => repo.Edit(existingPicture)).ReturnsAsync(true);
 
         // Mock user identity to match the image owner
         _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
@@ -268,18 +268,18 @@ public class BildeControllerTests
         _controller.ModelState.Clear();
 
         // Act
-        var result = await _controller.Edit(imageId, updatedBilde, null);
+        var result = await _controller.Edit(imageId, EditPicture, null);
 
         // Assert
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Grid", redirectResult.ActionName); // Ensure redirection to the "Grid" action
 
-        // Verify that the Tittel and Beskrivelse have been updated in the existing image
-        Assert.Equal(newTitle, existingBilde.Tittel);
-        Assert.Equal(newDescription, existingBilde.Beskrivelse);
+        // Verify that the Title and Description have been Editd in the existing image
+        Assert.Equal(newTitle, existingPicture.Title);
+        Assert.Equal(newDescription, existingPicture.Description);
 
         // Verify that Oppdater was called on the repository
-        _bildeRepositoryMock.Verify(repo => repo.Oppdater(existingBilde), Times.Once);
+        _pictureRepositoryMock.Verify(repo => repo.Edit(existingPicture), Times.Once);
     }
 
 }
