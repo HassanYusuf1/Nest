@@ -6,9 +6,10 @@
     <link href="~/css/Layout.css" rel="stylesheet" asp-append-version="true" />
 </head>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
     <div class="container-fluid">
-        <!-- Logo eller brand -->
+        <a class="navbar-brand" href="#">HASSSANYUSUF</a>
+
 
         <!-- Hamburger toggle button -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,9 +34,9 @@
 
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <li class="nav-item-custom-logout">
+                    <li class="btn btn-danger margin-left">
                         <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" class="form-inline">
-                            <button type="submit" class="btn btn-link nav-link">Logout</button>
+                            <button type="submit" class="btn btn-danger nav-link">Logout</button>
                         </form>
                     </li>
                 }
