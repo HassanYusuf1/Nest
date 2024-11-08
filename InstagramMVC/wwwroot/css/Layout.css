@@ -126,6 +126,68 @@ body.picture {
   margin: 0;
 }
 
+/*navigation links/bar*/
+
+.more-space-between {
+  margin-right: 200px;
+}
+
+.nav-item-custom {
+  text-decoration: none;
+  color: #333;
+  padding: 5px;
+  font-size: 18px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-item-custom::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: #007BFF;
+  transition: width 0.3s ease;
+}
+
+.nav-item-custom:hover {
+  color: #007BFF; /* Changes text color on hover */
+}
+
+.nav-item-custom:hover::after {
+  width: 100%; /* Expands the underline on hover */
+}
+
+
+.nav-item-custom-logout {
+  background-color: #bc3030;
+  border: 1px solid rgba(27, 31, 35, .15);
+  border-radius: 6px;
+  box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  padding: 6px 16px;
+  position: relative;
+  text-align: center;
+  touch-action: manipulation;
+  vertical-align: middle;
+}
+
+.nav-item-custom-logout:hover {
+  background-color: #e31616;
+}
+
+.nav-item-custom-logout:focus {
+  box-shadow: rgba(225, 5, 5, 0.4) 0 0 0 3px;
+  outline: none;
+}
+
 .picture-navbar {
   background-color: #f0f0f0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

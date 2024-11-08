@@ -2,7 +2,11 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
+<head>
+    <link href="~/css/Layout.css" rel="stylesheet" asp-append-version="true" />
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
     <div class="container-fluid">
         <!-- Logo eller brand -->
 
@@ -14,22 +18,22 @@
         <!-- Navbar links -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
+                <li class="nav-item-custom">
                     <a class="nav-link text-dark" asp-controller="Picture" asp-action="Grid">Pictures</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item-custom">
                     <a class="nav-link text-dark" asp-controller="Note" asp-action="Notes">Notes</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item-custom">
                     <a class="nav-link text-dark" asp-controller="Picture" asp-action="MyPage">MyPagePics</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item-custom">
                     <a class="nav-link text-dark" asp-controller="Note" asp-action="MyPage">MyPageNotes</a>
                 </li>
 
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <li class="nav-item">
+                    <li class="nav-item-custom-logout">
                         <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" class="form-inline">
                             <button type="submit" class="btn btn-link nav-link">Logout</button>
                         </form>
@@ -37,10 +41,10 @@
                 }
                 else
                 {
-                    <li class="nav-item">
+                    <li class="nav-item-custom">
                         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Log in</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item-custom">
                         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/register">Create User</a>
                     </li>
                 }
