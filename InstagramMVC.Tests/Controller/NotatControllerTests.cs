@@ -213,12 +213,43 @@ namespace InstagramMVC.Tests.Controllers
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Notes", redirectResult.ActionName); // Ensure redirection to the "Grid" action
 
-            // Verify that the Tittel and Beskrivelse have been updated in the existing note
+            // Verify that the Tittel and Innhold have been updated in the existing note
             Assert.Equal(newTitle, existingNote.Tittel);
             Assert.Equal(newInnhold, existingNote.Innhold);
 
             // Verify that Oppdater was called on the repository
             _notatRepositoryMock.Verify(repo => repo.Update(existingNote), Times.Once);
+        }
+
+        [Fact]
+        public async Task Details_GoIntoDetailedView_FromNotes()
+        {
+            // Arrange
+            var noteId = 50;
+            var source = "Notes";
+            var expectedNote = new Note
+            {
+                NoteId = noteId,
+                Tittel = "Test Title",
+                Innhold = "Test Description",
+            };
+
+            // Set up the repository to return the expected Note
+            _notatRepositoryMock.Setup(repo => repo.GetNoteById(noteId)).ReturnsAsync(expectedNote);
+
+            // Act
+            var result = await _controller.Details(noteId, source);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal("Details", viewResult.ViewName); // Check that the view name is "NoteDetails"
+            Assert.Equal(expectedNote, viewResult.Model); // Verify that the model is the expected Note
+
+            // Check that ViewBag.Source is set correctly
+            Assert.Equal(source, _controller.ViewBag.Source);
+
+            // Verify that NoteId was called on the repository with the correct id
+            _notatRepositoryMock.Verify(repo => repo.GetNoteById(noteId), Times.Once);
         }
     }
 }
