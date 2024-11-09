@@ -67,6 +67,9 @@ body.home-page {
     background-position: 0% 50%;
   }
 }
+nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom {
+  padding-left: 1rem;
+}
 
 .homepage-btn-toggle {
   flex: 1;

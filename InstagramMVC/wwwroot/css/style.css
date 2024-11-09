@@ -10,11 +10,12 @@
     max-width: 800px;
     margin: 0 auto;
 }
-.picture-feed-card-img {
-    width: 100%;
-    height: auto;              
-    max-height: 300px;          
-    object-fit: contain;       
+
+
+.picture-feed-card-footer {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #e0e0e0; 
 }
 
 .feed {
