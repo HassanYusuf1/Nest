@@ -24,30 +24,32 @@ public class NoteController : Controller
         _userManager = userManager;
     }
 
-    [HttpGet]
-    [Authorize]
-    public async Task<IActionResult> MyPage()
+  [HttpGet]
+[Authorize]
+public async Task<IActionResult> MyPage()
+{
+    var currentUserName = _userManager.GetUserName(User);
+    if (string.IsNullOrEmpty(currentUserName))
     {
-        var currentUserName = _userManager.GetUserName(User);
-        if (string.IsNullOrEmpty(currentUserName))
-        {
-            _logger.LogError("[NoteController] Current user is null or empty when accessing MyPage.");
-            return Unauthorized();
-        }
-
-        var allNotes = await _noteRepository.GetAll();
-        if (allNotes == null)
-        {
-            _logger.LogError("[NoteController] Could not retrieve notes for user {UserName}", currentUserName);
-            return NotFound();
-        }
-
-        var userNotes = allNotes.Where(n => n.username == currentUserName).ToList();
-
-        var notesViewModel = new NotesViewModel(userNotes, "MyPage");
-
-        return View("MyPage", notesViewModel);
+        _logger.LogError("[NoteController] Current user is null or empty when accessing MyPage.");
+        return Unauthorized();
     }
+
+    var allNotes = await _noteRepository.GetAll();
+    if (allNotes == null)
+    {
+        _logger.LogError("[NoteController] Could not retrieve notes for user {UserName}", currentUserName);
+        return NotFound();
+    }
+
+    var userNotes = allNotes.Where(n => n.username == currentUserName).ToList();
+    var notesViewModel = new NotesViewModel(userNotes, "MyPage");
+    
+    ViewBag.Source = "MyPage"; // Set the source for MyPage
+
+    return View("MyPage", notesViewModel);
+}
+
 
     [HttpGet]
     [Authorize]
@@ -166,19 +168,22 @@ public class NoteController : Controller
         return RedirectToAction(nameof(Notes));
     }
 
-    [HttpGet]
-    [Authorize]
-    public async Task<IActionResult> Notes()
+   [HttpGet]
+[Authorize]
+public async Task<IActionResult> Notes()
+{
+    var notes = await _noteRepository.GetAll();
+    if (notes == null)
     {
-        var notes = await _noteRepository.GetAll();
-        if (notes == null)
-        {
-            _logger.LogError("[NoteController] Note List not found when running _noteRepository.GetAll()");
-            return NotFound("Note List not found.");
-        }
-        var notesViewModel = new NotesViewModel(notes, "Notes");
-        return View(notesViewModel);
+        _logger.LogError("[NoteController] Note List not found when running _noteRepository.GetAll()");
+        return NotFound("Note List not found.");
     }
+    var notesViewModel = new NotesViewModel(notes, "Notes");
+    
+    ViewBag.Source = "Feed"; // Set the source for general feed
+    
+    return View(notesViewModel);
+}
 
     [HttpGet]
     [Authorize]

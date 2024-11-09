@@ -15,7 +15,7 @@ namespace InstagramMVC.Models {
         public DateTime UploadDate {get; set;} // dato innlegget ble opprettet
 
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
+        
         public string? UserName {get; set;} 
 
 

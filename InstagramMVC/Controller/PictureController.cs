@@ -25,30 +25,32 @@ namespace InstagramMVC.Controllers
             _logger = logger;
             _userManager = userManager; 
         }
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> MyPage()
-        {
-            var currentUserName = _userManager.GetUserName(User);
-            if (string.IsNullOrEmpty(currentUserName))
-            {
-                _logger.LogError("[PictureController] Current user is null or empty when accessing MyPage.");
-                return Unauthorized();
-            }
+     [HttpGet]
+[Authorize]
+public async Task<IActionResult> MyPage()
+{
+    var currentUserName = _userManager.GetUserName(User);
+    if (string.IsNullOrEmpty(currentUserName))
+    {
+        _logger.LogError("[PictureController] Current user is null or empty when accessing MyPage.");
+        return Unauthorized();
+    }
 
-            var allPictures = await _pictureRepository.GetAll();
-            if (allPictures == null)
-            {
-                _logger.LogError("[PictureController] Could not retrieve images for user {UserName}", currentUserName);
-                allPictures = Enumerable.Empty<Picture>();
-            }
+    var allPictures = await _pictureRepository.GetAll();
+    if (allPictures == null)
+    {
+        _logger.LogError("[PictureController] Could not retrieve images for user {UserName}", currentUserName);
+        allPictures = Enumerable.Empty<Picture>();
+    }
 
-            var userPictures = allPictures.Where(b => b.UserName == currentUserName).ToList();
+    var userPictures = allPictures.Where(b => b.UserName == currentUserName).ToList();
 
-            var pictureViewModel = new PicturesViewModel(userPictures, "MyPage");
+    var pictureViewModel = new PicturesViewModel(userPictures, "MyPage");
 
-            return View("MyPage", pictureViewModel);
-        }
+    ViewData["IsMyPage"] = true; // Set flag to indicate it's MyPage
+    return View("MyPage", pictureViewModel);
+}
+
 
 
         [HttpGet]
@@ -64,20 +66,20 @@ namespace InstagramMVC.Controllers
 
             return View(pictureViewModel);
         }
+public async Task<IActionResult> Grid()
+{
+    var pictures = await _pictureRepository.GetAll();
+    var pictureViewModel = new PicturesViewModel(pictures, "Picture");
 
-        public async Task<IActionResult> Grid()
-        {
-            var pictures = await _pictureRepository.GetAll();
-            var pictureViewModel = new PicturesViewModel(pictures, "Picture");
+    if (pictures == null)
+    {
+        _logger.LogError("[PictureController] Picture list, not found.");
+        return NotFound("Pictures not found");
+    }
 
-            if (pictures == null)
-            {
-                _logger.LogError("[PictureController] Picture list, not found.");
-                return NotFound("Pictures not found");
-            }
-
-            return View(pictureViewModel);
-        }
+    ViewData["IsMyPage"] = false; // Set IsMyPage flag to false for general feed (Grid)
+    return View(pictureViewModel);
+}
 
         [HttpGet]
         [Authorize]

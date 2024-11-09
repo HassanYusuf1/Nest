@@ -1,27 +1,22 @@
 @model IEnumerable<InstagramMVC.Models.Comment>
-   
 
-        @foreach (var comment in Model)
-        {
-            <div class="col-sm-4 mb-3">
-                <a asp-action="Details" asp-route-id="@comment.CommentId" class="text-decoration-none">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Comment to Note ID: @comment.PictureId</h5>
-                            <p class="card-text">@comment.CommentDescription</p>
-                            <p class="text-muted"><small>Published: @comment.CommentTime.ToString("yyyy-MM-dd HH:mm")</small></p>
-                        </div>
-                    </div>
-                </a>
+<div class="comments-section">
+    @foreach (var comment in Model)
+    {
+        <div class="comment mb-2">
+            <strong>@(comment.UserName?.Contains("@") == true ? comment.UserName.Split('@')[0] : comment.UserName):</strong>
+            <span>@comment.CommentDescription</span>
+            <div class="text-muted">
+                <small>Published: @comment.CommentTime.ToString("yyyy-MM-dd HH:mm")</small>
+                
                 @if (User.Identity?.Name == comment.UserName)
                 {
-                <div class="mt-2">
-                  <a asp-action="EditCommentNote" asp-controller="Comment" asp-route-id="@comment.CommentId" class="btn btn-outline-primary btn-sm">Edit</a>
-                  <a asp-action="DeleteCommentNote" asp-controller="Comment" asp-route-id="@comment.CommentId" class="btn btn-outline-danger btn-sm">Delete</a>
-                  
-                </div>
+                    <span class="comment-actions ms-3">
+                        <a asp-action="EditCommentNote" asp-controller="Comment" asp-route-id="@comment.CommentId" class="text-decoration-none text-primary me-2">Edit</a>
+                        <a asp-action="DeleteCommentNote" asp-controller="Comment" asp-route-id="@comment.CommentId" class="text-danger">Delete</a>
+                    </span>
                 }
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>

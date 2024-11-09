@@ -21,7 +21,7 @@
     <div class="row mt-5">
         @foreach (var picture in Model.Pictures)
         {
-            <div class="col-md-4">
+            <div class="col-md-8">
                 @await Html.PartialAsync("_PictureCard", picture, new ViewDataDictionary(ViewData) { { "returnUrl", returnUrl } })
             </div>
         }

@@ -1,35 +1,36 @@
 @model InstagramMVC.Models.Note
 
-<div class="card mb-4 shadow-sm">
-
+<div class="card mb-4 shadow-sm note-card">
     <a asp-action="Details" asp-route-id="@Model.NoteId" asp-route-source="MyPage" class="text-decoration-none">
         <div class="card-body">
-            <h4 class="card-title">@Model.Title</h4>
-            <p class="card-text"><small class="text-muted">Written by: @(Model.username?.Contains("@") == true ? Model.username.Split('@')[0] : Model.username)</small></p>
-            <p class="card-text">@Model.Content</p>
-            <p class="card-text"><small class="text-muted">Uploaded: @Model.UploadDate.ToString("yyyy-MM-dd HH:mm:ss")</small></p>
+            <h4 class="note-title">@Model.Title</h4>
+            <p class="note-author">Written by: @(Model.username?.Contains("@") == true ? Model.username.Split('@')[0] : Model.username)</p>
+            <p class="note-content">@Model.Content</p>
+            <p class="note-timestamp">Uploaded: @Model.UploadDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
         </div>
     </a>
 
     <div class="card-footer bg-light">
-        <!-- Rediger og Slett knapper, kun tilgjengelig for eieren -->
-        @if (User.Identity?.Name == Model.username)
+        <!-- Conditionally render Edit and Delete buttons only if on MyPage -->
+        @if (ViewBag.Source == "MyPage" && User.Identity?.Name == Model.username)
         {
-            <a asp-action="Edit" asp-route-id="@Model.NoteId" class="btn btn-warning btn-sm">Edit</a>
-            <a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-danger btn-sm">Delete</a>
+            <div class="note-actions">
+                <a asp-action="Edit" asp-route-id="@Model.NoteId" class="btn btn-warning btn-sm">Edit</a>
+                <a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-danger btn-sm">Delete</a>
+            </div>
         }
 
-        <!-- Comments Seksjon -->
-        <div class="mt-3">
+        <!-- Comments Section -->
+        <div class="comments-section">
             <h6>Comments:</h6>
             @await Html.PartialAsync("_CommentTableNote", Model.Comments)
-            <!-- Legg til ny comment -->
-            <form asp-action="CreateCommentNote" asp-controller="Comment" method="post" class="mt-2">
+            <!-- Add new comment -->
+            <form asp-action="CreateCommentNote" asp-controller="Comment" method="post" class="comment-form">
                 <input type="hidden" name="NoteId" value="@Model.NoteId" />
                 <div class="form-group">
-                    <textarea class="form-control" name="CommentDescription" placeholder="Write comment here..." required></textarea>
+                    <textarea class="form-control comment-textarea" name="CommentDescription" placeholder="Write comment here..." required></textarea>
                 </div>
-                <button type="submit" class="btn btn-success btn-sm mt-1">Comment</button>
+                <button type="submit" class="btn btn-primary btn-sm mt-1">Comment</button>
             </form>
         </div>
     </div>

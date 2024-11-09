@@ -16,7 +16,7 @@
     <div class="row mt-5">
         @foreach (var note in Model.Notes)
         {
-            <div class="col-md-4">
+            <div class="col-md-19">
                 @await Html.PartialAsync("_NoteList", note)
             </div>
         }
