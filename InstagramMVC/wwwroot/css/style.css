@@ -1,11 +1,20 @@
 
-
 /*Picture grid*/
 
 /* Center the container and set a max width */
-.container {
-    max-width: 600px;
+.container-page {
+    max-width: 1000px;
     margin: 0 auto;
+}
+.container-feed{
+    max-width: 800px;
+    margin: 0 auto;
+}
+.picture-feed-card-img {
+    width: 100%;
+    height: auto;              
+    max-height: 300px;          
+    object-fit: contain;       
 }
 
 .feed {

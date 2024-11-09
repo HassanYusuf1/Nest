@@ -6,12 +6,14 @@
     <link rel="stylesheet" href="~/css/layout.css" />
 </head>
 <body class="notes-page">
-    <div class="notes-container">
+    <div class="container-feed">
         <h1>Notes Feed</h1>
-        <div class="notes-column">
+        
+        <!-- Stack notes vertically, centered -->
+        <div class="row flex-column align-items-center">
             @foreach (var note in Model.Notes)
             {
-                <div class="note-card">
+                <div class="col-12 mb-4">
                     @{
                         ViewData["returnUrl"] = Url.Action("Notes");
                     }

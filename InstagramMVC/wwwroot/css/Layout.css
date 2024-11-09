@@ -1,3 +1,7 @@
+h1{
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
 body.home-page {
   background: linear-gradient(
     45deg,
