@@ -8,8 +8,8 @@
     <h3>@Model.Title</h3>
 </div>
 
-<form asp-action="DeleteConfirmed" asp-route-id="@Model.PictureId" method="post">
-    <input type="hidden" name="returnUrl" value="@TempData["ReturnUrl"]" />
+<form asp-action="DeleteConfirmed" asp-route-id="@Model.PictureId" asp-route-source="@TempData["Source"]" method="post">
+    <input type="hidden" name="source" value="@TempData["Source"]" />
     <button type="submit" class="btn btn-danger">Delete</button>
-    <a href="@TempData["ReturnUrl"]" class="btn btn-secondary">Cancel</a>
+    <a href="@((TempData["Source"] as string) == "MyPage" ? Url.Action("MyPage", "Picture") : Url.Action("Grid", "Picture"))" class="btn btn-secondary">Cancel</a>
 </form>

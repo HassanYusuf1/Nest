@@ -151,164 +151,165 @@ public async Task<IActionResult> Grid()
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+[Authorize]
+public async Task<IActionResult> Edit(int id, string source = "Grid")
+{
+    var picture = await _pictureRepository.PictureId(id);
+    if (picture == null)
+    {
+        _logger.LogError("The image with id {PictureId} was not found", id);
+        return NotFound();
+    }
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (picture.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized edit attempt by user {UserId} for image {PictureId}", currentUserName, id);
+        return Forbid();
+    }
+
+    TempData["Source"] = source; // Lagre source i TempData, slik som i Delete
+    return View(picture);
+}
+
+
+     [HttpPost]
+[Authorize]
+public async Task<IActionResult> Edit(int id, Picture updatedPicture, IFormFile? newPictureUrl, string source)
+{
+    if (id != updatedPicture.PictureId || !ModelState.IsValid)
+    {
+        TempData["Source"] = source; // Bevar source-verdien i tilfelle det oppstår en valideringsfeil
+        return View(updatedPicture);
+    }
+
+    var existingPicture = await _pictureRepository.PictureId(id);
+    if (existingPicture == null)
+    {
+        _logger.LogError("The image with id {PictureId} was not found", id);
+        return NotFound();
+    }
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (existingPicture.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized edit attempt by user {UserName} for image {PictureId}", currentUserName, id);
+        return Forbid();
+    }
+
+    // Oppdatere bildetittel og beskrivelse
+    existingPicture.Title = updatedPicture.Title;
+    existingPicture.Description = updatedPicture.Description;
+
+    // Oppdatere bildet hvis et nytt bilde er lastet opp
+    if (newPictureUrl != null && newPictureUrl.Length > 0)
+    {
+        string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newPictureUrl.FileName);
+        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+        using (var fileStream = new FileStream(filePath, FileMode.Create))
         {
-            var picture = await _pictureRepository.PictureId(id);
-            if (picture == null)
-            {
-                _logger.LogError("The image with id {PictureId} was not found", id);
-                return NotFound();
-            }
-            var currentUserName =  _userManager.GetUserName(User);
-            if(picture.UserName != currentUserName)
-            {
-                _logger.LogWarning("Unartorized edit attempt by user {UserId} for image {PictureId}", currentUserName,id);
-                return Forbid();
-            }
-            return View(picture);
+            await newPictureUrl.CopyToAsync(fileStream);
         }
 
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Edit(int id, Picture updatedPicture, IFormFile? newPictureUrl)
+        // Slett det gamle bildet
+        if (!string.IsNullOrEmpty(existingPicture.PictureUrl))
         {
-            if (id != updatedPicture.PictureId || !ModelState.IsValid)
+            string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingPicture.PictureUrl.TrimStart('/'));
+            if (FileUtil.FileExists(oldFilePath))
             {
-                return View(updatedPicture);
+                FileUtil.FileDelete(oldFilePath);
             }
-
-            var exisitingPicture = await _pictureRepository.PictureId(id);
-            if (exisitingPicture == null)
-            {
-                return NotFound();
-            }
-
-            var currentUserName = _userManager.GetUserName(User);
-            if(exisitingPicture.UserName != currentUserName)
-            {
-                _logger.LogWarning("Unaauthorized edit attempt by use {UserName} for image {PictureId}", currentUserName, id);
-                return Forbid();
-            }
-
-            exisitingPicture.Title = updatedPicture.Title;
-            exisitingPicture.Description = updatedPicture.Description;
-
-            if (newPictureUrl != null && newPictureUrl.Length > 0)
-            {
-                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newPictureUrl.FileName);
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await newPictureUrl.CopyToAsync(fileStream);
-                }
-
-                if (!string.IsNullOrEmpty(exisitingPicture.PictureUrl))
-                {
-                    string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", exisitingPicture.PictureUrl.TrimStart('/'));
-                    if (FileUtil.FileExists(oldFilePath))
-                    {
-                        FileUtil.FileDelete(oldFilePath);
-                    }
-                }   
-
-                exisitingPicture.PictureUrl = "/images/" + uniqueFileName;
-            }
-
-            bool success = await _pictureRepository.Edit(exisitingPicture);
-            return success ? RedirectToAction("Grid") : View(updatedPicture);
         }
 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Delete(int id, string? returnUrl = null)
+        existingPicture.PictureUrl = "/images/" + uniqueFileName;
+    }
+
+    bool success = await _pictureRepository.Edit(existingPicture);
+    if (success)
+    {
+        // Redirect to the correct page based on the Source parameter
+        return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
+    }
+    else
+    {
+        _logger.LogWarning("[PictureController] Could not update the image.");
+        TempData["Source"] = source; // Bevar source-verdien hvis oppdateringen feiler
+        return View(updatedPicture);
+    }
+}
+
+
+
+     [HttpGet]
+[Authorize]
+public async Task<IActionResult> Delete(int id, string source = "Grid")
+{
+    var picture = await _pictureRepository.PictureId(id);
+    if (picture == null)
+    {
+        _logger.LogError("[PictureController] picture with Id not found {id}", id);
+        return NotFound();
+    }
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (picture.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
+        return Forbid();
+    }
+
+    // Store the source in TempData so we can pass it to the Delete view.
+    TempData["Source"] = source; // Lagre source i TempData
+
+    return View(picture);
+}
+
+
+
+
+     [HttpPost]
+[Authorize]
+public async Task<IActionResult> DeleteConfirmed(int id, string source)
+{
+    var picture = await _pictureRepository.PictureId(id);
+    if (picture == null)
+    {
+        _logger.LogError("[PictureController] picture with Id not found {id}", id);
+        return NotFound();
+    }
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (picture.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
+        return Forbid();
+    }
+
+    if (!string.IsNullOrEmpty(picture.PictureUrl))
+    {
+        string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picture.PictureUrl.TrimStart('/'));
+
+        if (FileUtil.FileExists(fullPath))
         {
-            var picture = await _pictureRepository.PictureId(id);
-            if (picture == null)
-            {
-                _logger.LogError("[PictureController] picture with Id not found {id}", id);
-                return NotFound();
-            }
-
-            var currentUserName = _userManager.GetUserName(User);
-            if (picture.UserName != currentUserName)
-            {
-                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
-                return Forbid();
-            }
-
-            // Store the returnUrl in TempData so we can pass it to the Delete view.
-            TempData["ReturnUrl"] = returnUrl ?? Url.Action("Grid"); // Lagre returnUrl i TempData
-
-            return View(picture);
+            FileUtil.FileDelete(fullPath);
         }
+    }
+
+    bool success = await _pictureRepository.Delete(id);
+
+    if (!success)
+    {
+        _logger.LogError("[PictureController] picture not deleted with {Id}", id);
+        return BadRequest("Picture not deleted");
+    }
+
+    // Redirect to the correct page based on the Source parameter
+    return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
+}
 
 
-
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> DeleteConfirmed(int id, string? returnUrl = null)
-        {
-            var picture = await _pictureRepository.PictureId(id);
-            if (picture == null)
-            {
-                _logger.LogError("[PictureController] picture with Id not found {id}", id);
-                return NotFound();
-            }
-
-            var currentUserName = _userManager.GetUserName(User);
-            if (picture.UserName != currentUserName)
-            {
-                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
-                return Forbid();
-            }
-
-            if (!string.IsNullOrEmpty(picture.PictureUrl))
-            {
-                string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picture.PictureUrl.TrimStart('/'));
-
-                if (FileUtil.FileExists(fullPath))
-                {
-                    FileUtil.FileDelete(fullPath);
-                }
-            }
-
-            bool success = await _pictureRepository.Delete(id);
-
-            if (!success)
-            {
-                _logger.LogError("[PictureController] picture not deleted with {Id}", id);
-                return BadRequest("Picture not deleted");
-            }
-
-            return Redirect(returnUrl ?? Url.Action("Grid")); // Endret: Sikrer at `Redirect` får en ikke-null verdi
-        }
-
-        public async Task<IActionResult> DownloadImage(int id)
-        {
-            // Retrieve the picture from the database
-            var picture = await _pictureRepository.PictureId(id);
-
-            if (picture == null || string.IsNullOrEmpty(picture.PictureUrl))
-            {
-                return NotFound("Picture not found.");
-            }
-
-            // Construct the full file path
-            string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picture.PictureUrl.TrimStart('/'));
-
-            if (!FileUtil.FileExists(fullPath))
-            {
-                return NotFound("File not found.");
-            }
-
-            // Read file asynchronously and return it as a download
-            var fileBytes = await System.IO.File.ReadAllBytesAsync(fullPath);
-            var fileName = Path.GetFileName(picture.PictureUrl);
-
-            return File(fileBytes, "application/octet-stream", fileName);
-        }
 
     }
 }
