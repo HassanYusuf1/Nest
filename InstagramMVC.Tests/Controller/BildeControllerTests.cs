@@ -152,7 +152,7 @@ public class PictureControllerTests
         var imageId = 50;
         var PictureUrl = "/images/test.jpg";
         var currentUserName = "testUser";
-        var returnUrl = "https://localhost/Grid";
+        var returnUrl = "Grid";
         var Picture = new Picture { PictureId = imageId, PictureUrl = PictureUrl, UserName = currentUserName };
         
         // Set up the repository to return the image and confirm deletion
@@ -173,11 +173,11 @@ public class PictureControllerTests
         FileUtil.FileDelete = path => fileDeleted = true; // Track if deletion occurs
 
         // Act
-        var result = await _controller.DeleteConfirmed(imageId);
+        var result = await _controller.DeleteConfirmed(imageId, "Grid");
 
         // Assert
-        var redirectResult = Assert.IsType<RedirectResult>(result); // Expect RedirectResult
-        Assert.Equal(returnUrl, redirectResult.Url); // Check that the URL matches the expected returnUrl
+        var redirectResult = Assert.IsType<RedirectToActionResult>(result); // Expect RedirectResult
+        Assert.Equal(returnUrl, redirectResult.ActionName); // Check that the URL matches the expected returnUrl
         Assert.True(fileDeleted); // Verify that the file was deleted
         _pictureRepositoryMock.Verify(repo => repo.Delete(imageId), Times.Once);
     }
@@ -192,7 +192,7 @@ public class PictureControllerTests
         _pictureRepositoryMock.Setup(repo => repo.PictureId(imageId)).ReturnsAsync((Picture)null);
 
         // Act
-        var result = await _controller.DeleteConfirmed(imageId);
+        var result = await _controller.DeleteConfirmed(imageId, "Grid");
 
         // Assert
         Assert.IsType<NotFoundResult>(result);
@@ -215,7 +215,7 @@ public class PictureControllerTests
         _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
 
         // Act
-        var result = await _controller.DeleteConfirmed(imageId);
+        var result = await _controller.DeleteConfirmed(imageId, "Grid");
 
         // Assert
         Assert.IsType<ForbidResult>(result);
@@ -268,7 +268,7 @@ public class PictureControllerTests
         _controller.ModelState.Clear();
 
         // Act
-        var result = await _controller.Edit(imageId, EditPicture, null);
+        var result = await _controller.Edit(imageId, EditPicture, null, "Grid");
 
         // Assert
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
