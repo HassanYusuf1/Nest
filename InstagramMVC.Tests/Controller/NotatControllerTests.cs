@@ -26,21 +26,21 @@ namespace InstagramMVC.Tests.Controllers
         private readonly Mock<IUrlHelper> _urlHelperMock;
         private readonly Mock<UserManager<IdentityUser>> _userManagerMock;
 
-        public NoteControllerTests()
+        public NoteControllerTests() //This part of testing code is to initialize so we don't have to write this multiple times
         {
-            // Instantiate mocks
+            //Instantiate mocks
             _noteRepositoryMock = new Mock<INoteRepository>();
             _commentRepositoryMock = new Mock<ICommentRepository>();
             _loggerMock = new Mock<ILogger<NoteController>>();
             _urlHelperMock = new Mock<IUrlHelper>();
 
-            // Set up UserManager<IdentityUser> mock with default constructor parameters
+            //Set up UserManager<IdentityUser> mock with default constructor parameters
             var store = new Mock<IUserStore<IdentityUser>>();
             _userManagerMock = new Mock<UserManager<IdentityUser>>(
                 store.Object, null, null, null, null, null, null, null, null
             );
 
-            // Initialize controller with mocks
+            //Initialize controller with mocks
             _controller = new NoteController(
                 _noteRepositoryMock.Object,
                 _commentRepositoryMock.Object,
@@ -67,38 +67,38 @@ namespace InstagramMVC.Tests.Controllers
         [Fact]
         public async Task Create_SavesNoteAndCreatesDatabaseRecord_WhenValid()
         {
-            // Arrange
+            //Arrange
             var userId = "user123";
             var userName = "testUser";
             var noteTitle = "Test Title";
             var noteContent = "This is a test note content.";
 
-            // Set up a Note object to be created
+            //Set up a Note object to be created
             var newNote = new Note
             {
-                NoteId = 10, // New note, ID will be set by the repository
+                NoteId = 10, //New note, ID will be autoset by the repository
                 Title = noteTitle,
                 Content = noteContent
             };
 
-            // Mock UserManager to return the current user's ID and username
+            //Mock UserManager to return the current users ID and username
             var mockUser = new IdentityUser { Id = userId, UserName = userName };
             _userManagerMock.Setup(u => u.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(mockUser);
 
-            // Mock the repository to handle the creation of the note
+            //Mock the repository to handle the creation of the note
             _noteRepositoryMock.Setup(repo => repo.Create(It.IsAny<Note>())).Returns(Task.CompletedTask);
 
 
-            // Act
+            //Act
             var result = await _controller.Create(newNote);
 
-            // Assert
-            // Verify that the note was created and saved in the repository
+            //Assert
+            //Verify that the note was created and saved in the repository
             _noteRepositoryMock.Verify(repo => repo.Create(It.Is<Note>(n => 
                 n.Title == noteTitle && 
                 n.Content == noteContent)), Times.Once);
 
-            // Check that the result is a RedirectToActionResult, redirecting to the "Notes" or another specified page
+            //Check that the result is a RedirectToActionResult, redirecting to the "Notes" or another specified page
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Notes", redirectResult.ActionName); // Change "Notes" to the appropriate action name if needed
         }
@@ -106,15 +106,15 @@ namespace InstagramMVC.Tests.Controllers
         [Fact]
         public async Task CreateNote_ReturnsView_WhenDatabaseSaveFails()
         {
-            // Arrange
+            //Arrange
             var newNote = new Note();
             _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns("testUser");
             _noteRepositoryMock.Setup(repo => repo.Create(It.IsAny<Note>())).Returns(Task.CompletedTask);
 
-            // Act
+            //Act
             var result = await _controller.Create(newNote);
 
-            // Assert
+            //Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Notes", redirectResult.ActionName); // Change "Notes" to the appropriate action name if needed
         }
@@ -122,56 +122,56 @@ namespace InstagramMVC.Tests.Controllers
         [Fact]
         public async Task DeleteConfirmed_DeletesNote_WhenNoteIdExists()
         {
-            // Arrange
+            //Arrange
             int noteId = 30;
             var currentUserName = "testUser";
             var newNote = new Note { NoteId = noteId, username = currentUserName };
 
-            // Set up the repository to return the note and confirm deletion
+            //Set up the repository to return the note and confirm deletion
             _noteRepositoryMock.Setup(repo => repo.GetNoteById(noteId)).ReturnsAsync(newNote);
             _noteRepositoryMock.Setup(repo => repo.DeleteConfirmed(noteId)).ReturnsAsync(true);
 
-            // Mock user identity
+            //Mock user identity to get past it
             _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
 
-            // Act
+            //Act
             var result = await _controller.DeleteConfirmed(noteId);
 
-            // Assert
-            // Check for redirect after deletion
+            //Assert
+            //Check for redirect after deletion
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Notes", redirectToActionResult.ActionName); // Assuming it redirects to "Notes"
 
-            // Verify that DeleteConfirmed was called exactly once
+            //Verify that DeleteConfirmed was called exactly once
             _noteRepositoryMock.Verify(repo => repo.DeleteConfirmed(noteId), Times.Once);
         }
         
         [Fact]
         public async Task DeleteConfirmed_ReturnsForbid_WhenUserIsNotAuthorized()
         {
-            // Arrange
+            //Arrange
             var noteId = 50;
             var currentUserName = "testUser";
             var anotherUserName = "unauthorizedUser";
             var note = new Note { NoteId = noteId, username = anotherUserName };
 
-            // Set up the repository to return the note owned by a different user
+            //Set up the repository to return the note owned by a different user
             _noteRepositoryMock.Setup(repo => repo.GetNoteById(noteId)).ReturnsAsync(note);
 
-            // Mock the current user identity to a different user
+            //Mock the current user identity to a different user
             _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
 
-            // Act
+            //Act
             var result = await _controller.DeleteConfirmed(noteId);
 
-            // Assert
+            //Assert
             Assert.IsType<ForbidResult>(result);
         }
 
         [Fact]
         public async Task Edit_note_ReturnsToNotes_WhenEditIsOk()
         {
-            // Arrange
+            //Arrange
             var noteId = 50;
             var currentUserName = "testUser";
             var existingTitle = "Old Title";
@@ -179,7 +179,7 @@ namespace InstagramMVC.Tests.Controllers
             var newTitle = "New Title";
             var newContent = "New Content";
 
-            // Set up the existing note in the repository
+            //Set up the existing note in the repository
             var existingNote = new Note
             {
                 NoteId = noteId,
@@ -188,43 +188,43 @@ namespace InstagramMVC.Tests.Controllers
                 Content = existingContent,
             };
 
-            // Set up the Editd note details
-            var EditdNote = new Note
+            //Set up the Edited note details
+            var EditedNote = new Note
             {
-                NoteId = noteId, // Ensure the IDs match to pass the ID check
+                NoteId = noteId, //Make sure the IDs match to pass the ID check
                 Title = newTitle,
                 Content = newContent
             };
 
-            // Mock repository to return the existing note and confirm successful Edit
+            //Mock repository to return the existing note and confirm successful Edit
             _noteRepositoryMock.Setup(repo => repo.GetNoteById(noteId)).ReturnsAsync(existingNote);
             _noteRepositoryMock.Setup(repo => repo.Edit(existingNote)).Returns(Task.CompletedTask);
 
-            // Mock user identity to match the note owner
+            //Mock user identity to match the note owner
             _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
 
-            // Ensure ModelState is valid
+            //Make sure ModelState is valid
             _controller.ModelState.Clear();
 
-            // Act
-            var result = await _controller.Edit(EditdNote);
+            //Act
+            var result = await _controller.Edit(EditedNote);
 
-            // Assert
+            //Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Notes", redirectResult.ActionName); // Ensure redirection to the "Grid" action
+            Assert.Equal("Notes", redirectResult.ActionName); //Make sure redirection to the "Notes" action
 
-            // Verify that the Title and Content have been Editd in the existing note
+            //Verify that the title and Content have been edited in the existing note
             Assert.Equal(newTitle, existingNote.Title);
             Assert.Equal(newContent, existingNote.Content);
 
-            // Verify that Oppdater was called on the repository
+            //Verify that edit was called on the repository
             _noteRepositoryMock.Verify(repo => repo.Edit(existingNote), Times.Once);
         }
 
         [Fact]
         public async Task Details_GoIntoDetailedView_FromNotes()
         {
-            // Arrange
+            //Arrange
             var noteId = 50;
             var source = "Notes";
             var expectedNote = new Note
@@ -234,21 +234,21 @@ namespace InstagramMVC.Tests.Controllers
                 Content = "Test Description",
             };
 
-            // Set up the repository to return the expected Note
+            //Set up the repository to return the expected Note
             _noteRepositoryMock.Setup(repo => repo.GetNoteById(noteId)).ReturnsAsync(expectedNote);
 
-            // Act
+            //Act
             var result = await _controller.Details(noteId, source);
 
-            // Assert
+            //Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("Details", viewResult.ViewName); // Check that the view name is "NoteDetails"
-            Assert.Equal(expectedNote, viewResult.Model); // Verify that the model is the expected Note
+            Assert.Equal("Details", viewResult.ViewName); //Check that the view name is "NoteDetails"
+            Assert.Equal(expectedNote, viewResult.Model); //Verify that the model is the expected Note
 
-            // Check that ViewBag.Source is set correctly
+            //Check that source is set correctly
             Assert.Equal(source, _controller.ViewBag.Source);
 
-            // Verify that NoteId was called on the repository with the correct id
+            //Verify that NoteId was called on the repository with the correct id
             _noteRepositoryMock.Verify(repo => repo.GetNoteById(noteId), Times.Once);
         }
     }
