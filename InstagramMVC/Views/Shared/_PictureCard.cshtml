@@ -28,14 +28,15 @@
     </div>
 
     <!-- Show edit, delete, and download buttons if viewing on "MyPage" and the logged-in user owns the picture -->
-    @if (isMyPage && User.Identity?.Name == Model.UserName)
+   @if (User.Identity?.Name == Model.UserName) // Check ownership of the picture
     {
-        <div class="p-3 d-flex justify-content-start">
-            <a asp-action="Edit" asp-route-id="@Model.PictureId" class="btn btn-warning me-2">Edit</a>
-            <a asp-action="Delete" asp-route-id="@Model.PictureId" asp-route-returnUrl="@returnUrl" class="btn btn-danger me-2">Delete</a>
-            <a asp-action="DownloadImage" asp-route-id="@Model.PictureId" class="btn btn-primary">Download Image</a>
-        </div>
+    <div class="p-3 d-flex justify-content-start">
+        <a asp-action="Edit" asp-route-id="@Model.PictureId" asp-route-source="@(isMyPage ? "MyPage" : "Grid")" class="btn btn-warning me-2">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.PictureId" asp-route-source="@(isMyPage ? "MyPage" : "Grid")" class="btn btn-danger me-2">Delete</a>
+        <a asp-action="DownloadImage" asp-route-id="@Model.PictureId" class="btn btn-primary">Download Image</a>
+    </div>
     }
+
 
     <div class="picture-card-footer p-3">
         <!-- Show "View All Comments" if there are comments -->

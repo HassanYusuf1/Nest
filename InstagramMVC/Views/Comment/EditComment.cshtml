@@ -3,7 +3,8 @@
 <h2>Edit Comment</h2>
 
 <form asp-action="EditComment" method="post">
-    <input type="hidden" asp-for="CommentId" /> <!-- Skjult felt for CommentId -->
+    <input type="hidden" asp-for="CommentId" /> <!-- Hidden field for CommentId -->
+    <input type="hidden" name="source" value="@TempData["Source"]" /> <!-- Hidden field for Source -->
 
     <div class="form-group">
         <label for="CommentDescription">Comment</label>
@@ -12,4 +13,5 @@
     </div>
 
     <button type="submit" class="btn btn-primary mt-2">Save changes</button>
+    <a href="@((TempData["Source"] as string) == "MyPage" ? Url.Action("MyPage", "Picture") : Url.Action("Grid", "Picture"))" class="btn btn-secondary mt-2">Cancel</a>
 </form>

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using InstagramMVC.Utilities;
 
-
 namespace InstagramMVC.Controllers
 {
     public class PictureController : Controller
@@ -18,40 +17,39 @@ namespace InstagramMVC.Controllers
         private readonly ILogger<PictureController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public PictureController(IPictureRepository pictureRepository, ICommentRepository commentRepository, ILogger<PictureController> logger,UserManager<IdentityUser> userManager)
+        public PictureController(IPictureRepository pictureRepository, ICommentRepository commentRepository, ILogger<PictureController> logger, UserManager<IdentityUser> userManager)
         {
             _commentRepository = commentRepository;
             _pictureRepository = pictureRepository;
             _logger = logger;
-            _userManager = userManager; 
+            _userManager = userManager;
         }
-     [HttpGet]
-[Authorize]
-public async Task<IActionResult> MyPage()
-{
-    var currentUserName = _userManager.GetUserName(User);
-    if (string.IsNullOrEmpty(currentUserName))
-    {
-        _logger.LogError("[PictureController] Current user is null or empty when accessing MyPage.");
-        return Unauthorized();
-    }
 
-    var allPictures = await _pictureRepository.GetAll();
-    if (allPictures == null)
-    {
-        _logger.LogError("[PictureController] Could not retrieve images for user {UserName}", currentUserName);
-        allPictures = Enumerable.Empty<Picture>();
-    }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> MyPage()
+        {
+            var currentUserName = _userManager.GetUserName(User);
+            if (string.IsNullOrEmpty(currentUserName))
+            {
+                _logger.LogError("[PictureController] Current user is null or empty when accessing MyPage.");
+                return Unauthorized();
+            }
 
-    var userPictures = allPictures.Where(b => b.UserName == currentUserName).ToList();
+            var allPictures = await _pictureRepository.GetAll();
+            if (allPictures == null)
+            {
+                _logger.LogError("[PictureController] Could not retrieve images for user {UserName}", currentUserName);
+                allPictures = Enumerable.Empty<Picture>();
+            }
 
-    var pictureViewModel = new PicturesViewModel(userPictures, "MyPage");
+            var userPictures = allPictures.Where(b => b.UserName == currentUserName).ToList();
 
-    ViewData["IsMyPage"] = true; // Set flag to indicate it's MyPage
-    return View("MyPage", pictureViewModel);
-}
+            var pictureViewModel = new PicturesViewModel(userPictures, "MyPage");
 
-
+            ViewData["IsMyPage"] = true; // Set flag to indicate it's MyPage
+            return View("MyPage", pictureViewModel);
+        }
 
         [HttpGet]
         public async Task<IActionResult> Picture()
@@ -66,20 +64,21 @@ public async Task<IActionResult> MyPage()
 
             return View(pictureViewModel);
         }
-public async Task<IActionResult> Grid()
-{
-    var pictures = await _pictureRepository.GetAll();
-    var pictureViewModel = new PicturesViewModel(pictures, "Picture");
 
-    if (pictures == null)
-    {
-        _logger.LogError("[PictureController] Picture list, not found.");
-        return NotFound("Pictures not found");
-    }
+        public async Task<IActionResult> Grid()
+        {
+            var pictures = await _pictureRepository.GetAll();
+            var pictureViewModel = new PicturesViewModel(pictures, "Picture");
 
-    ViewData["IsMyPage"] = false; // Set IsMyPage flag to false for general feed (Grid)
-    return View(pictureViewModel);
-}
+            if (pictures == null)
+            {
+                _logger.LogError("[PictureController] Picture list, not found.");
+                return NotFound("Pictures not found");
+            }
+
+            ViewData["IsMyPage"] = false; // Set IsMyPage flag to false for general feed (Grid)
+            return View(pictureViewModel);
+        }
 
         [HttpGet]
         [Authorize]
@@ -94,15 +93,14 @@ public async Task<IActionResult> Grid()
         {
             var time = DateTime.Now;
             newImage.UploadDate = time;
-            
 
             if (!ModelState.IsValid)
             {
                 return View(newImage);
             }
-            var UserName = _userManager.GetUserName(User);
-            newImage.UserName = UserName; 
 
+            var UserName = _userManager.GetUserName(User);
+            newImage.UserName = UserName;
 
             if (PictureUrl != null && PictureUrl.Length > 0)
             {
@@ -144,172 +142,159 @@ public async Task<IActionResult> Grid()
                 _logger.LogError("[PictureController] picture id not found");
                 return NotFound();
             }
-    
-            ViewBag.Source = source; // Lagre source i ViewBag
+
+            ViewBag.Source = source; // Save source in ViewBag
             return View("PictureDetails", picture);
         }
 
-
         [HttpGet]
-[Authorize]
-public async Task<IActionResult> Edit(int id, string source = "Grid")
-{
-    var picture = await _pictureRepository.PictureId(id);
-    if (picture == null)
-    {
-        _logger.LogError("The image with id {PictureId} was not found", id);
-        return NotFound();
-    }
-
-    var currentUserName = _userManager.GetUserName(User);
-    if (picture.UserName != currentUserName)
-    {
-        _logger.LogWarning("Unauthorized edit attempt by user {UserId} for image {PictureId}", currentUserName, id);
-        return Forbid();
-    }
-
-    TempData["Source"] = source; // Lagre source i TempData, slik som i Delete
-    return View(picture);
-}
-
-
-     [HttpPost]
-[Authorize]
-public async Task<IActionResult> Edit(int id, Picture updatedPicture, IFormFile? newPictureUrl, string source)
-{
-    if (id != updatedPicture.PictureId || !ModelState.IsValid)
-    {
-        TempData["Source"] = source; // Bevar source-verdien i tilfelle det oppstår en valideringsfeil
-        return View(updatedPicture);
-    }
-
-    var existingPicture = await _pictureRepository.PictureId(id);
-    if (existingPicture == null)
-    {
-        _logger.LogError("The image with id {PictureId} was not found", id);
-        return NotFound();
-    }
-
-    var currentUserName = _userManager.GetUserName(User);
-    if (existingPicture.UserName != currentUserName)
-    {
-        _logger.LogWarning("Unauthorized edit attempt by user {UserName} for image {PictureId}", currentUserName, id);
-        return Forbid();
-    }
-
-    // Oppdatere bildetittel og beskrivelse
-    existingPicture.Title = updatedPicture.Title;
-    existingPicture.Description = updatedPicture.Description;
-
-    // Oppdatere bildet hvis et nytt bilde er lastet opp
-    if (newPictureUrl != null && newPictureUrl.Length > 0)
-    {
-        string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-        string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newPictureUrl.FileName);
-        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, string source = "Grid")
         {
-            await newPictureUrl.CopyToAsync(fileStream);
+            var picture = await _pictureRepository.PictureId(id);
+            if (picture == null)
+            {
+                _logger.LogError("The image with id {PictureId} was not found", id);
+                return NotFound();
+            }
+
+            var currentUserName = _userManager.GetUserName(User);
+            if (picture.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized edit attempt by user {UserId} for image {PictureId}", currentUserName, id);
+                return Forbid();
+            }
+
+            TempData["Source"] = source; // Store source in TempData
+            return View(picture);
         }
 
-        // Slett det gamle bildet
-        if (!string.IsNullOrEmpty(existingPicture.PictureUrl))
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(int id, Picture updatedPicture, IFormFile? newPictureUrl, string source)
         {
-            string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingPicture.PictureUrl.TrimStart('/'));
-            if (FileUtil.FileExists(oldFilePath))
+            if (id != updatedPicture.PictureId || !ModelState.IsValid)
             {
-                FileUtil.FileDelete(oldFilePath);
+                TempData["Source"] = source; // Preserve source value in case of validation error
+                return View(updatedPicture);
+            }
+
+            var existingPicture = await _pictureRepository.PictureId(id);
+            if (existingPicture == null)
+            {
+                _logger.LogError("The image with id {PictureId} was not found", id);
+                return NotFound();
+            }
+
+            var currentUserName = _userManager.GetUserName(User);
+            if (existingPicture.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized edit attempt by user {UserName} for image {PictureId}", currentUserName, id);
+                return Forbid();
+            }
+
+            // Update title and description
+            existingPicture.Title = updatedPicture.Title;
+            existingPicture.Description = updatedPicture.Description;
+
+            // Update the image if a new one is uploaded
+            if (newPictureUrl != null && newPictureUrl.Length > 0)
+            {
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newPictureUrl.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await newPictureUrl.CopyToAsync(fileStream);
+                }
+
+                // Delete the old image
+                if (!string.IsNullOrEmpty(existingPicture.PictureUrl))
+                {
+                    string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingPicture.PictureUrl.TrimStart('/'));
+                    if (FileUtil.FileExists(oldFilePath))
+                    {
+                        FileUtil.FileDelete(oldFilePath);
+                    }
+                }
+
+                existingPicture.PictureUrl = "/images/" + uniqueFileName;
+            }
+
+            bool success = await _pictureRepository.Edit(existingPicture);
+            if (success)
+            {
+                // Redirect to the correct page based on the Source parameter
+                return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
+            }
+            else
+            {
+                _logger.LogWarning("[PictureController] Could not update the image.");
+                TempData["Source"] = source; // Preserve source value if the update fails
+                return View(updatedPicture);
             }
         }
 
-        existingPicture.PictureUrl = "/images/" + uniqueFileName;
-    }
-
-    bool success = await _pictureRepository.Edit(existingPicture);
-    if (success)
-    {
-        // Redirect to the correct page based on the Source parameter
-        return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
-    }
-    else
-    {
-        _logger.LogWarning("[PictureController] Could not update the image.");
-        TempData["Source"] = source; // Bevar source-verdien hvis oppdateringen feiler
-        return View(updatedPicture);
-    }
-}
-
-
-
-     [HttpGet]
-[Authorize]
-public async Task<IActionResult> Delete(int id, string source = "Grid")
-{
-    var picture = await _pictureRepository.PictureId(id);
-    if (picture == null)
-    {
-        _logger.LogError("[PictureController] picture with Id not found {id}", id);
-        return NotFound();
-    }
-
-    var currentUserName = _userManager.GetUserName(User);
-    if (picture.UserName != currentUserName)
-    {
-        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
-        return Forbid();
-    }
-
-    // Store the source in TempData so we can pass it to the Delete view.
-    TempData["Source"] = source; // Lagre source i TempData
-
-    return View(picture);
-}
-
-
-
-
-     [HttpPost]
-[Authorize]
-public async Task<IActionResult> DeleteConfirmed(int id, string source)
-{
-    var picture = await _pictureRepository.PictureId(id);
-    if (picture == null)
-    {
-        _logger.LogError("[PictureController] picture with Id not found {id}", id);
-        return NotFound();
-    }
-
-    var currentUserName = _userManager.GetUserName(User);
-    if (picture.UserName != currentUserName)
-    {
-        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
-        return Forbid();
-    }
-
-    if (!string.IsNullOrEmpty(picture.PictureUrl))
-    {
-        string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picture.PictureUrl.TrimStart('/'));
-
-        if (FileUtil.FileExists(fullPath))
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id, string source = "Grid")
         {
-            FileUtil.FileDelete(fullPath);
+            var picture = await _pictureRepository.PictureId(id);
+            if (picture == null)
+            {
+                _logger.LogError("[PictureController] picture with Id not found {id}", id);
+                return NotFound();
+            }
+
+            var currentUserName = _userManager.GetUserName(User);
+            if (picture.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
+                return Forbid();
+            }
+
+            TempData["Source"] = source; // Store source in TempData
+            return View(picture);
         }
-    }
 
-    bool success = await _pictureRepository.Delete(id);
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirmed(int id, string source)
+        {
+            var picture = await _pictureRepository.PictureId(id);
+            if (picture == null)
+            {
+                _logger.LogError("[PictureController] picture with Id not found {id}", id);
+                return NotFound();
+            }
 
-    if (!success)
-    {
-        _logger.LogError("[PictureController] picture not deleted with {Id}", id);
-        return BadRequest("Picture not deleted");
-    }
+            var currentUserName = _userManager.GetUserName(User);
+            if (picture.UserName != currentUserName)
+            {
+                _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
+                return Forbid();
+            }
 
-    // Redirect to the correct page based on the Source parameter
-    return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
-}
+            if (!string.IsNullOrEmpty(picture.PictureUrl))
+            {
+                string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picture.PictureUrl.TrimStart('/'));
 
+                if (FileUtil.FileExists(fullPath))
+                {
+                    FileUtil.FileDelete(fullPath);
+                }
+            }
 
+            bool success = await _pictureRepository.Delete(id);
+            if (!success)
+            {
+                _logger.LogError("[PictureController] picture not deleted with {Id}", id);
+                return BadRequest("Picture not deleted");
+            }
 
+            // Redirect to the correct page based on the Source parameter
+            return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
+        }
     }
 }

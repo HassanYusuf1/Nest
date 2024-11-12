@@ -70,66 +70,72 @@ namespace InstagramMVC.Controllers
     }
 
     [HttpGet]
-    [Authorize]
-    public async Task<IActionResult> EditComment(int Id)
-    {
-        var Comment = await _CommentRepository.GetCommentById(Id);
+[Authorize]
+public async Task<IActionResult> EditComment(int Id, string source = "Grid")
+{
+    var comment = await _CommentRepository.GetCommentById(Id);
 
-        if (Comment == null)
+    if (comment == null)
+    {
+        _logger.LogError("[CommentController] Could not find comment with id {Id}", Id);
+        return NotFound();
+    }
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (comment.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {CommentId}", currentUserName, Id);
+        return Forbid();
+    }
+
+    TempData["Source"] = source; // Store source for later use in view
+    return View(comment);
+}
+
+[HttpPost]
+[Authorize]
+public async Task<IActionResult> EditComment(Comment comment, string source)
+{
+    if (!ModelState.IsValid)
+    {
+        _logger.LogWarning("Error comment update, invalid ModelState. CommentId: {CommentId}", comment.CommentId);
+        TempData["Source"] = source; // Preserve source value in case of validation error
+        return View(comment);
+    }
+
+    try
+    {
+        var existingComment = await _CommentRepository.GetCommentById(comment.CommentId);
+        if (existingComment == null)
         {
-            _logger.LogError("[CommentController] could not find comment with id {Id}", Id);
+            _logger.LogError("Could not find comment ID {CommentId}", comment.CommentId);
             return NotFound();
         }
 
         var currentUserName = _userManager.GetUserName(User);
-        if (Comment.UserName != currentUserName)
+        if (existingComment.UserName != currentUserName)
         {
-            _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {CommentId}", currentUserName, Id);
+            _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {CommentId}", currentUserName, comment.CommentId);
             return Forbid();
         }
 
-        return View(Comment);
-    }
+        // Update the comment content and timestamp
+        existingComment.CommentDescription = comment.CommentDescription;
+        existingComment.CommentTime = DateTime.Now;
 
-    [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> EditComment(Comment Comment)
+        await _CommentRepository.Edit(existingComment);
+
+        // Redirect to the correct page based on the source parameter
+        return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
+    }
+    catch (Exception e)
     {
-        if (!ModelState.IsValid)
-        {
-            _logger.LogWarning("Error comment update, invalid ModelState. CommentId: {CommentId}", Comment.CommentId);
-            return View(Comment);
-        }
-
-        try
-        {
-            var existingComment = await _CommentRepository.GetCommentById(Comment.CommentId);
-            if (existingComment == null)
-            {
-                _logger.LogError("Could not find comment ID {CommentId}", Comment.CommentId);
-                return NotFound();
-            }
-
-            var currentUserName = _userManager.GetUserName(User);
-            if (existingComment.UserName != currentUserName)
-            {
-                _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {CommentId}", currentUserName, Comment.CommentId);
-                return Forbid();
-            }
-
-            existingComment.CommentDescription = Comment.CommentDescription;
-            existingComment.CommentTime = DateTime.Now;
-
-            await _CommentRepository.Edit(existingComment);
-
-            return RedirectToAction("Details", "Picture", new { id = existingComment.PictureId });
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error during comment upload, ID {CommentId}", Comment.CommentId);
-            throw;
-        }
+        _logger.LogError(e, "Error during comment update, ID {CommentId}", comment.CommentId);
+        throw;
     }
+}
+
+
 
 [HttpGet]
 [Authorize]
