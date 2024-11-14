@@ -45,7 +45,7 @@ public async Task<IActionResult> MyPage()
     var userNotes = allNotes.Where(n => n.username == currentUserName).ToList();
     var notesViewModel = new NotesViewModel(userNotes, "MyPage");
     
-    ViewBag.Source = "MyPage"; // Set the source for MyPage
+    ViewData["IsMyPage"] = true; // Set the source for MyPage
 
     return View("MyPage", notesViewModel);
 }
@@ -181,14 +181,15 @@ public async Task<IActionResult> MyPage()
 public async Task<IActionResult> Notes()
 {
     var notes = await _noteRepository.GetAll();
+    var notesViewModel = new NotesViewModel(notes, "Notes");
     if (notes == null)
     {
         _logger.LogError("[NoteController] Note List not found when running _noteRepository.GetAll()");
         return NotFound("Note List not found.");
     }
-    var notesViewModel = new NotesViewModel(notes, "Notes");
     
-    ViewBag.Source = "Feed"; // Set the source for general feed
+    
+    ViewData["IsMyPage"] = false; // Set the source for general feed
     
     return View(notesViewModel);
 }

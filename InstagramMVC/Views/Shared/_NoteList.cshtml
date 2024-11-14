@@ -1,5 +1,10 @@
 @model InstagramMVC.Models.Note
+@{
+    
+    bool isMyPage = ViewData["IsMyPage"] as bool? ?? false;
+    
 
+}
 <div class="card mb-4 shadow-sm note-card">
     <a asp-action="Details" asp-route-id="@Model.NoteId" asp-route-source="MyPage" class="text-decoration-none">
         <div class="card-body">
@@ -15,7 +20,7 @@
         @if (User.Identity?.Name == Model.username)
     {
         <div class="note-actions">
-            <a asp-action="Edit" asp-route-id="@Model.NoteId" asp-route-source="@(ViewBag.Source ?? "Notes")" class="btn btn-warning btn-sm">Edit</a>
+            <a asp-action="Edit" asp-route-id="@Model.NoteId" asp-route-source="@(isMyPage ? "MyPage" : "Notes")" class="btn btn-warning btn-sm">Edit</a>
             <a asp-action="Delete" asp-route-id="@Model.NoteId" asp-route-source="@(ViewBag.Source ?? "Notes")" class="btn btn-danger btn-sm">Delete</a>
         </div>
     }
