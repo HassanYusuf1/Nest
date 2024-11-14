@@ -15,21 +15,24 @@
 
     <div class="row mt-2">
         <div class="col-md-12">
-            <p><strong>Created on:</strong> @Model.UploadDate.ToString("yyyy-MM-dd")</p>
+            <p><strong>Created on:</strong> @Model.UploadDate.ToString("yyyy-MM-dd HH:mm")</p>
         </div>
     </div>
 
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <a asp-action="Update" asp-route-id="@Model.NoteId" class="btn btn-warning">Edit</a>
-            <a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-danger">Delete</a>
+    @if (User.Identity?.Name == Model.username)
+    {
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <a asp-action="Edit" asp-route-id="@Model.NoteId" asp-route-source="@(ViewBag.Source ?? "Notes")" class="btn btn-warning btn-sm">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.NoteId" asp-route-source="@(ViewBag.Source ?? "Notes")" class="btn btn-danger btn-sm">Delete</a>
+            </div>
         </div>
-    </div>
+    }
 
     <div class="row mt-3">
         <div class="col-md-12">
-            <!-- Tilpass tilbake-knappen til å gå til riktig side basert på ViewBag.Source -->
-            <a href="@((string)ViewBag.Source == "MyPage" ? Url.Action("MyPage", "Note") : Url.Action("Notes", "Note"))" class="btn btn-secondary">return</a>
+            <!-- Return button to either MyPage or Notes based on ViewBag.Source -->
+            <a href="@((string)ViewBag.Source == "MyPage" ? Url.Action("MyPage", "Note") : Url.Action("Notes", "Note"))" class="btn btn-secondary">Return</a>
         </div>
     </div>
 </div>

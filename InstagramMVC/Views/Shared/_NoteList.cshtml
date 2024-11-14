@@ -12,13 +12,13 @@
 
     <div class="card-footer bg-light">
         <!-- Conditionally render Edit and Delete buttons only if on MyPage -->
-        @if (ViewBag.Source == "MyPage" && User.Identity?.Name == Model.username)
-        {
-            <div class="note-actions">
-                <a asp-action="Edit" asp-route-id="@Model.NoteId" class="btn btn-warning btn-sm">Edit</a>
-                <a asp-action="Delete" asp-route-id="@Model.NoteId" class="btn btn-danger btn-sm">Delete</a>
-            </div>
-        }
+        @if (User.Identity?.Name == Model.username)
+    {
+        <div class="note-actions">
+            <a asp-action="Edit" asp-route-id="@Model.NoteId" asp-route-source="@(ViewBag.Source ?? "Notes")" class="btn btn-warning btn-sm">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.NoteId" asp-route-source="@(ViewBag.Source ?? "Notes")" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+    }
 
         <!-- Comments Section with toggle visibility -->
         <div class="comments-section">

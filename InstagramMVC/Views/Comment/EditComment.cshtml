@@ -12,6 +12,6 @@
         <span asp-validation-for="CommentDescription" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Save changes</button>
-    <a href="@((TempData["Source"] as string) == "MyPage" ? Url.Action("MyPage", "Picture") : Url.Action("Grid", "Picture"))" class="btn btn-secondary mt-2">Cancel</a>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="@((TempData["Source"] as string) == "MyPage" ? Url.Action("MyPage", "Picture") : Url.Action("Grid", "Picture"))" class="btn btn-secondary">Cancel</a>
 </form>

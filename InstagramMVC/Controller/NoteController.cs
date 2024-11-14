@@ -53,7 +53,7 @@ public async Task<IActionResult> MyPage()
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(int id, string source = "Notes")
     {
         var note = await _noteRepository.GetNoteById(id);
         if (note == null)
@@ -69,12 +69,13 @@ public async Task<IActionResult> MyPage()
             return Forbid();
         }
 
+        TempData["Source"] = source; // Store source in TempData
         return View(note);
     }
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    public async Task<IActionResult> DeleteConfirmed(int id, string source)
     {
         var note = await _noteRepository.GetNoteById(id);
         if (note == null)
@@ -91,7 +92,9 @@ public async Task<IActionResult> MyPage()
         }
 
         await _noteRepository.DeleteConfirmed(id);
-        return RedirectToAction(nameof(Notes));
+
+        // Redirect to the correct page based on the Source parameter
+        return RedirectToAction(source == "MyPage" ? "MyPage" : "Notes");
     }
 
     [HttpGet]
@@ -109,7 +112,7 @@ public async Task<IActionResult> MyPage()
         {
             note.username = _userManager.GetUserName(User);
             await _noteRepository.Create(note);
-            return RedirectToAction(nameof(Notes));
+            return RedirectToAction(nameof(MyPage));
         }
         _logger.LogWarning("[NoteController] Creating Note failed {@note}", note);
         return View(note);
@@ -117,7 +120,7 @@ public async Task<IActionResult> MyPage()
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Edit(int id)
+    public async Task<IActionResult> Edit(int id, string source = "Notes")
     {
         var note = await _noteRepository.GetNoteById(id);
         if (note == null)
@@ -133,15 +136,17 @@ public async Task<IActionResult> MyPage()
             return Forbid();
         }
 
+        TempData["Source"] = source; // Store source in TempData for use in redirection
         return View(note);
     }
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Edit(Note note)
+    public async Task<IActionResult> Edit(Note note, string source)
     {
         if (!ModelState.IsValid)
         {
+            TempData["Source"] = source; // Preserve source value in case of validation error
             _logger.LogWarning("[NoteController] Note update failed due to invalid ModelState {@note}", note);
             return View(note);
         }
@@ -165,8 +170,11 @@ public async Task<IActionResult> MyPage()
         existingNote.UploadDate = DateTime.Now;
 
         await _noteRepository.Edit(existingNote);
-        return RedirectToAction(nameof(Notes));
+
+        // Redirect to the correct page based on the Source parameter
+        return RedirectToAction(source == "MyPage" ? "MyPage" : "Notes");
     }
+
 
    [HttpGet]
 [Authorize]
@@ -186,7 +194,6 @@ public async Task<IActionResult> Notes()
 }
 
     [HttpGet]
-    [Authorize]
     public async Task<IActionResult> Details(int id, string source = "Notes")
     {
         var note = await _noteRepository.GetNoteById(id);

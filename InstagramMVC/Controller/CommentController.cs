@@ -126,7 +126,14 @@ public async Task<IActionResult> EditComment(Comment comment, string source)
         await _CommentRepository.Edit(existingComment);
 
         // Redirect to the correct page based on the source parameter
-        return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
+        if (source == "MyPage")
+        {
+            return RedirectToAction("MyPage", "Picture");
+        }
+        else
+        {
+            return RedirectToAction("Grid", "Picture");
+        }
     }
     catch (Exception e)
     {
@@ -134,6 +141,7 @@ public async Task<IActionResult> EditComment(Comment comment, string source)
         throw;
     }
 }
+
 
 
 
