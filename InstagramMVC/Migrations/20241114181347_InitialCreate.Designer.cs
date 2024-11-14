@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InstagramMVC.Migrations
 {
     [DbContext(typeof(MediaDbContext))]
-    [Migration("20241106182926_MakeBildeIdNullable")]
-    partial class MakeBildeIdNullable
+    [Migration("20241114181347_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,61 +24,34 @@ namespace InstagramMVC.Migrations
                 .HasAnnotation("Proxies:CheckEquality", false)
                 .HasAnnotation("Proxies:LazyLoading", true);
 
-            modelBuilder.Entity("InstagramMVC.Models.Bilde", b =>
+            modelBuilder.Entity("InstagramMVC.Models.Comment", b =>
                 {
-                    b.Property<int>("BildeId")
+                    b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Beskrivelse")
-                        .HasMaxLength(500)
+                    b.Property<string>("CommentDescription")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("BildeUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("OpprettetDato")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Tittel")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("BildeId");
-
-                    b.ToTable("Bilder");
-                });
-
-            modelBuilder.Entity("InstagramMVC.Models.Kommentar", b =>
-                {
-                    b.Property<int>("KommentarId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("BildeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("KommentarBeskrivelse")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("KommentarTid")
+                    b.Property<DateTime>("CommentTime")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("NoteId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("PictureId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("UserName")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("KommentarId");
-
-                    b.HasIndex("BildeId");
+                    b.HasKey("CommentId");
 
                     b.HasIndex("NoteId");
 
-                    b.ToTable("Kommentarer");
+                    b.HasIndex("PictureId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("InstagramMVC.Models.Note", b =>
@@ -87,15 +60,15 @@ namespace InstagramMVC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Innhold")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("OpprettetDato")
+                    b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Tittel")
-                        .IsRequired()
+                    b.Property<DateTime>("UploadDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("username")
@@ -104,6 +77,33 @@ namespace InstagramMVC.Migrations
                     b.HasKey("NoteId");
 
                     b.ToTable("Notes");
+                });
+
+            modelBuilder.Entity("InstagramMVC.Models.Picture", b =>
+                {
+                    b.Property<int>("PictureId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PictureUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PictureId");
+
+                    b.ToTable("Pictures");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -302,21 +302,21 @@ namespace InstagramMVC.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("InstagramMVC.Models.Kommentar", b =>
+            modelBuilder.Entity("InstagramMVC.Models.Comment", b =>
                 {
-                    b.HasOne("InstagramMVC.Models.Bilde", "Bilde")
-                        .WithMany("Kommentarer")
-                        .HasForeignKey("BildeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("InstagramMVC.Models.Note", "Note")
-                        .WithMany("Kommentarer")
+                        .WithMany("Comments")
                         .HasForeignKey("NoteId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("Bilde");
+                    b.HasOne("InstagramMVC.Models.Picture", "Picture")
+                        .WithMany("Comments")
+                        .HasForeignKey("PictureId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Note");
+
+                    b.Navigation("Picture");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -370,14 +370,14 @@ namespace InstagramMVC.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("InstagramMVC.Models.Bilde", b =>
-                {
-                    b.Navigation("Kommentarer");
-                });
-
             modelBuilder.Entity("InstagramMVC.Models.Note", b =>
                 {
-                    b.Navigation("Kommentarer");
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("InstagramMVC.Models.Picture", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
