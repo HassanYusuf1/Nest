@@ -81,12 +81,21 @@ namespace InstagramMVC.DAL
             }
         }
 
-        public async Task Edit(Comment comment)
-        {
-            _context.Comments.Update(comment);
-            await _context.SaveChangesAsync();
+       public async Task<bool> Edit(Comment comment)
+{
+    try
+    {
+        _context.Comments.Update(comment);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+    catch (Exception e)
+    {
+        _logger.LogError("[CommentRepository] Error updating comment ID {CommentId}, error: {e}", comment.CommentId, e.Message);
+        return false;
+    }
+}
 
-        }
 
         public async Task<bool> Delete(int id)
         {

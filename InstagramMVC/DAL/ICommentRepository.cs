@@ -12,7 +12,7 @@ namespace InstagramMVC.DAL
         Task<int?> GetNoteId(int id);
         
         Task Create(Comment comment);
-        Task Edit(Comment comment);
+        Task <bool>Edit(Comment comment);
         Task<bool> Delete(int id);
 
     }

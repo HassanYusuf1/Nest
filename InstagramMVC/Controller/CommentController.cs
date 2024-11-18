@@ -69,7 +69,7 @@ namespace InstagramMVC.Controllers
         }
     }
 
-    [HttpGet]
+   [HttpGet]
 [Authorize]
 public async Task<IActionResult> EditComment(int Id, string source = "Grid")
 {
@@ -88,57 +88,49 @@ public async Task<IActionResult> EditComment(int Id, string source = "Grid")
         return Forbid();
     }
 
-    TempData["Source"] = source; // Store source for later use in view
+    TempData["Source"] = source; // Store source in TempData for later use in view
     return View(comment);
 }
 
 [HttpPost]
 [Authorize]
-public async Task<IActionResult> EditComment(Comment comment, string source)
+public async Task<IActionResult> EditComment(int Id, Comment updatedComment, string source)
 {
-    if (!ModelState.IsValid)
+    if (Id != updatedComment.CommentId || !ModelState.IsValid)
     {
-        _logger.LogWarning("Error comment update, invalid ModelState. CommentId: {CommentId}", comment.CommentId);
         TempData["Source"] = source; // Preserve source value in case of validation error
-        return View(comment);
+        return View(updatedComment);
     }
 
-    try
+    var existingComment = await _CommentRepository.GetCommentById(Id);
+    if (existingComment == null)
     {
-        var existingComment = await _CommentRepository.GetCommentById(comment.CommentId);
-        if (existingComment == null)
-        {
-            _logger.LogError("Could not find comment ID {CommentId}", comment.CommentId);
-            return NotFound();
-        }
-
-        var currentUserName = _userManager.GetUserName(User);
-        if (existingComment.UserName != currentUserName)
-        {
-            _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {CommentId}", currentUserName, comment.CommentId);
-            return Forbid();
-        }
-
-        // Update the comment content and timestamp
-        existingComment.CommentDescription = comment.CommentDescription;
-        existingComment.CommentTime = DateTime.Now;
-
-        await _CommentRepository.Edit(existingComment);
-
-        // Redirect to the correct page based on the source parameter
-        if (source == "MyPage")
-        {
-            return RedirectToAction("MyPage", "Picture");
-        }
-        else
-        {
-            return RedirectToAction("Grid", "Picture");
-        }
+        _logger.LogError("Could not find comment ID {CommentId}", updatedComment.CommentId);
+        return NotFound();
     }
-    catch (Exception e)
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (existingComment.UserName != currentUserName)
     {
-        _logger.LogError(e, "Error during comment update, ID {CommentId}", comment.CommentId);
-        throw;
+        _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {CommentId}", currentUserName, updatedComment.CommentId);
+        return Forbid();
+    }
+
+    // Update the comment content and timestamp
+    existingComment.CommentDescription = updatedComment.CommentDescription;
+    existingComment.CommentTime = DateTime.Now;
+
+    bool success = await _CommentRepository.Edit(existingComment);
+    if (success)
+    {
+        // Redirect to the correct page based on the Source parameter
+        return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid", "Picture");
+    }
+    else
+    {
+        _logger.LogWarning("[CommentController] Could not update the comment.");
+        TempData["Source"] = source; // Preserve source value in case of update failure
+        return View(updatedComment);
     }
 }
 
