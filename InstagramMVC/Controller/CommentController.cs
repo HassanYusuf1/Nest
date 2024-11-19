@@ -198,43 +198,57 @@ public async Task<IActionResult> DeleteConfirmedComment(int id, string source)
 
         //FOR NOTATER
     [HttpGet]
-    [Authorize]
-    public IActionResult CreateCommentNote(int noteId)
+[Authorize]
+public IActionResult CreateCommentNote(int noteId, string source = "Notes")
+{
+    try
     {
-        try
+        var Comment = new Comment
         {
-            var Comment = new Comment
-            {
-                NoteId = noteId
-            };
-            return View(Comment);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error create new comment");
-            throw;
-        }
+            NoteId = noteId
+        };
+        TempData["Source"] = source; // Store the source in TempData for use after the comment is created.
+        return View(Comment);
     }
+    catch (Exception e)
+    {
+        _logger.LogError(e, "Error create new comment");
+        throw;
+    }
+}
+
 
 [HttpPost]
 [Authorize]
-public async Task<IActionResult> CreateCommentNote(Comment Comment)
+public async Task<IActionResult> CreateCommentNote(Comment comment)
 {
+    // Retrieve the source from TempData right at the beginning
+    var source = TempData["Source"] as string ?? "Notes";
+
     try
     {
         if (ModelState.IsValid)
         {
-            Comment.PictureId = null;
-            Comment.CommentTime = DateTime.Now;
-            Comment.UserName = _userManager.GetUserName(User);
+            comment.PictureId = null;  // Since this is for Note comments
+            comment.CommentTime = DateTime.Now;
+            comment.UserName = _userManager.GetUserName(User);
 
-            await _CommentRepository.Create(Comment);
-            return RedirectToAction("Notes", "Note", new { id = Comment.NoteId });
-            
+            await _CommentRepository.Create(comment);
+
+            // Redirect based on source parameter
+            if (source == "MyPage")
+            {
+                return RedirectToAction("MyPage", "Note");
+            }
+            else
+            {
+                return RedirectToAction("Notes", "Note");
+            }
         }
-                                                
+
         _logger.LogWarning("[CommentController] Error new note upload, ModelState invalid");
-        return View(Comment);
+        TempData.Keep("Source"); // Keep the TempData value for re-use after a validation failure
+        return View(comment);
     }
     catch (Exception e)
     {
@@ -242,6 +256,8 @@ public async Task<IActionResult> CreateCommentNote(Comment Comment)
         throw;
     }
 }
+
+
 
 [HttpGet]
 [Authorize]
@@ -312,51 +328,59 @@ public async Task<IActionResult> EditCommentNote(int id, Comment updatedComment,
 
 [HttpGet]
 [Authorize]
-public async Task<IActionResult> DeleteCommentNote(int id)
+public async Task<IActionResult> DeleteCommentNote(int id, string source = "Notes")
 {
-    var Comment = await _CommentRepository.GetCommentById(id);
+    var comment = await _CommentRepository.GetCommentById(id);
 
-    if (Comment == null)
+    if (comment == null)
     {
-        _logger.LogWarning("Comment not found when trying to delete, comment ID : {CommentId}", id);
+        _logger.LogWarning("Comment not found when trying to delete, comment ID: {CommentId}", id);
         return NotFound();
     }
 
     var currentUserName = _userManager.GetUserName(User);
-    if (Comment.UserName != currentUserName)
+    if (comment.UserName != currentUserName)
     {
         _logger.LogWarning("Unauthorized delete attempt by user {UserName} for comment {CommentId}", currentUserName, id);
         return Forbid();
     }
 
-    return View(Comment);
+    TempData["Source"] = source; // Store source in TempData for later use in view
+    return View(comment);
 }
+
 
 [HttpPost]
 [Authorize]
-public async Task<IActionResult> DeleteConfirmedCommentNote(int id)
+public async Task<IActionResult> DeleteConfirmedCommentNote(int id, string source)
 {
-    var Comment = await _CommentRepository.GetCommentById(id);
-    if (Comment == null)
+    var comment = await _CommentRepository.GetCommentById(id);
+    if (comment == null)
     {
-        _logger.LogWarning("Comment not found when trying to delete, comment ID : {CommentId}", id);
+        _logger.LogWarning("Comment not found when trying to delete, comment ID: {CommentId}", id);
         return NotFound();
     }
 
-    var noteId = Comment.NoteId;
+    var currentUserName = _userManager.GetUserName(User);
+    if (comment.UserName != currentUserName)
+    {
+        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for comment {CommentId}", currentUserName, id);
+        return Forbid();
+    }
 
-    try
+    bool success = await _CommentRepository.Delete(id);
+    if (!success)
     {
-        await _CommentRepository.Delete(id);
-        _logger.LogInformation("Comment with ID {CommentId} ble slettet", id);
-        return RedirectToAction("Notes", "Note", new { id = noteId });
+        _logger.LogError("Comment with ID {CommentId} was not deleted successfully", id);
+        return BadRequest("Comment not deleted");
     }
-    catch (Exception e)
-    {
-        _logger.LogError(e, "Error delete comment with ID {Id}", id);
-        return RedirectToAction("Notes", "Note", new { id = noteId });
-    }
+
+    _logger.LogInformation("Comment with ID {CommentId} was deleted successfully", id);
+
+    // Redirect to the correct page based on the Source parameter
+    return RedirectToAction(source == "Notes" ? "Notes" : "MyPage", "Note");
 }
+
         
     }
 }

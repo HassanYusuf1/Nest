@@ -8,8 +8,8 @@
     <p><small><strong>Written:</strong> @Model.CommentTime.ToString("yyyy-MM-dd HH:mm")</small></p>
 </div>
 
-<form asp-action="DeleteConfirmedComment" asp-route-id="@Model.CommentId" asp-route-source="@TempData["Source"]" method="post">
-    <input type="hidden" name="source" value="@TempData["Source"]" />
+<form asp-action="DeleteConfirmedCommentNote" asp-route-id="@Model.CommentId" asp-route-source="@TempData["Source"]" method="post">
+    <input type="hidden" name="source" value="@TempData["Source"]" /> <!-- Keep track of the source to redirect properly -->
     <button type="submit" class="btn btn-danger">Delete</button>
-    <a href="@((TempData["Source"] as string) == "MyPage" ? Url.Action("MyPage", "Picture") : Url.Action("Grid", "Picture"))" class="btn btn-secondary">Cancel</a>
+    <a href="@((TempData["Source"] as string) == "Notes" ? Url.Action("Notes", "Note") : Url.Action("MyPage", "Note"))" class="btn btn-secondary">Cancel</a>
 </form>

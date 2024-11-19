@@ -21,7 +21,7 @@
     {
         <div class="note-actions">
             <a asp-action="Edit" asp-route-id="@Model.NoteId" asp-route-source="@(isMyPage ? "MyPage" : "Notes")" class="btn btn-warning btn-sm">Edit</a>
-            <a asp-action="Delete" asp-route-id="@Model.NoteId" asp-route-source="@(ViewBag.Source ?? "Notes")" class="btn btn-danger btn-sm">Delete</a>
+            <a asp-action="Delete" asp-route-id="@Model.NoteId" asp-route-source="@(isMyPage ? "MyPage" : "Notes")" class="btn btn-danger btn-sm">Delete</a>
         </div>
     }
 
@@ -44,10 +44,11 @@
             <!-- Add new comment form -->
             <form asp-action="CreateCommentNote" asp-controller="Comment" method="post" class="comment-form mt-2">
                 <input type="hidden" name="NoteId" value="@Model.NoteId" />
+                <input type="hidden" name="source" value="@TempData["Source"]" /> <!-- Hidden field for Source -->
                 <div class="form-group">
                     <textarea class="form-control" name="CommentDescription" placeholder="Write a comment..." required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary btn-sm mt-1">Comment</button>
+                <button type="submit" class="btn btn-primary btn-sm mt-1">Commen</button>
             </form>
         </div>
     </div>
