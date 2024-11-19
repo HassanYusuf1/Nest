@@ -139,58 +139,62 @@ public async Task<IActionResult> EditComment(int Id, Comment updatedComment, str
 
 [HttpGet]
 [Authorize]
-public async Task<IActionResult> DeleteComment(int Id)
+public async Task<IActionResult> DeleteComment(int id, string source = "Grid")
 {
-    var Comment = await _CommentRepository.GetCommentById(Id);
+    var comment = await _CommentRepository.GetCommentById(id);
 
-    if (Comment == null)
+    if (comment == null)
     {
-        _logger.LogWarning("Comment not found when trying to delete, comment ID : {CommentId}", Id);
+        _logger.LogWarning("Comment not found when trying to delete, comment ID: {CommentId}", id);
         return NotFound();
     }
 
     var currentUserName = _userManager.GetUserName(User);
-    if (Comment.UserName != currentUserName)
+    if (comment.UserName != currentUserName)
     {
-        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for comment {CommentId}", currentUserName, Id);
+        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for comment {CommentId}", currentUserName, id);
         return Forbid();
     }
 
-    return View(Comment);
+    // Store the source in TempData for later use in the POST method.
+    TempData["Source"] = source;
+
+    return View(comment);
 }
+
 
 [HttpPost]
 [Authorize]
-public async Task<IActionResult> DeleteConfirmedComment(int Id)
+public async Task<IActionResult> DeleteConfirmedComment(int id, string source)
 {
-    var Comment = await _CommentRepository.GetCommentById(Id);
-    if (Comment == null)
+    var comment = await _CommentRepository.GetCommentById(id);
+    if (comment == null)
     {
-        _logger.LogWarning("Comment not found when trying to delete, comment ID : {CommentId}", Id);
+        _logger.LogWarning("[CommentController] Comment with Id {CommentId} not found", id);
         return NotFound();
     }
 
     var currentUserName = _userManager.GetUserName(User);
-    if (Comment.UserName != currentUserName)
+    if (comment.UserName != currentUserName)
     {
-        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for comment {CommentId}", currentUserName, Id);
+        _logger.LogWarning("Unauthorized delete attempt by user {UserName} for comment {CommentId}", currentUserName, id);
         return Forbid();
     }
 
-    var PictureId = Comment.PictureId;
+    bool success = await _CommentRepository.Delete(id);
 
-    try
+    if (!success)
     {
-        await _CommentRepository.Delete(Id);
-        _logger.LogInformation("Commenten with Id {CommentId} ble slettet", Id);
-        return RedirectToAction("Details", "Picture", new { id = PictureId });
+        _logger.LogError("[CommentController] Comment with Id {CommentId} was not deleted successfully", id);
+        TempData["Source"] = source; // Preserve source value in case of deletion failure
+        return BadRequest("Comment not deleted");
     }
-    catch (Exception e)
-    {
-        _logger.LogError(e, "Error delete comment with ID {Id}", Id);
-        return RedirectToAction("Details", "Picture", new { id = PictureId });
-    }
+
+    // Redirect to the correct page based on the Source parameter
+    return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid", "Picture");
 }
+
+
 
         //FOR NOTATER
     [HttpGet]
@@ -241,65 +245,70 @@ public async Task<IActionResult> CreateCommentNote(Comment Comment)
 
 [HttpGet]
 [Authorize]
-public async Task<IActionResult> EditCommentNote(int id)
+public async Task<IActionResult> EditCommentNote(int id, string source = "Notes")
 {
-    var Comment = await _CommentRepository.GetCommentById(id);
+    var comment = await _CommentRepository.GetCommentById(id);
 
-    if (Comment == null)
+    if (comment == null)
     {
-        _logger.LogError("[CommentController] Could not fint comment with id {Id}", id);
+        _logger.LogError("[CommentController] Could not find comment with id {Id}", id);
         return NotFound();
     }
 
     var currentUserName = _userManager.GetUserName(User);
-    if (Comment.UserName != currentUserName)
+    if (comment.UserName != currentUserName)
     {
         _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {CommentId}", currentUserName, id);
         return Forbid();
     }
 
-    return View(Comment);
+    TempData["Source"] = source; // Store source in TempData for later use in view
+    return View(comment);
 }
+
 
 [HttpPost]
 [Authorize]
-public async Task<IActionResult> EditCommentNote(Comment Comment)
+public async Task<IActionResult> EditCommentNote(int id, Comment updatedComment, string source)
 {
-    if (!ModelState.IsValid)
+    if (id != updatedComment.CommentId || !ModelState.IsValid)
     {
-        _logger.LogWarning("INvalid ModelState by comment update. CommentId: {CommentId}", Comment.CommentId);
-        return View(Comment);
+        TempData["Source"] = source; // Preserve source value in case of validation error
+        return View(updatedComment);
     }
 
-    try
+    var existingComment = await _CommentRepository.GetCommentById(id);
+    if (existingComment == null)
     {
-        var existingComment = await _CommentRepository.GetCommentById(Comment.CommentId);
-        if (existingComment == null)
-        {
-            _logger.LogError("Could not find comment with ID {CommentId}", Comment.CommentId);
-            return NotFound();
-        }
-
-        var currentUserName = _userManager.GetUserName(User);
-        if (existingComment.UserName != currentUserName)
-        {
-            _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {CommentId}", currentUserName, Comment.CommentId);
-            return Forbid();
-        }
-
-        existingComment.CommentDescription = Comment.CommentDescription;
-        existingComment.CommentTime = DateTime.Now;
-
-        await _CommentRepository.Edit(existingComment);
-
-        return RedirectToAction("Notes", "Note", new { id = existingComment.NoteId });
+        _logger.LogError("Could not find comment ID {CommentId}", updatedComment.CommentId);
+        return NotFound();
     }
-    catch (Exception e)
+
+    var currentUserName = _userManager.GetUserName(User);
+    if (existingComment.UserName != currentUserName)
     {
-        _logger.LogError(e, "Error comment update with ID {CommentId}", Comment.CommentId);
-        throw;
+        _logger.LogWarning("Unauthorized edit attempt by user {UserName} for comment {CommentId}", currentUserName, updatedComment.CommentId);
+        return Forbid();
+    }
+
+    // Update the comment content and timestamp
+    existingComment.CommentDescription = updatedComment.CommentDescription;
+    existingComment.CommentTime = DateTime.Now;
+
+    bool success = await _CommentRepository.Edit(existingComment);
+    if (success)
+    {
+        // Redirect to the correct page based on the Source parameter
+        return RedirectToAction(source == "Notes" ? "Notes" : "MyPage", "Note", new { id = existingComment.NoteId });
+    }
+    else
+    {
+        _logger.LogWarning("[CommentController] Could not update the comment.");
+        TempData["Source"] = source; // Preserve source value in case of update failure
+        return View(updatedComment);
     }
 }
+
 
 [HttpGet]
 [Authorize]

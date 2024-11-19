@@ -5,6 +5,7 @@
     var userNameBeforeAt = Model.UserName?.Split('@')[0];
     bool isMyPage = ViewData["IsMyPage"] as bool? ?? false;
     var uniqueId = Model.PictureId;
+    
 }
 
 <div class="picture-feed-card mb-4">
@@ -62,8 +63,8 @@
                     @if (User.Identity?.Name == comment.UserName)
                     {
                         <div class="comment-actions">
-                            <a asp-action="EditComment" asp-controller="Comment" asp-route-id="@comment.CommentId" class="text-primary me-2">Edit</a>
-                            <a asp-action="DeleteComment" asp-controller="Comment" asp-route-id="@comment.CommentId" class="text-danger">Delete</a>
+                        <a asp-action="EditComment" asp-controller="Comment" asp-route-id="@comment.CommentId" asp-route-source="@(isMyPage ? "MyPage" : "Grid")" class="text-decoration-none text-primary me-2">Edit</a>
+                        <a asp-action="DeleteComment" asp-controller="Comment" asp-route-id="@comment.CommentId" asp-route-source="@(isMyPage ? "MyPage" : "Grid")" class="text-danger">Delete</a>
                         </div>
                     }
                 </div>
