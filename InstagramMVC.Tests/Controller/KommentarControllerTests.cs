@@ -22,7 +22,7 @@ public class CommentControllerTests
     private readonly Mock<IPictureRepository> _pictureRepositoryMock;
     private readonly Mock<ICommentRepository> _commentRepositoryMock;
     private readonly Mock<INoteRepository> _noteRepositoryMock;
-    private readonly Mock<ILogger<PictureController>> _loggerMock;
+    private readonly Mock<ILogger<CommentController>> _loggerMock;
     private readonly Mock<UserManager<IdentityUser>> _userManagerMock;
     private readonly Mock<IUrlHelper> _urlHelperMock;
     private readonly CommentController _controller;
@@ -30,6 +30,8 @@ public class CommentControllerTests
     public CommentControllerTests() //This part of testing code is to initialize so we don't have to write this multiple times
     {
         _commentRepositoryMock = new Mock<ICommentRepository>(); 
+        _pictureRepositoryMock = new Mock<IPictureRepository>();
+        _noteRepositoryMock = new Mock<INoteRepository>();
         _loggerMock = new Mock<ILogger<CommentController>>();
 
         //Set up UserManager<IdentityUser> mock with default constructor parameters
@@ -46,36 +48,61 @@ public class CommentControllerTests
     }
 
     [Fact]
-    public async Task CreateComment_ForPictures_CreateDatabaseAndNoNoteID()
+    public async Task CreateCommentForPicture_SaveCommentInDB_Verifies()
     {
-        //Arrange
-        int pictureId = 1;
-        var title = "hello";
-        var description = "world";
-        var pictureUrl = "/images/testImage.jpg";
+        // Arrange
+        var testComment = new Comment
+        {
+            CommentId = 1,
+            PictureId = 10,
+            CommentDescription = "This is a test comment",
+            CommentTime = DateTime.UtcNow,
+            UserName = "TestUser"
+        };
 
-        var userName = "testUser";
-            _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(userName);
+        _commentRepositoryMock
+            .Setup(repo => repo.Create(It.IsAny<Comment>()))
+            .Returns(Task.CompletedTask); // Simulate repository behavior
 
-        var picture = new Picture { PictureId = pictureId, Title = title, Description = description, PictureUrl = pictureUrl, Comments = new List<Comment>(), UserName = userName };
-            _pictureRepositoryMock.Setup(repo => repo.Create(It.IsAny<Picture>())).ReturnsAsync(true);
+        // Act
+        var result = await _controller.CreateComment(testComment);
 
-        
+        // Assert
+        var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Grid", redirectResult.ActionName); // Change "Grid" to the appropriate action name if needed
+
+        _commentRepositoryMock.Verify(repo => repo.Create(It.Is<Comment>(n => 
+                n.CommentId == testComment.CommentId && 
+                n.PictureId == testComment.PictureId && n.NoteId == null)), Times.Once); //NoteId has to be null
+    }
+
+     [Fact]
+    public async Task CreateCommentForNotes_SaveCommentInDB_Verifies()
+    {
+        // Arrange
+        var testComment = new Comment
+        {
+            CommentId = 1,
+            NoteId = 10,
+            CommentDescription = "This is a test comment",
+            CommentTime = DateTime.UtcNow,
+            UserName = "TestUser"
+        };
+
+        _commentRepositoryMock
+            .Setup(repo => repo.Create(It.IsAny<Comment>()))
+            .Returns(Task.CompletedTask); // Simulate repository behavior
+
+        // Act
+        var result = _controller.CreateCommentNote(testComment);
+
+        // Assert
+        var redirectResult = Assert.IsType<ViewResult>(result); // This retrieves the ViewResult instance
+        Assert.Equal(testComment, redirectResult.Model); // Use the instance to access the Model property
 
 
-        //Act
-        var result = _controller.CreateComment(pictureId);
-
-        //Assert
-        var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsType<Comment>(viewResult.Model);
-        Assert.Equal(pictureId, model.PictureId);
-        Assert.Null(model.NoteId);
-        Assert.Contains(model, picture.Comments);
-
-        //Check if it has entered the database correctly
-        _commentRepositoryMock.Verify(r => r.Create(It.Is<Comment>(c => c.PictureId == pictureId && c.NoteId == null)), Times.Once);
-
-
+        _commentRepositoryMock.Verify(repo => repo.Create(It.Is<Comment>(n => 
+                n.CommentId == testComment.CommentId && 
+                n.NoteId == testComment.NoteId && n.PictureId == null)), Times.Once); //PictureId is null
     }
 }

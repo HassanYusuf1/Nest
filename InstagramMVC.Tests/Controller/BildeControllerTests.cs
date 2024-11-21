@@ -282,5 +282,6 @@ public class PictureControllerTests
         _pictureRepositoryMock.Verify(repo => repo.Edit(existingPicture), Times.Once);
     }
 
+
 }
 

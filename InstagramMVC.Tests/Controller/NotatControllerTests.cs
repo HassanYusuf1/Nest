@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.IO.Abstractions;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Xunit;
 using InstagramMVC.Controllers; // Adjust namespace as needed
 using InstagramMVC.Models;
@@ -100,7 +101,7 @@ namespace InstagramMVC.Tests.Controllers
 
             //Check that the result is a RedirectToActionResult, redirecting to the "Notes" or another specified page
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Notes", redirectResult.ActionName); // Change "Notes" to the appropriate action name if needed
+            Assert.Equal("MyPage", redirectResult.ActionName); // Change "Notes" to the appropriate action name if needed
         }
 
         [Fact]
@@ -116,13 +117,14 @@ namespace InstagramMVC.Tests.Controllers
 
             //Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Notes", redirectResult.ActionName); // Change "Notes" to the appropriate action name if needed
+            Assert.Equal("MyPage", redirectResult.ActionName); // Change "Notes" to the appropriate action name if needed
         }
 
         [Fact]
         public async Task DeleteConfirmed_DeletesNote_WhenNoteIdExists()
         {
             //Arrange
+            var source = "Notes";
             int noteId = 30;
             var currentUserName = "testUser";
             var newNote = new Note { NoteId = noteId, username = currentUserName };
@@ -135,7 +137,7 @@ namespace InstagramMVC.Tests.Controllers
             _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
 
             //Act
-            var result = await _controller.DeleteConfirmed(noteId);
+            var result = await _controller.DeleteConfirmed(noteId, source);
 
             //Assert
             //Check for redirect after deletion
@@ -150,6 +152,7 @@ namespace InstagramMVC.Tests.Controllers
         public async Task DeleteConfirmed_ReturnsForbid_WhenUserIsNotAuthorized()
         {
             //Arrange
+            var source = "Notes";
             var noteId = 50;
             var currentUserName = "testUser";
             var anotherUserName = "unauthorizedUser";
@@ -162,7 +165,7 @@ namespace InstagramMVC.Tests.Controllers
             _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
 
             //Act
-            var result = await _controller.DeleteConfirmed(noteId);
+            var result = await _controller.DeleteConfirmed(noteId, source);
 
             //Assert
             Assert.IsType<ForbidResult>(result);
@@ -206,8 +209,15 @@ namespace InstagramMVC.Tests.Controllers
             //Make sure ModelState is valid
             _controller.ModelState.Clear();
 
+            var tempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
+            {
+                ["Source"] = "Notes" // Simulate the TempData value
+            };
+
             //Act
-            var result = await _controller.Edit(EditedNote);
+            _controller.TempData = tempData;
+            var result = await _controller.Edit(noteId, "Notes");
+            
 
             //Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
@@ -219,6 +229,10 @@ namespace InstagramMVC.Tests.Controllers
 
             //Verify that edit was called on the repository
             _noteRepositoryMock.Verify(repo => repo.Edit(existingNote), Times.Once);
+
+            //Check TempData 
+            Assert.True(_controller.TempData.ContainsKey("Source"));
+            Assert.Equal("Notes", _controller.TempData["Source"]);
         }
 
         [Fact]
