@@ -73,12 +73,14 @@
 
         <!-- Comment Form -->
         <form asp-action="CreateComment" asp-controller="Comment" method="post" id="commentForm-@uniqueId">
-            <input type="hidden" name="PictureId" value="@Model.PictureId" />
-            <div class="form-group">
-                <textarea class="form-control" name="CommentDescription" placeholder="Add a comment..." required 
-                          onkeydown="submitOnEnter(event, '@uniqueId')"></textarea>
-            </div>
-        </form>
+        <input type="hidden" name="PictureId" value="@Model.PictureId" />
+       <input type="hidden" name="source" value="@(isMyPage ? "MyPage" : "Grid")" 
+        <div class="form-group">
+        <textarea class="form-control" name="CommentDescription" placeholder="Add a comment..." required 
+                  onkeydown="submitOnEnter(event, '@uniqueId')"></textarea>
+    </div>
+</form>
+
     </div>
 </div>
 

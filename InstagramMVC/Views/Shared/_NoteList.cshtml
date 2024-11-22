@@ -6,7 +6,7 @@
 
 }
 <div class="card mb-4 shadow-sm note-card">
-    <a asp-action="Details" asp-route-id="@Model.NoteId" asp-route-source="MyPage" class="text-decoration-none">
+    <a asp-action="Details" asp-route-id="@Model.NoteId" asp-route-source="@(isMyPage ? "MyPage" : "Notes")" class="text-decoration-none">
         <div class="card-body">
             <h4 class="note-title">@Model.Title</h4>
             <p class="note-author">Written by: @(Model.username?.Contains("@") == true ? Model.username.Split('@')[0] : Model.username)</p>
@@ -43,13 +43,14 @@
 
             <!-- Add new comment form -->
             <form asp-action="CreateCommentNote" asp-controller="Comment" method="post" class="comment-form mt-2">
-                <input type="hidden" name="NoteId" value="@Model.NoteId" />
-                <input type="hidden" name="source" value="@TempData["Source"]" /> <!-- Hidden field for Source -->
-                <div class="form-group">
-                    <textarea class="form-control" name="CommentDescription" placeholder="Write a comment..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary btn-sm mt-1">Commen</button>
-            </form>
+    <input type="hidden" name="NoteId" value="@Model.NoteId" />
+    <input type="hidden" name="source" value="@(isMyPage ? "MyPage" : "Notes")" /> <!-- Use isMyPage to set the correct source -->
+    <div class="form-group">
+        <textarea class="form-control" name="CommentDescription" placeholder="Write a comment..." required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm mt-1">Comment</button>
+</form>
+
         </div>
     </div>
 </div>

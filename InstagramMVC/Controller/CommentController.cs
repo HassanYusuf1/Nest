@@ -45,29 +45,38 @@ namespace InstagramMVC.Controllers
             }
         }
     [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> CreateComment(Comment Comment)
+[Authorize]
+public async Task<IActionResult> CreateComment(Comment comment, string source = "Grid")
+{
+    try
     {
-        try
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
+            comment.CommentTime = DateTime.Now;
+            comment.UserName = _userManager.GetUserName(User);
+            await _CommentRepository.Create(comment);
+
+            // Redirect based on the source value
+            if (source == "MyPage")
             {
-                Comment.CommentTime = DateTime.Now;
-                Comment.UserName = _userManager.GetUserName(User);
-                await _CommentRepository.Create(Comment);
-
-                return RedirectToAction("Grid", "Picture", new { id = Comment.PictureId });
+                return RedirectToAction("MyPage", "Picture");
             }
+            else
+            {
+                return RedirectToAction("Grid", "Picture");
+            }
+        }
 
-            _logger.LogWarning("[CommentController] Failed to upload comment, ModelState not working");
-            return View(Comment);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Error during comment upload");
-            throw;
-        }
+        _logger.LogWarning("[CommentController] Failed to upload comment, ModelState not working");
+        return View(comment);
     }
+    catch (Exception e)
+    {
+        _logger.LogError(e, "Error during comment upload");
+        throw;
+    }
+}
+
 
    [HttpGet]
 [Authorize]
@@ -220,11 +229,8 @@ public IActionResult CreateCommentNote(int noteId, string source = "Notes")
 
 [HttpPost]
 [Authorize]
-public async Task<IActionResult> CreateCommentNote(Comment comment)
+public async Task<IActionResult> CreateCommentNote(Comment comment, string source = "Notes")
 {
-    // Retrieve the source from TempData right at the beginning
-    var source = TempData["Source"] as string ?? "Notes";
-
     try
     {
         if (ModelState.IsValid)
@@ -247,7 +253,6 @@ public async Task<IActionResult> CreateCommentNote(Comment comment)
         }
 
         _logger.LogWarning("[CommentController] Error new note upload, ModelState invalid");
-        TempData.Keep("Source"); // Keep the TempData value for re-use after a validation failure
         return View(comment);
     }
     catch (Exception e)
@@ -256,6 +261,7 @@ public async Task<IActionResult> CreateCommentNote(Comment comment)
         throw;
     }
 }
+
 
 
 
