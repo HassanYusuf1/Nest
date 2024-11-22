@@ -174,7 +174,7 @@ namespace InstagramMVC.Tests.Controllers
         [Fact]
         public async Task Edit_note_ReturnsToNotes_WhenEditIsOk()
         {
-            //Arrange
+            // Arrange
             var noteId = 50;
             var currentUserName = "testUser";
             var existingTitle = "Old Title";
@@ -182,7 +182,7 @@ namespace InstagramMVC.Tests.Controllers
             var newTitle = "New Title";
             var newContent = "New Content";
 
-            //Set up the existing note in the repository
+            // Set up the existing note in the repository
             var existingNote = new Note
             {
                 NoteId = noteId,
@@ -191,46 +191,50 @@ namespace InstagramMVC.Tests.Controllers
                 Content = existingContent,
             };
 
-            //Set up the Edited note details
+            // Set up the Edited note details
             var EditedNote = new Note
             {
-                NoteId = noteId, //Make sure the IDs match to pass the ID check
+                NoteId = noteId, // Make sure the IDs match to pass the ID check
                 Title = newTitle,
                 Content = newContent
             };
 
-            //Mock repository to return the existing note and confirm successful Edit
+            // Mock repository to return the existing note and confirm successful Edit
             _noteRepositoryMock.Setup(repo => repo.GetNoteById(noteId)).ReturnsAsync(existingNote);
-            _noteRepositoryMock.Setup(repo => repo.Edit(existingNote)).Returns(Task.CompletedTask);
+            _noteRepositoryMock.Setup(repo => repo.Edit(It.IsAny<Note>())).Returns(Task.CompletedTask);
 
-            //Mock user identity to match the note owner
+            // Mock user identity to match the note owner
             _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns(currentUserName);
 
-            //Make sure ModelState is valid
+            // Make sure ModelState is valid
             _controller.ModelState.Clear();
 
+            // Set up TempData
             var tempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>())
             {
                 ["Source"] = "Notes" // Simulate the TempData value
             };
-
-            //Act
             _controller.TempData = tempData;
-            var result = await _controller.Edit(noteId, "Notes");
-            
 
-            //Assert
-            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Notes", redirectResult.ActionName); //Make sure redirection to the "Notes" action
+            // Act
+            var result = await _controller.Edit(EditedNote, "Notes");
 
-            //Verify that the title and Content have been edited in the existing note
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result); // Verify the result is a RedirectToActionResult
+            Assert.Equal("Notes", redirectResult.ActionName); // Ensure redirection to the "Notes" action
+
+            // Verify that the title and Content have been edited in the existing note
             Assert.Equal(newTitle, existingNote.Title);
             Assert.Equal(newContent, existingNote.Content);
 
-            //Verify that edit was called on the repository
-            _noteRepositoryMock.Verify(repo => repo.Edit(existingNote), Times.Once);
+            // Verify that Edit was called on the repository
+            _noteRepositoryMock.Verify(repo => repo.Edit(It.Is<Note>(n =>
+                n.NoteId == noteId &&
+                n.Title == newTitle &&
+                n.Content == newContent
+            )), Times.Once);
 
-            //Check TempData 
+            // Check TempData 
             Assert.True(_controller.TempData.ContainsKey("Source"));
             Assert.Equal("Notes", _controller.TempData["Source"]);
         }
