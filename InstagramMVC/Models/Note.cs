@@ -11,7 +11,7 @@ namespace InstagramMVC.Models
         [Required]
         public string Content {get; set;} = string.Empty;
 
-        public DateTime UploadDate {get; set;} // dato innlegget ble opprettet
+        public DateTime UploadDate {get; set;} 
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public string? username {get; set;}
 
