@@ -1,0 +1,19 @@
+@model Nest.ViewModels.NotesViewModel
+
+<div class="container-page">
+    <h1>My notes</h2>
+    
+    <!-- Liste over mine notater -->
+    <div class="row mt-5">
+        @foreach (var note in Model.Notes)
+        {
+            <div class="col-md-4 mb-4">  <!-- Change col-md-4 to ensure 3 notes per row -->
+                @await Html.PartialAsync("_NoteList", note)
+            </div>
+        }
+    </div>
+
+    <div class="mt-4 text-center">
+        <a asp-action="Create" asp-controller="Note" class="btn btn-primary">Create new note</a>
+    </div>
+</div>

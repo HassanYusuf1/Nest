@@ -1,0 +1,16 @@
+@model Nest.Models.Comment
+
+<div class="container mt-4">
+    <h4>Add Comment</h4>
+    <form asp-action="CreateCommentNote" method="post" class="d-flex align-items-center">
+        <input type="hidden" asp-for="NoteId" />
+        <input type="hidden" name="source" value="@TempData["Source"]" /> <!-- Hidden field to store the source value -->
+
+        <div class="form-group flex-grow-1 mr-2">
+            <textarea asp-for="CommentDescription" class="form-control" rows="1" placeholder="Write your comment here..."></textarea>
+            <span asp-validation-for="CommentDescription" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary ml-2">Comment</button>
+    </form>
+</div>
