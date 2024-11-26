@@ -11,7 +11,7 @@ namespace Instagram.Controllers
             if (User?.Identity?.IsAuthenticated == true)
             {
                 // If logged in, redirect to the user's main page
-                return Redirect("~/Picture/MyPage"); 
+                return Redirect("~/Picture/MyPage");
             }
 
             // Show the default welcome page for users who aren’t logged in
