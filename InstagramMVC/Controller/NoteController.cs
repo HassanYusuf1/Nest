@@ -111,6 +111,7 @@ public class NoteController : Controller
         if (ModelState.IsValid)
         {
             note.username = _userManager.GetUserName(User);
+            note.UploadDate = DateTime.UtcNow;
             await _noteRepository.Create(note);
             return RedirectToAction(nameof(MyPage));
         }
