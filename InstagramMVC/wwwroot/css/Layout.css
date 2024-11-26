@@ -1,4 +1,4 @@
-h1{
+h1 {
   margin-top: 3rem;
   margin-bottom: 3rem;
 }
@@ -34,6 +34,8 @@ body.home-page {
 }
 
 .homepage-login-register-box {
+  position: relative;
+  top: -200px;
   background: rgba(255, 255, 255, 0.1);
   padding: 30px;
   border-radius: 12px;
@@ -156,12 +158,12 @@ body.picture {
   bottom: 0;
   width: 0;
   height: 2px;
-  background-color: #007BFF;
+  background-color: #007bff;
   transition: width 0.3s ease;
 }
 
 .nav-item-custom:hover {
-  color: #007BFF; /* Changes text color on hover */
+  color: #007bff; /* Changes text color on hover */
 }
 
 .nav-item-custom:hover::after {
