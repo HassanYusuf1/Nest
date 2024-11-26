@@ -4,7 +4,7 @@ using InstagramMVC.Models;
 
 namespace InstagramMVC.DAL
 {
-    public interface IPictureRepository 
+    public interface IPictureRepository
     {
         //Henter Alle pictures fra databasen
         Task<IEnumerable<Picture>?> GetAll();
@@ -21,7 +21,7 @@ namespace InstagramMVC.DAL
         // Sletter et picture basert på ID.
         Task<bool> Delete(int id);
 
-         
+
 
     }
 

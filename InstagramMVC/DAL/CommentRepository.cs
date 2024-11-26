@@ -1,7 +1,7 @@
 
 using InstagramMVC.Models;
 using Microsoft.EntityFrameworkCore;
- 
+
 namespace InstagramMVC.DAL
 {
     public class CommentRepository : ICommentRepository
@@ -10,7 +10,7 @@ namespace InstagramMVC.DAL
 
         private readonly ILogger<CommentRepository> _logger;
 
-        public CommentRepository( MediaDbContext context, ILogger<CommentRepository> logger )
+        public CommentRepository(MediaDbContext context, ILogger<CommentRepository> logger)
         {
             _context = context;
             _logger = logger;
@@ -23,10 +23,10 @@ namespace InstagramMVC.DAL
                 return await _context.Comments.ToListAsync();
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(e, "[CommentRepository] Comment ToListAsync failed using GetAll(). Error: {ErrorMessage}", e.Message);
-                 return Enumerable.Empty<Comment>();
+                return Enumerable.Empty<Comment>();
             }
         }
 
@@ -38,7 +38,7 @@ namespace InstagramMVC.DAL
                 return await _context.Comments.FindAsync(id);
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(e, "[CommentRepository] Failed using GetCommentById for CommentId {CommentId:0000}. Error: {ErrorMessage}", id, e.Message);
                 return null;
@@ -75,26 +75,26 @@ namespace InstagramMVC.DAL
                 await _context.SaveChangesAsync();
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(e, "[CommentRepository] Error comment upload with id {@Comment}. error: {ErrorMessage}", comment, e.Message);
             }
         }
 
-       public async Task<bool> Edit(Comment comment)
-{
-    try
-    {
-        _context.Comments.Update(comment);
-        await _context.SaveChangesAsync();
-        return true;
-    }
-    catch (Exception e)
-    {
-        _logger.LogError("[CommentRepository] Error updating comment ID {CommentId}, error: {e}", comment.CommentId, e.Message);
-        return false;
-    }
-}
+        public async Task<bool> Edit(Comment comment)
+        {
+            try
+            {
+                _context.Comments.Update(comment);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("[CommentRepository] Error updating comment ID {CommentId}, error: {e}", comment.CommentId, e.Message);
+                return false;
+            }
+        }
 
 
         public async Task<bool> Delete(int id)
@@ -103,7 +103,7 @@ namespace InstagramMVC.DAL
             {
                 var comment = await _context.Comments.FindAsync(id);
 
-                if(comment == null)
+                if (comment == null)
                 {
                     return false;
                 }
@@ -112,13 +112,13 @@ namespace InstagramMVC.DAL
                 return true;
             }
 
-            
-            catch(Exception e)
+
+            catch (Exception e)
             {
                 _logger.LogError(e, "[CommentRepository] failed deleting comment with ID {CommentId:0000}. error: {ErrorMessage}", id, e.Message);
                 return false;
             }
-                
+
         }
 
     }

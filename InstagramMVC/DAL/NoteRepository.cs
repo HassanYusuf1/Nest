@@ -73,19 +73,19 @@ public class NoteRepository : INoteRepository
     }
 
     public async Task<bool> Delete(int NoteId)
-    {   
+    {
         var note = await _db.Notes.FindAsync(NoteId); // Find the Note object by its ID
         if (note != null)
         {
-        _db.Notes.Remove(note);  // Now pass the object to Remove, not the ID
-        await _db.SaveChangesAsync();
-        return true;
-    }
-    else
-    {
-        _logger.LogError("Failed finding note with id: {NoteId}", NoteId);
-        return false;
-    }
+            _db.Notes.Remove(note);  // Now pass the object to Remove, not the ID
+            await _db.SaveChangesAsync();
+            return true;
+        }
+        else
+        {
+            _logger.LogError("Failed finding note with id: {NoteId}", NoteId);
+            return false;
+        }
     }
 
     public async Task<bool> DeleteConfirmed(int NoteId)
@@ -98,5 +98,5 @@ public class NoteRepository : INoteRepository
             return true;
         }
         return false;
-}
+    }
 }

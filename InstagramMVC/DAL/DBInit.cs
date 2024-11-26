@@ -12,13 +12,13 @@ public static class DBInit
     {
         // Create a new scope to resolve services
         using var serviceScope = app.ApplicationServices.CreateScope();
-        
+
         // Get the database context from the service provider
         var context = serviceScope.ServiceProvider.GetRequiredService<MediaDbContext>();
-        
+
         // Get the user manager to handle user-related operations
         var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-        
+
         // Delete the existing database and create a new one if needed
         context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
@@ -30,26 +30,26 @@ public static class DBInit
             // Create a new default user if one doesn't already exist
             defaultUser = new IdentityUser
             {
-                UserName = "Ali123@hotmail.com", 
-                Email = "Ali123@hotmail.com", 
-                EmailConfirmed = true 
+                UserName = "Ali123@hotmail.com",
+                Email = "Ali123@hotmail.com",
+                EmailConfirmed = true
             };
             // Add the user to the database with the specified password
             await userManager.CreateAsync(defaultUser, "Bekam2305."); // Use the provided password
         }
 
         // Seed data for images (Pictures)
-        if (!context.Pictures.Any()) 
+        if (!context.Pictures.Any())
         {
             var pictures = new List<Picture>
             {
                 new Picture
                 {
-                    Title = "Digg", 
-                    Description = "Va.", 
-                    PictureUrl = "/images/Solnedgang_JPG.jpg", 
-                    UploadDate = DateTime.Now.AddDays(-10), 
-                    UserName = defaultUser.UserName 
+                    Title = "Digg",
+                    Description = "Va.",
+                    PictureUrl = "/images/Solnedgang_JPG.jpg",
+                    UploadDate = DateTime.Now.AddDays(-10),
+                    UserName = defaultUser.UserName
                 }
             };
             // Add the images to the database
@@ -58,33 +58,33 @@ public static class DBInit
         }
 
         // Seed data for notes (Notes)
-        if (!context.Notes.Any()) 
+        if (!context.Notes.Any())
         {
             var notes = new List<Note>
             {
-                new Note 
-                { 
-                    Title = "Dagbok - Dag 1", 
-                    Content = "Startet dagen med en god frokost og dro på tur.", 
-                    UploadDate = DateTime.Now.AddDays(-10), 
-                    username = defaultUser.UserName 
+                new Note
+                {
+                    Title = "Dagbok - Dag 1",
+                    Content = "Startet dagen med en god frokost og dro på tur.",
+                    UploadDate = DateTime.Now.AddDays(-10),
+                    username = defaultUser.UserName
                 },
-                new Note 
-                { 
-                    Title = "Dagbok - Dag 2", 
-                    Content = "Møtte noen venner for fjelltur. Fantastisk utsikt!", 
-                    UploadDate = DateTime.Now.AddDays(-9), 
-                    username = defaultUser.UserName 
+                new Note
+                {
+                    Title = "Dagbok - Dag 2",
+                    Content = "Møtte noen venner for fjelltur. Fantastisk utsikt!",
+                    UploadDate = DateTime.Now.AddDays(-9),
+                    username = defaultUser.UserName
                 }
             };
-            
+
             // Add the notes to the database
             context.Notes.AddRange(notes);
             await context.SaveChangesAsync(); // Save changes to the database
         }
 
         // Seed data for comments (Comments) on images
-        if (!context.Comments.Any()) 
+        if (!context.Comments.Any())
         {
             var comments = new List<Comment>
             {
@@ -97,14 +97,14 @@ public static class DBInit
         }
 
         // Seed data for comments on notes (Comments for Notes)
-        if (!context.Comments.Any(k => k.NoteId == 1)) 
+        if (!context.Comments.Any(k => k.NoteId == 1))
         {
             var noteComments = new List<Comment>
             {
-                new Comment { NoteId = 1, CommentDescription = "Great start to the day!", CommentTime = DateTime.Now.AddDays(-5) }, 
-                new Comment { NoteId = 1, CommentDescription = "Sounds amazing!", CommentTime = DateTime.Now.AddDays(-4) } 
+                new Comment { NoteId = 1, CommentDescription = "Great start to the day!", CommentTime = DateTime.Now.AddDays(-5) },
+                new Comment { NoteId = 1, CommentDescription = "Sounds amazing!", CommentTime = DateTime.Now.AddDays(-4) }
             };
-            
+
             // Add the comments for notes to the database
             context.Comments.AddRange(noteComments);
             await context.SaveChangesAsync(); // Save changes to the database
