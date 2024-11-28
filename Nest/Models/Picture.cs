@@ -8,8 +8,6 @@ namespace Nest.Models {
         public int PictureId { get; set; }
 
         //URL of the Picture
-        [Required(ErrorMessage = "Picture URL is required.")]
-        [Url(ErrorMessage = "The Picture URL must be a valid URL.")]
         public string? PictureUrl { get; set; }  // Stores the file path to the picture
 
         //Title of the Picture
