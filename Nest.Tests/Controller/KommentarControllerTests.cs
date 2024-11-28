@@ -112,6 +112,21 @@ public class CommentControllerTests
     }
 
     [Fact]
+    public async Task Create_ReturnsView_WhenModelStateIsInvalid()
+    {
+        // Arrange
+        _controller.ModelState.AddModelError("Content", "Required");
+        var newComment = new Comment();
+
+        // Act
+        var result = await _controller.CreateComment(newComment);
+
+        // Assert
+        var viewResult = Assert.IsType<ViewResult>(result);
+        Assert.Equal(newComment, viewResult.Model);
+    }
+
+    [Fact]
     public async Task DeleteCommentForPictures_DBConfirmed_WhenCommentIdExist()
     {
         //Arrange

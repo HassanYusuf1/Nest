@@ -1,20 +1,37 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace Nest.Models
 {
     public class Note
     {
-        public int NoteId {get; set;}
-        [Required]
-        public string Title {get; set;} = string.Empty;
-        [Required]
-        public string Content {get; set;} = string.Empty;
+        //Primary Key
+        public int NoteId { get; set; }
 
-        public DateTime UploadDate {get; set;} 
+        //Title of the Note
+        [Required(ErrorMessage = "Title is required.")]
+        [StringLength(200, ErrorMessage = "Title cannot exceed 200 characters.")]
+        public string Title { get; set; } = string.Empty;
+
+        //Content of the Note
+        [Required(ErrorMessage = "Content is required.")]
+        [StringLength(2000, ErrorMessage = "Content cannot exceed 2000 characters.")]
+        public string Content { get; set; } = string.Empty;
+
+        //ate the Note was uploaded
+        [Required]
+        public DateTime UploadDate { get; set; } = DateTime.Now;
+
+        //List of Comments associated with the Note
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-        public string? username {get; set;}
 
-        
+        //Username of the person who created the Note
+        [Required(ErrorMessage = "Username is required.")]
+        [StringLength(100, ErrorMessage = "Username cannot exceed 100 characters.")]
+        public string? Username { get; set; }
     }
 }

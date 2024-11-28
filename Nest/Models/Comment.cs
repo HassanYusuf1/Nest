@@ -1,25 +1,39 @@
-namespace Nest.Models{
-public class Comment {
+using System;
+using System.ComponentModel.DataAnnotations;
 
-    public int CommentId {get; set;}  // PK
-    // Picture sin id
-    public int? PictureId{get; set;} //FK
+namespace Nest.Models
+{
+    public class Comment
+    {
+        //Primary Key
+        public int CommentId { get; set; }
 
-    public int? NoteId {get; set;}
+        //Foreign Key to Picture
+        public int? PictureId { get; set; } //Optional, since it's nullable
 
-    //Comment innehold
-    public string?  CommentDescription  {get;set;}  
+        //Foreign Key to Note
+        public int? NoteId { get; set; } // Optional, since it's nullable
 
-    public DateTime CommentTime {get; set;}
+        //Comment content/description
+        [Required(ErrorMessage = "Comment description is required.")]
+        [StringLength(500, ErrorMessage = "Comment description cannot exceed 500 characters.")]
+        public string? CommentDescription { get; set; }
 
-    // Relasjon til Picture
-    public virtual Picture? Picture {get; set;} 
+        //Timestamp for when the comment was made
+        [Required]
+        public DateTime CommentTime { get; set; }
 
-    public virtual Note? Note { get; set; }
+        //Navigation property for related Picture
+        public virtual Picture? Picture { get; set; }
 
-    //public virtual IdentityUser? Bruker // legger til dette når vi har lagt inn identityuser
-    public string? UserName {get; set;} 
+        //Navigation property for related Note
+        public virtual Note? Note { get; set; }
 
-    
-}
+        //Username associated with the comment
+        [Required(ErrorMessage = "User name is required.")]
+        [StringLength(100, ErrorMessage = "User name cannot exceed 100 characters.")]
+        public string? UserName { get; set; }
+
+        //public virtual IdentityUser? Bruker; //Uncomment when IdentityUser is implemented
+    }
 }

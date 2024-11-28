@@ -2,24 +2,36 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Nest.Models;
 namespace Nest.Models {
-    public class Picture {
-        public int PictureId { get; set; }  
-        public string? PictureUrl {get; set;}  // Lagrer filstien til picture
-        public string? Title {get; set;} // Picturetekst
+    public class Picture
+    {
+        //Primary Key
+        public int PictureId { get; set; }
 
+        //URL of the Picture
+        [Required(ErrorMessage = "Picture URL is required.")]
+        [Url(ErrorMessage = "The Picture URL must be a valid URL.")]
+        public string? PictureUrl { get; set; }  // Stores the file path to the picture
 
-        // Beskrivelse for picture picturet  Maks 500 tegn
-        [StringLength(500)]
-        public String? Description {get; set;}
+        //Title of the Picture
+        [Required(ErrorMessage = "Title is required.")]
+        [StringLength(200, ErrorMessage = "Title cannot exceed 200 characters.")]
+        public string? Title { get; set; } // Text for picture title
 
-        public DateTime UploadDate {get; set;} // dato innlegget ble opprettet
+        //Description for the Picture, maximum of 500 characters
+        [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
+        public string? Description { get; set; }
 
+        //Date the Picture was uploaded
+        [Required]
+        public DateTime UploadDate { get; set; } = DateTime.Now;
+
+        //List of Comments associated with the Picture
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-        
-        public string? UserName {get; set;} 
 
-
-    
-}
+        //Username of the person who uploaded the Picture
+        [Required(ErrorMessage = "Username is required.")]
+        [StringLength(100, ErrorMessage = "Username cannot exceed 100 characters.")]
+        public string? UserName { get; set; }
+    }
 
 }
