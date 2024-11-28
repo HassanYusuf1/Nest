@@ -29,7 +29,6 @@ namespace Nest.Models {
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         //Username of the person who uploaded the Picture
-        [Required(ErrorMessage = "Username is required.")]
         [StringLength(100, ErrorMessage = "Username cannot exceed 100 characters.")]
         public string? UserName { get; set; }
     }
