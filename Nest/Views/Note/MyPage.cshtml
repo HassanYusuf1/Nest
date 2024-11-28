@@ -7,7 +7,7 @@
     <div class="row mt-5">
         @foreach (var note in Model.Notes)
         {
-            <div class="col-md-4 mb-4">  <!-- Change col-md-4 to ensure 3 notes per row -->
+            <div class="col mb-4">  <!-- Change col-md-4 to ensure 3 notes per row -->
                 @await Html.PartialAsync("_NoteList", note)
             </div>
         }

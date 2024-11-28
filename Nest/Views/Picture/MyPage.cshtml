@@ -4,14 +4,14 @@
     var returnUrl = Url.Action("MyPage", "Picture");
 }
 
-<div class="container-page">
+<div class="container">
     <h1>My Pictures</h1>
 
     <!-- List of pictures -->
-    <div class="row mt-5">
+    <div class="row flex-column align-items-center">
         @foreach (var picture in Model.Pictures)
         {
-            <div class="col-12 col-md-4 col-lg-4 mb-4"> <!-- Change to col-md-4 for 3 per row -->
+            <div class="col-12 mb-4"> <!-- Change to col-md-4 for 3 per row -->
                 @await Html.PartialAsync("_PictureCard", picture, new ViewDataDictionary(ViewData) { { "returnUrl", returnUrl } })
             </div>
         }
