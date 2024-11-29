@@ -16,6 +16,16 @@
   background-repeat: no-repeat; /* Prevent tiling */
 }
 
+.carousel-fade .carousel-item {
+  opacity: 0; /* Start fully transparent */
+  transition: opacity 2.5s ease-in-out; /* Smooth fade duration (adjustable) */
+}
+
+.carousel-fade .carousel-item.active {
+  opacity: 1; /* Fully visible for the active slide */
+  transition: opacity 2.5s ease-in-out; /* Match the fade duration */
+}
+
 /* Foreground content styling */
 .foreground-content {
   position: relative;
