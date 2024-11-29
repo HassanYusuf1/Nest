@@ -14,6 +14,8 @@ using Nest.Models;
 using Nest.DAL;
 using Nest.ViewModels;
 using Nest.Utilities;
+#nullable disable
+
 
 namespace Nest.Tests.Controllers;
 
@@ -222,6 +224,7 @@ public class PictureControllerTests
     }
 
     //Reset FileUtil delegates after each test to avoid side effects in other tests
+    [Fact]
     public void Dispose()
     {
         FileUtil.FileExists = System.IO.File.Exists;

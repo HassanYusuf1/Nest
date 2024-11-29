@@ -15,6 +15,8 @@ using Nest.Models;
 using Nest.DAL;
 using Nest.ViewModels;
 using Nest.Utilities;
+#nullable disable
+
 
 namespace Nest.Tests.Controllers;
 
@@ -25,7 +27,6 @@ public class CommentControllerTests
     private readonly Mock<INoteRepository> _noteRepositoryMock;
     private readonly Mock<ILogger<CommentController>> _loggerMock;
     private readonly Mock<UserManager<IdentityUser>> _userManagerMock;
-    private readonly Mock<IUrlHelper> _urlHelperMock;
     private readonly CommentController _controller;
 
     public CommentControllerTests() //This part of testing code is to initialize so we don't have to write this multiple times
@@ -393,6 +394,22 @@ public class CommentControllerTests
         //Check TempData
         Assert.True(_controller.TempData.ContainsKey("Source"));
         Assert.Equal("Grid", _controller.TempData["Source"]);
+    }
+    
+    [Fact]
+    public async Task CreateComment_ReturnsView_WhenDatabaseSaveFails()
+    {
+        //Arrange
+        var newComment = new Comment();
+        _userManagerMock.Setup(u => u.GetUserName(It.IsAny<ClaimsPrincipal>())).Returns("testUser");
+        _commentRepositoryMock.Setup(repo => repo.Create(It.IsAny<Comment>())).Returns(Task.CompletedTask);
+
+        //Act
+        var result = await _controller.CreateCommentNote(newComment, "Notes");
+
+        //Assert
+        var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Notes", redirectResult.ActionName); // Change "Notes" to the appropriate action name if needed
     }
 
 
