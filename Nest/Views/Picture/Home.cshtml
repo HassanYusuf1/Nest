@@ -1,0 +1,24 @@
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Nest</title>
+</head>
+
+    <div class="container">
+        <div>
+            <h2 class="spaced-heading">Welcome to Nest</h2>
+            <h2 class="card-text">
+                Nest is your new home for sharing images and notes effortlessly. 
+                Stay connected, express your creativity, and keep your memories alive.
+            </h2>
+        </div>
+        <div class="button-container">
+            <a class="btn" asp-controller="Picture" asp-action="MyPage">Go to Pictures</a>
+            <a class="btn" asp-controller="Note" asp-action="MyPage">Go to Notes</a>
+        </div>
+        <div>
+            <partial name="_Carousel" />
+        </div>
+    </div>
+

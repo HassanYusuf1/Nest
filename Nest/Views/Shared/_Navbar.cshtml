@@ -20,6 +20,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item-custom">
+                    <a class="nav-link text-dark" asp-controller="Picture" asp-action="Home">Home</a>
+                </li>
+                <li class="nav-item-custom">
                     <a class="nav-link text-dark" asp-controller="Picture" asp-action="Grid">Pictures</a>
                 </li>
                 <li class="nav-item-custom">
@@ -34,9 +37,9 @@
 
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <li class="btn btn-danger margin-left">
+                    <li class="btn">
                         <form method="post" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" class="form-inline">
-                            <button type="submit" class="btn btn-danger nav-link">Logout</button>
+                            <button type="submit" class="logout-button">Logout</button>
                         </form>
                     </li>
                 }

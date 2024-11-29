@@ -296,5 +296,18 @@ namespace Nest.Controllers
             // Redirect to the correct page based on the Source parameter
             return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
         }
+
+        public IActionResult Home()
+        {
+            //Path to the images folder in wwwroot
+            var imageFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images-carousel");
+        
+            //Get all image file paths
+            var images = Directory.GetFiles(imageFolderPath)
+                              .Select(file => "/images-carousel/" + Path.GetFileName(file))
+                              .ToList();
+
+            return View(images); // Pass images to the view
+        }
     }
 }

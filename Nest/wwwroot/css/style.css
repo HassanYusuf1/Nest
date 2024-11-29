@@ -254,15 +254,11 @@
   background-color: #007bb5;
 }
 
-.posts-container {
-  width: 90%; /* Adjust width to control the posts container's size */
-  max-width: 800px; /* Optional: limit maximum width */
-  margin-top: 20px; /* Add some spacing from the top of the page */
-  display: flex;
-  flex-direction: column;
-  gap: 15px; /* Space between posts */
-  background-color: #ffffff; /* Optional: background color for the container */
-  padding: 10px; /* Add padding inside the container */
-  border-radius: 10px; /* Optional: rounded corners */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+.spaced-heading {
+  font-size: 2rem; /* Adjust the size of the heading */
+  font-family: 'Arial', sans-serif; /* Use a clean, modern font */
+  color: #333; /* Neutral color for the text */
+  margin: 30px 0; /* Adds space above and below the heading */
+  text-align: center; /* Centers the heading */
+  font-weight: bold; /* Makes the heading stand out */
 }
