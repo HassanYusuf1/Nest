@@ -1,6 +1,6 @@
 h1 {
   font-size: 2.5rem;
-  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-family: "Helvetica", "Arial", sans-serif;
   color: #333;
   text-align: center;
   font-weight: 700;
@@ -10,7 +10,7 @@ h1 {
 }
 
 h1::after {
-  content: '';
+  content: "";
   display: block;
   width: 100%;
   height: 4px;
@@ -441,80 +441,49 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom {
 
 /* LOG OUT BUTTON ON NAVBAR*/
 .logout-button {
-  padding: 10px 20px; 
+  padding: 10px 20px;
   font-size: 1rem;
-  font-family: 'Arial', sans-serif;
-  color: #fff; 
+  font-family: "Arial", sans-serif;
+  color: #fff;
   background: red;
-  border: none; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  transition: background 0.3s, transform 0.2s; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .logout-button:hover {
-  background: linear-gradient(90deg, #e60000, #cc0000); 
-  transform: scale(1.05); 
+  background: linear-gradient(90deg, #e60000, #cc0000);
+  transform: scale(1.05);
 }
 
 .logout-button:active {
-  transform: scale(0.95); 
-  background: linear-gradient(90deg, #cc0000, #b30000); 
+  transform: scale(0.95);
+  background: linear-gradient(90deg, #cc0000, #b30000);
 }
 
 /* Button styling for pictures Home */
 .button-container {
-  display: flex;  
-  justify-content: center; 
-  gap: 20px; 
-  margin: 50px 0; 
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 50px 0;
 }
 
-
 .button-container a {
-  padding: 20px 40px; 
-  font-size: 1.5rem; 
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(90deg, #ff8a00, #da1b60); 
-  color: #fff; 
-  border: none; 
-  border-radius: 10px; 
-  cursor: pointer; 
-  transition: transform 0.2s, background 0.3s; 
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(90deg, #ff8a00, #da1b60);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
 }
 
 /* Hover effect for buttons ON PICTURE HOME */
 .button-container a:hover {
-  transform: scale(1.05);  
+  transform: scale(1.05);
   color: #fff;
-}
-
-/* CAROUSEL!!!!*/
-.carousel {
-  max-width: 500px; 
-  margin: 20px auto;
-  border-radius: 10px;
-  overflow: hidden; 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
-}
-
-.carousel img {
-  height: auto; 
-  object-fit: cover; 
-}
-
-.carousel-indicators button {
-  width: 12px; 
-  height: 12px;
-  border-radius: 50%; 
-  background-color: #0b0707; 
-  border: none;
-}
-
-.carousel-indicators .active {
-  background-color: #333; 
-}
-
-.carousel-inner {
-  border-radius: 10px; 
 }
