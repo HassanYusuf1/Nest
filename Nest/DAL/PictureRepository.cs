@@ -43,7 +43,7 @@ namespace Nest.DAL
             }
             catch(Exception e)
             {
-                _logger.LogError("[PictureRepository] Error uploading picture {@picture}, error: {e} ", picture , e.Message);
+                _logger.LogError("[PictureRepository] uploading picture {@picture} failed, error: {e} ", picture , e.Message);
                 return false;
             }
         }
@@ -56,7 +56,7 @@ namespace Nest.DAL
             }
             catch (Exception e)
             {
-                _logger.LogError("[PictureRepository] Error getting picture with ID {id} (FindAsync), error: {e}", id, e.Message);
+                _logger.LogError("[PictureRepository] Getting picture ID failed  {id} (FindAsync), error: {e}", id, e.Message);
                 return null;
             }
         }
@@ -70,7 +70,7 @@ namespace Nest.DAL
            }
            catch(Exception e)
            {
-            _logger.LogError("[PictureRepository] Error picture update ID {PictureId} , error: {e}", picture.PictureId,e.Message);
+            _logger.LogError("[PictureRepository] Picture update failed ID {PictureId} , error: {e}", picture.PictureId,e.Message);
             return false;
            }
         }
@@ -92,7 +92,7 @@ namespace Nest.DAL
             }
             catch(Exception e)
             {
-                _logger.LogError("[PictureRepository] Error picture delete with ID {id} , error: {e}", id, e.Message);
+                _logger.LogError("[PictureRepository] Picture delete failed with ID {id} , error: {e}", id, e.Message);
                 return false;
 
             }

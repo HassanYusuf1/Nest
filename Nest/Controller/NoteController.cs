@@ -45,7 +45,7 @@ public class NoteController : Controller
         var userNotes = allNotes.Where(n => n.username == currentUserName).ToList();
         var notesViewModel = new NotesViewModel(userNotes, "MyPage");
 
-        ViewData["IsMyPage"] = true; // Set the source for MyPage
+        ViewData["IsMyPage"] = true; //Set the source for MyPage
 
         return View("MyPage", notesViewModel);
     }
@@ -69,7 +69,7 @@ public class NoteController : Controller
             return Forbid();
         }
 
-        TempData["Source"] = source; // Store source in TempData
+        TempData["Source"] = source; //Store source in TempData for later use in view
         return View(note);
     }
 
@@ -93,7 +93,7 @@ public class NoteController : Controller
 
         await _noteRepository.DeleteConfirmed(id);
 
-        // Redirect to the correct page based on the Source parameter
+        //Redirect to the correct page 
         return RedirectToAction(source == "MyPage" ? "MyPage" : "Notes");
     }
 
@@ -137,7 +137,7 @@ public class NoteController : Controller
             return Forbid();
         }
 
-        TempData["Source"] = source; // Store source in TempData for use in redirection
+        TempData["Source"] = source; //Store source in TempData for later use in view
         return View(note);
     }
 
@@ -147,7 +147,7 @@ public class NoteController : Controller
     {
         if (!ModelState.IsValid)
         {
-            TempData["Source"] = source; // Preserve source value in case of validation error
+            TempData["Source"] = source; 
             _logger.LogWarning("[NoteController] Note update failed due to invalid ModelState {@note}", note);
             return View(note);
         }
@@ -172,7 +172,7 @@ public class NoteController : Controller
 
         await _noteRepository.Edit(existingNote);
 
-        // Redirect to the correct page based on the Source parameter
+        // Redirect to the correct page 
         return RedirectToAction(source == "MyPage" ? "MyPage" : "Notes");
     }
 
@@ -190,7 +190,7 @@ public class NoteController : Controller
         }
 
 
-        ViewData["IsMyPage"] = false; // Set the source for general feed
+        ViewData["IsMyPage"] = false; //Set the source for general feed
 
         return View(notesViewModel);
     }
@@ -205,7 +205,7 @@ public class NoteController : Controller
             return NotFound("Note not found for the NoteId");
         }
 
-        ViewBag.Source = source; // Lagre source i ViewBag for bruk i visningen
+        ViewBag.Source = source; 
         return View("Details", note);
     }
 

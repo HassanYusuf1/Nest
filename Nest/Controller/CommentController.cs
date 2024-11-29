@@ -36,7 +36,7 @@ namespace Nest.Controllers
 
 
             }
-            //Nye Commenter return til view
+            //Commenter return til view
 
             catch (Exception e)
             {
@@ -97,7 +97,7 @@ namespace Nest.Controllers
                 return Forbid();
             }
 
-            TempData["Source"] = source; // Store source in TempData for later use in view
+            TempData["Source"] = source; //Store source in TempData for later use in view
             return View(comment);
         }
 
@@ -132,13 +132,13 @@ namespace Nest.Controllers
             bool success = await _CommentRepository.Edit(existingComment);
             if (success)
             {
-                // Redirect to the correct page based on the Source parameter
+                //Redirect to the correct page based on the Source parameter
                 return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid", "Picture");
             }
             else
             {
                 _logger.LogWarning("[CommentController] Could not update the comment.");
-                TempData["Source"] = source; // Preserve source value in case of update failure
+                TempData["Source"] = source; //Preserve source value in case of update failure
                 return View(updatedComment);
             }
         }
@@ -165,7 +165,7 @@ namespace Nest.Controllers
                 return Forbid();
             }
 
-            // Store the source in TempData for later use in the POST method.
+            //Store the source in TempData for later use in the POST method.
             TempData["Source"] = source;
 
             return View(comment);
@@ -195,11 +195,11 @@ namespace Nest.Controllers
             if (!success)
             {
                 _logger.LogError("[CommentController] Comment with Id {CommentId} was not deleted successfully", id);
-                TempData["Source"] = source; // Preserve source value in case of deletion failure
+                TempData["Source"] = source; //Preserve source value in case of deletion failure
                 return BadRequest("Comment not deleted");
             }
 
-            // Redirect to the correct page based on the Source parameter
+            //Redirect to the correct page based on the Source parameter
             return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid", "Picture");
         }
 
@@ -216,7 +216,7 @@ namespace Nest.Controllers
                 {
                     NoteId = noteId
                 };
-                TempData["Source"] = source; // Store the source in TempData for use after the comment is created.
+                TempData["Source"] = source; //Store the source in TempData for use after the comment is created.
                 return View(Comment);
             }
             catch (Exception e)
@@ -235,13 +235,13 @@ namespace Nest.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    comment.PictureId = null;  // Since this is for Note comments
+                    comment.PictureId = null;  //Since this is for Note comments
                     comment.CommentTime = DateTime.Now;
                     comment.UserName = _userManager.GetUserName(User);
 
                     await _CommentRepository.Create(comment);
 
-                    // Redirect based on source parameter
+                    //Redirect based on source parameter
                     if (source == "MyPage")
                     {
                         return RedirectToAction("MyPage", "Note");
@@ -284,7 +284,7 @@ namespace Nest.Controllers
                 return Forbid();
             }
 
-            TempData["Source"] = source; // Store source in TempData for later use in view
+            TempData["Source"] = source; //Store source in TempData for later use in view
             return View(comment);
         }
 
@@ -295,7 +295,7 @@ namespace Nest.Controllers
         {
             if (id != updatedComment.CommentId || !ModelState.IsValid)
             {
-                TempData["Source"] = source; // Preserve source value in case of validation error
+                TempData["Source"] = source; //Preserve source value in case of validation error
                 return View(updatedComment);
             }
 
@@ -313,20 +313,20 @@ namespace Nest.Controllers
                 return Forbid();
             }
 
-            // Update the comment content and timestamp
+            //Update the comment content and timestamp
             existingComment.CommentDescription = updatedComment.CommentDescription;
             existingComment.CommentTime = DateTime.Now;
 
             bool success = await _CommentRepository.Edit(existingComment);
             if (success)
             {
-                // Redirect to the correct page based on the Source parameter
+                //Redirect to the correct page based on the Source parameter
                 return RedirectToAction(source == "Notes" ? "Notes" : "MyPage", "Note", new { id = existingComment.NoteId });
             }
             else
             {
                 _logger.LogWarning("[CommentController] Could not update the comment.");
-                TempData["Source"] = source; // Preserve source value in case of update failure
+                TempData["Source"] = source; //Preserve source value in case of update failure
                 return View(updatedComment);
             }
         }
@@ -351,7 +351,7 @@ namespace Nest.Controllers
                 return Forbid();
             }
 
-            TempData["Source"] = source; // Store source in TempData for later use in view
+            TempData["Source"] = source; //Store source in TempData for later use in view
             return View(comment);
         }
 
@@ -383,7 +383,7 @@ namespace Nest.Controllers
 
             _logger.LogInformation("Comment with ID {CommentId} was deleted successfully", id);
 
-            // Redirect to the correct page based on the Source parameter
+            //Redirect to the correct page based on the Source parameter
             return RedirectToAction(source == "Notes" ? "Notes" : "MyPage", "Note");
         }
 
