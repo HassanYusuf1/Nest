@@ -9,24 +9,23 @@
 }
 
 .background-slide {
-  width: 100%; /* Ensure it covers the entire width */
-  height: 100vh; /* Ensure it covers the full height */
+  width: 100%; /* Ensure it covers the whole site */
+  height: 100vh;
   background-size: cover; /* Scale the image to fill the frame */
-  background-position: center 75%; /* Slightly lower than center, but higher than before */
+  background-position: center 75%; /* To find the best way to showcase the pictures*/
   background-repeat: no-repeat; /* Prevent tiling */
 }
 
 .carousel-fade .carousel-item {
   opacity: 0; /* Start fully transparent */
-  transition: opacity 2.5s ease-in-out; /* Smooth fade duration (adjustable) */
+  transition: opacity 2.5s ease-in-out; /* Fades the pictures*/
 }
 
 .carousel-fade .carousel-item.active {
   opacity: 1; /* Fully visible for the active slide */
-  transition: opacity 2.5s ease-in-out; /* Match the fade duration */
+  transition: opacity 2.5s ease-in-out; /* Matching the fade duration */
 }
 
-/* Foreground content styling */
 .foreground-content {
   position: relative;
   z-index: 1; /* Place it above the carousel */
