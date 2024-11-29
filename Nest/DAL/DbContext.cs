@@ -31,17 +31,17 @@ namespace Nest.DAL
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure the relationship between Comment and Note
+        //Configure the relationship between Comment and Note
         modelBuilder.Entity<Comment>()
             .HasOne(k => k.Note)
-            .WithMany(n => n.Comments) // Assuming Note has a collection of Comment
+            .WithMany(n => n.Comments) //Note has a collection of Comment
             .HasForeignKey(k => k.NoteId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Configure the relationship between Comment and Picture
+        //Configure the relationship between Comment and Picture
         modelBuilder.Entity<Comment>()
             .HasOne(k => k.Picture)
-            .WithMany(b => b.Comments) // Assuming Picture has a collection of Comment
+            .WithMany(b => b.Comments) //Picture has a collection of Comment
             .HasForeignKey(k => k.PictureId)
             .OnDelete(DeleteBehavior.Cascade);
     }

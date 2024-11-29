@@ -74,10 +74,10 @@ public class NoteRepository : INoteRepository
 
     public async Task<bool> Delete(int NoteId)
     {
-        var note = await _db.Notes.FindAsync(NoteId); // Find the Note object by its ID
+        var note = await _db.Notes.FindAsync(NoteId); 
         if (note != null)
         {
-            _db.Notes.Remove(note);  // Now pass the object to Remove, not the ID
+            _db.Notes.Remove(note);  
             await _db.SaveChangesAsync();
             return true;
         }
@@ -90,11 +90,11 @@ public class NoteRepository : INoteRepository
 
     public async Task<bool> DeleteConfirmed(int NoteId)
     {
-        var note = await _db.Notes.FindAsync(NoteId); // Use FindAsync to get the note by ID
+        var note = await _db.Notes.FindAsync(NoteId); 
         if (note != null)
         {
-            _db.Notes.Remove(note); // Remove the found note
-            await _db.SaveChangesAsync(); // Save changes
+            _db.Notes.Remove(note); 
+            await _db.SaveChangesAsync();  
             return true;
         }
         return false;

@@ -47,7 +47,7 @@ namespace Nest.Controllers
 
             var pictureViewModel = new PicturesViewModel(userPictures, "MyPage");
 
-            ViewData["IsMyPage"] = true; // Set flag to indicate it's MyPage
+            ViewData["IsMyPage"] = true; 
             return View("MyPage", pictureViewModel);
         }
 
@@ -76,7 +76,7 @@ namespace Nest.Controllers
                 return NotFound("Pictures not found");
             }
 
-            ViewData["IsMyPage"] = false; // Set IsMyPage flag to false for general feed (Grid)
+            ViewData["IsMyPage"] = false; 
             return View(pictureViewModel);
         }
 
@@ -143,7 +143,7 @@ namespace Nest.Controllers
                 return NotFound();
             }
 
-            ViewBag.Source = source; // Save source in ViewBag
+            ViewBag.Source = source; 
             return View("PictureDetails", picture);
         }
 
@@ -165,7 +165,7 @@ namespace Nest.Controllers
                 return Forbid();
             }
 
-            TempData["Source"] = source; // Store source in TempData
+            TempData["Source"] = source; //Store source in TempData for later use in view
             return View(picture);
         }
 
@@ -225,13 +225,13 @@ namespace Nest.Controllers
             bool success = await _pictureRepository.Edit(existingPicture);
             if (success)
             {
-                // Redirect to the correct page based on the Source parameter
+                // Redirect to the correct page 
                 return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
             }
             else
             {
                 _logger.LogWarning("[PictureController] Could not update the image.");
-                TempData["Source"] = source; // Preserve source value if the update fails
+                TempData["Source"] = source; //Store source in TempData for later use in view
                 return View(updatedPicture);
             }
         }
@@ -254,7 +254,7 @@ namespace Nest.Controllers
                 return Forbid();
             }
 
-            TempData["Source"] = source; // Store source in TempData
+            TempData["Source"] = source; //Store source in TempData for later use in view
             return View(picture);
         }
 
@@ -293,7 +293,7 @@ namespace Nest.Controllers
                 return BadRequest("Picture not deleted");
             }
 
-            // Redirect to the correct page based on the Source parameter
+            // Redirect to the correct page 
             return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
         }
 
@@ -307,7 +307,7 @@ namespace Nest.Controllers
                               .Select(file => "/images-carousel/" + Path.GetFileName(file))
                               .ToList();
 
-            return View(images); // Pass images to the view
+            return View(images); 
         }
     }
 }
