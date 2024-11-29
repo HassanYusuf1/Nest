@@ -3,11 +3,12 @@
 <div class="container-page">
     <h2 class="spaced-heading">My notes</h2>
     
-    <!-- Liste over mine notater -->
+    <!-- List over the users notes -->
     <div class="row mt-5">
         @foreach (var note in Model.Notes)
         {
-            <div class="col mb-4">  <!-- Change col-md-4 to ensure 3 notes per row -->
+            <div class="col mb-4">  
+                <!-- Uses NoteList from Shared -->
                 @await Html.PartialAsync("_NoteList", note)
             </div>
         }

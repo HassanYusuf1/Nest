@@ -17,7 +17,7 @@
 }
 
 .carousel-fade .carousel-item {
-  opacity: 0; /* Start fully transparent */
+  opacity: 0; /*transparent */
   transition: opacity 2.5s ease-in-out; /* Fades the pictures*/
 }
 

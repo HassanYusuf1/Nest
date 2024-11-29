@@ -2,6 +2,7 @@
 @{
     bool isMyPage = ViewBag.IsMyPage as bool? ?? false;
 }
+<!-- Comment section for all commentmodel under a picture -->
 <div class="comments-section">
     @foreach (var comment in Model)
     {
@@ -11,6 +12,7 @@
             <div class="text-muted">
                 <small>@comment.CommentTime.ToString("yyyy-MM-dd HH:mm")</small>
 
+                <!-- Show comments if its your comment and username match -->
                 @if (User.Identity?.Name == comment.UserName)
                 {
                     <span class="comment-actions ms-3">

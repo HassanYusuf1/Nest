@@ -52,7 +52,7 @@ public class CommentControllerTests
     [Fact]
     public async Task CreateCommentForPicture_SaveCommentInDB_Verifies()
     {
-        // Arrange
+        //Arrange
         var testComment = new Comment
         {
             CommentId = 1,
@@ -66,10 +66,10 @@ public class CommentControllerTests
             .Setup(repo => repo.Create(It.IsAny<Comment>()))
             .Returns(Task.CompletedTask); // Simulate repository behavior
 
-        // Act
+        //Act
         var result = await _controller.CreateComment(testComment);
 
-        // Assert
+        //Assert
         var redirectResult = Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Grid", redirectResult.ActionName); // Change "Grid" to the appropriate action name if needed
 
@@ -78,7 +78,7 @@ public class CommentControllerTests
                 n.PictureId == testComment.PictureId && n.NoteId == null)), Times.Once); //NoteId has to be null
     }
 
-     [Fact]
+    [Fact]
     public async Task CreateCommentForNotes_SaveCommentInDB_Verifies()
     {
         //Arrange

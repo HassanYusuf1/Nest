@@ -1,7 +1,7 @@
 @model Nest.Models.Note
 
 <h2>Edit Note</h2>
-
+<!-- Seperate page/form to Edit your note -->
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="NoteId" />
     <input type="hidden" name="source" value="@TempData["Source"]" /> <!-- Add hidden field for source -->

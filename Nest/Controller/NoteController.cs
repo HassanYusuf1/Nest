@@ -106,31 +106,31 @@ public class NoteController : Controller
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Create(Note note)
+    public async Task<IActionResult> Create(Note note) //Method for creating Note
     {
-        if (ModelState.IsValid)
+        if (ModelState.IsValid) //Check if note model is valid and correct
         {
             note.username = _userManager.GetUserName(User);
             note.UploadDate = DateTime.UtcNow;
             await _noteRepository.Create(note);
             return RedirectToAction(nameof(MyPage));
         }
-        _logger.LogWarning("[NoteController] Creating Note failed {@note}", note);
+        _logger.LogWarning("[NoteController] Creating Note failed {@note}", note); //Returns Error if not successful
         return View(note);
     }
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Edit(int id, string source = "Notes")
+    public async Task<IActionResult> Edit(int id, string source = "Notes") //Method for editing a note
     {
-        var note = await _noteRepository.GetNoteById(id);
+        var note = await _noteRepository.GetNoteById(id); //Retrieve the note based on noteId
         if (note == null)
         {
             _logger.LogError("[NoteController] Note not found for NoteId {NoteId}", id);
             return NotFound();
         }
 
-        var currentUserName = _userManager.GetUserName(User);
+        var currentUserName = _userManager.GetUserName(User); //Check for authentication
         if (note.username != currentUserName)
         {
             _logger.LogWarning("Unauthorized edit attempt by user {UserName} for note {NoteId}", currentUserName, id);
@@ -143,59 +143,58 @@ public class NoteController : Controller
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Edit(Note note, string source)
+    public async Task<IActionResult> Edit(Note note, string source) //Method for editing a note
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid) //Check if model is valid
         {
             TempData["Source"] = source; 
             _logger.LogWarning("[NoteController] Note update failed due to invalid ModelState {@note}", note);
             return View(note);
         }
 
-        var existingNote = await _noteRepository.GetNoteById(note.NoteId);
+        var existingNote = await _noteRepository.GetNoteById(note.NoteId); //Retrieve the note based on noteId
         if (existingNote == null)
         {
             _logger.LogError("[NoteController] Note not found for update. NoteId: {NoteId}", note.NoteId);
             return NotFound();
         }
 
-        var currentUserName = _userManager.GetUserName(User);
+        var currentUserName = _userManager.GetUserName(User); //Check for authentication
         if (existingNote.username != currentUserName)
         {
             _logger.LogWarning("Unauthorized update attempt by user {UserName} for note {NoteId}", currentUserName, note.NoteId);
             return Forbid();
         }
-
-        existingNote.Title = note.Title;
+        //Sets the existing note's attributes to new changes including edited date/time
+        existingNote.Title = note.Title;        
         existingNote.Content = note.Content;
         existingNote.UploadDate = DateTime.Now;
 
-        await _noteRepository.Edit(existingNote);
+        await _noteRepository.Edit(existingNote); //Edits in the database
 
-        // Redirect to the correct page 
+        //Redirect to the correct page 
         return RedirectToAction(source == "MyPage" ? "MyPage" : "Notes");
     }
 
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Notes()
+    public async Task<IActionResult> Notes() //Shows all the notes
     {
         var notes = await _noteRepository.GetAll() ?? Enumerable.Empty<Note>();
-        var notesViewModel = new NotesViewModel(notes, "Notes");
+        var notesViewModel = new NotesViewModel(notes, "Notes"); //Uses ViewModel
         if (notes == null)
         {
             _logger.LogError("[NoteController] Note List not found when running _noteRepository.GetAll()");
             return NotFound("Note List not found.");
         }
 
-
         ViewData["IsMyPage"] = false; //Set the source for general feed
 
         return View(notesViewModel);
     }
 
-    [HttpGet]
+    [HttpGet] //Method for getting into detailed view for the note
     public async Task<IActionResult> Details(int id, string source = "Notes")
     {
         var note = await _noteRepository.GetNoteById(id);
@@ -205,7 +204,7 @@ public class NoteController : Controller
             return NotFound("Note not found for the NoteId");
         }
 
-        ViewBag.Source = source; 
+        ViewBag.Source = source; //Saves the source via Viewbag
         return View("Details", note);
     }
 

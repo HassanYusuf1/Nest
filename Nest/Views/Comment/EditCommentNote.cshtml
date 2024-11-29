@@ -1,10 +1,10 @@
 @model Nest.Models.Comment
-
+<!-- Seperate page/form to Edit your comment for NoteId -->
 <h2>Edit Comment</h2>
 
 <form asp-action="EditCommentNote" asp-route-id="@Model.CommentId" method="post">
     <input type="hidden" asp-for="CommentId" /> <!-- Hidden field for CommentId -->
-    <input type="hidden" name="source" value="@TempData["Source"]" /> <!-- Hidden field for Source -->
+    <input type="hidden" name="source" value="@TempData["Source"]" /> 
 
     <div class="form-group">
         <label for="CommentDescription">Comment</label>

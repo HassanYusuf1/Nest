@@ -1,3 +1,5 @@
+/*TITLE H1*/
+
 h1 {
   font-size: 2.5rem;
   font-family: "Helvetica", "Arial", sans-serif;
@@ -23,6 +25,8 @@ h1::after {
 h1:hover::after {
   width: 80%;
 }
+
+/*HOMEPAGE AND LOGIN START PAGE */
 
 body.home-page {
   background: linear-gradient(
@@ -151,7 +155,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom {
   border-color: #5d4037;
 }
 
-/*navigation links/bar*/
+/*NAVIGATION links/bar*/
 
 .more-space-between {
   margin-right: 200px;
@@ -189,6 +193,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom {
 .margin-left {
   margin-left: 50px;
 }
+
+/*PICTURE CARD AND SITEWIDE CSS  */
 
 .picture-navbar {
   background-color: #f0f0f0;
@@ -326,7 +332,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom {
   padding: 4px 12px;
 }
 
-/* Notes Page */
+/* NOTE PAGE AND CARD */
 
 .notes-card {
   background-color: #ffffff;
@@ -367,7 +373,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom {
   color: #777;
 }
 
-/* Knapper for redigering og sletting */
+/* NOTE BUTTONS */
 .notes-btn {
   display: inline-block;
   padding: 8px 12px;
@@ -396,7 +402,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom {
   background-color: #c82333;
 }
 
-/* Footer for kommentarer */
+/* COMMENT FOOTER */
 .notes-card-footer {
   padding: 16px;
   background-color: #f9f9f9;
@@ -408,7 +414,7 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.border-bottom {
   margin-bottom: 12px;
 }
 
-/* Kommentarform og input-grupper */
+/* COMMENT-FORMS AND INPUTS */
 .notes-comment-form {
   margin-top: 12px;
 }

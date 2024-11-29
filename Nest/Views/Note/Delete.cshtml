@@ -1,7 +1,7 @@
 @model Nest.Models.Note
 
 <h2>Delete Note</h2>
-
+<!-- Delete note page to make sure you dont missclick delete -->
 <h3>Are you sure you want to delete this Note?</h3>
 <div>
     <h4>Note</h4>
@@ -18,7 +18,7 @@
     </dl>
 
     <form asp-action="DeleteConfirmed" asp-route-id="@Model.NoteId" method="post">
-        <input type="hidden" name="source" value="@TempData["Source"]" /> <!-- Add hidden field for source -->
+        <input type="hidden" name="source" value="@TempData["Source"]" />
 
         <button type="submit" class="btn btn-danger">Delete</button>
         <a href="@((TempData["Source"] as string) == "MyPage" ? Url.Action("MyPage", "Note") : Url.Action("Notes", "Note"))" class="btn btn-secondary">Cancel</a> <!-- Redirect based on source -->

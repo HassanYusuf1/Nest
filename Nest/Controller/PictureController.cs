@@ -27,25 +27,25 @@ namespace Nest.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> MyPage()
+        public async Task<IActionResult> MyPage()  //Showing users pictures
         {
-            var currentUserName = _userManager.GetUserName(User);
+            var currentUserName = _userManager.GetUserName(User); //Check for authentication
             if (string.IsNullOrEmpty(currentUserName))
             {
                 _logger.LogError("[PictureController] Current user is null or empty when accessing MyPage.");
                 return Unauthorized();
             }
 
-            var allPictures = await _pictureRepository.GetAll();
+            var allPictures = await _pictureRepository.GetAll(); //Retrieve pictures based on username
             if (allPictures == null)
             {
                 _logger.LogError("[PictureController] Could not retrieve images for user {UserName}", currentUserName);
                 allPictures = Enumerable.Empty<Picture>();
             }
 
-            var userPictures = allPictures.Where(b => b.UserName == currentUserName).ToList();
+            var userPictures = allPictures.Where(b => b.UserName == currentUserName).ToList(); //filters for user
 
-            var pictureViewModel = new PicturesViewModel(userPictures, "MyPage");
+            var pictureViewModel = new PicturesViewModel(userPictures, "MyPage"); //Uses ViewModel 
 
             ViewData["IsMyPage"] = true; 
             return View("MyPage", pictureViewModel);
@@ -65,12 +65,12 @@ namespace Nest.Controllers
             return View(pictureViewModel);
         }
 
-        public async Task<IActionResult> Grid()
+        public async Task<IActionResult> Grid() //Feed for pictures
         {
-            var pictures = await _pictureRepository.GetAll() ?? Enumerable.Empty<Picture>();
+            var pictures = await _pictureRepository.GetAll() ?? Enumerable.Empty<Picture>(); //Retrieve all pictures in database
             var pictureViewModel = new PicturesViewModel(pictures, "Picture");
 
-            if (pictures == null)
+            if (pictures == null) //If no pictures are in the database
             {
                 _logger.LogError("[PictureController] Picture list, not found.");
                 return NotFound("Pictures not found");
@@ -82,46 +82,46 @@ namespace Nest.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Create()
+        public IActionResult Create() //Method for creating a picture
         {
             return View();
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(Picture newImage, IFormFile PictureUrl)
+        public async Task<IActionResult> Create(Picture newImage, IFormFile PictureUrl) //Method for creating a picture
         {
             var time = DateTime.Now;
-            newImage.UploadDate = time;
+            newImage.UploadDate = time; //Sets the time and date it was created
 
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) //Has to be a valid model
             {
                 return View(newImage);
             }
 
-            var UserName = _userManager.GetUserName(User);
+            var UserName = _userManager.GetUserName(User); //Check for authentication
             newImage.UserName = UserName;
 
             if (PictureUrl != null && PictureUrl.Length > 0)
             {
-                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images"); //Choosing path which is wwwroot
                 if (!Directory.Exists(uploadsFolder))
                 {
-                    Directory.CreateDirectory(uploadsFolder);
+                    Directory.CreateDirectory(uploadsFolder); //If image directory does not exist, it gets created
                 }
 
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(PictureUrl.FileName);
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName); //Make sure the filename is unique 
 
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                using (var fileStream = new FileStream(filePath, FileMode.Create)) //downloads the file
                 {
                     await PictureUrl.CopyToAsync(fileStream);
                 }
 
-                newImage.PictureUrl = "/images/" + uniqueFileName;
+                newImage.PictureUrl = "/images/" + uniqueFileName; //Finally saves
             }
 
-            bool success = await _pictureRepository.Create(newImage);
+            bool success = await _pictureRepository.Create(newImage); //Returns true if created successfully
             if (success)
             {
                 return RedirectToAction(nameof(MyPage));
@@ -134,9 +134,9 @@ namespace Nest.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id, string source = "Grid")
+        public async Task<IActionResult> Details(int id, string source = "Grid") //Method to redirect to specified picture post
         {
-            var picture = await _pictureRepository.PictureId(id);
+            var picture = await _pictureRepository.PictureId(id); //finds the picture by its id
             if (picture == null)
             {
                 _logger.LogError("[PictureController] picture id not found");
@@ -149,16 +149,16 @@ namespace Nest.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, string source = "Grid")
+        public async Task<IActionResult> Edit(int id, string source = "Grid") //Method for editing a pictures description and title
         {
-            var picture = await _pictureRepository.PictureId(id);
+            var picture = await _pictureRepository.PictureId(id); //finds chosen picture
             if (picture == null)
             {
                 _logger.LogError("The image with id {PictureId} was not found", id);
                 return NotFound();
             }
 
-            var currentUserName = _userManager.GetUserName(User);
+            var currentUserName = _userManager.GetUserName(User); //Check for authentication
             if (picture.UserName != currentUserName)
             {
                 _logger.LogWarning("Unauthorized edit attempt by user {UserId} for image {PictureId}", currentUserName, id);
@@ -171,11 +171,11 @@ namespace Nest.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, Picture updatedPicture, IFormFile? newPictureUrl, string source)
+        public async Task<IActionResult> Edit(int id, Picture updatedPicture, IFormFile? newPictureUrl, string source) //Method for editing a pictures description and title
         {
-            if (id != updatedPicture.PictureId || !ModelState.IsValid)
+            if (id != updatedPicture.PictureId || !ModelState.IsValid) //Has to be a valid model
             {
-                TempData["Source"] = source; // Preserve source value in case of validation error
+                TempData["Source"] = source; //Preserve source value in case of validation error
                 return View(updatedPicture);
             }
 
@@ -186,18 +186,18 @@ namespace Nest.Controllers
                 return NotFound();
             }
 
-            var currentUserName = _userManager.GetUserName(User);
+            var currentUserName = _userManager.GetUserName(User); //Check for authentication
             if (existingPicture.UserName != currentUserName)
             {
                 _logger.LogWarning("Unauthorized edit attempt by user {UserName} for image {PictureId}", currentUserName, id);
                 return Forbid();
             }
 
-            // Update title and description
+            //Update title and description
             existingPicture.Title = updatedPicture.Title;
             existingPicture.Description = updatedPicture.Description;
 
-            // Update the image if a new one is uploaded
+            //Update the image if a new one is uploaded
             if (newPictureUrl != null && newPictureUrl.Length > 0)
             {
                 string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
@@ -209,7 +209,7 @@ namespace Nest.Controllers
                     await newPictureUrl.CopyToAsync(fileStream);
                 }
 
-                // Delete the old image
+                //Delete the old image
                 if (!string.IsNullOrEmpty(existingPicture.PictureUrl))
                 {
                     string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingPicture.PictureUrl.TrimStart('/'));
@@ -225,7 +225,7 @@ namespace Nest.Controllers
             bool success = await _pictureRepository.Edit(existingPicture);
             if (success)
             {
-                // Redirect to the correct page 
+                //Redirect to the correct page 
                 return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
             }
             else
@@ -238,16 +238,16 @@ namespace Nest.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Delete(int id, string source = "Grid")
+        public async Task<IActionResult> Delete(int id, string source = "Grid") //Method for deleting a picture post
         {
-            var picture = await _pictureRepository.PictureId(id);
+            var picture = await _pictureRepository.PictureId(id); //Finds which picture to delete
             if (picture == null)
             {
                 _logger.LogError("[PictureController] picture with Id not found {id}", id);
                 return NotFound();
             }
 
-            var currentUserName = _userManager.GetUserName(User);
+            var currentUserName = _userManager.GetUserName(User); //Check for authentication
             if (picture.UserName != currentUserName)
             {
                 _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
@@ -260,16 +260,16 @@ namespace Nest.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> DeleteConfirmed(int id, string source)
+        public async Task<IActionResult> DeleteConfirmed(int id, string source) //Method for deleting a picture post
         {
-            var picture = await _pictureRepository.PictureId(id);
+            var picture = await _pictureRepository.PictureId(id); //Finds which picture to delete
             if (picture == null)
             {
                 _logger.LogError("[PictureController] picture with Id not found {id}", id);
                 return NotFound();
             }
 
-            var currentUserName = _userManager.GetUserName(User);
+            var currentUserName = _userManager.GetUserName(User); //Check for authentication
             if (picture.UserName != currentUserName)
             {
                 _logger.LogWarning("Unauthorized delete attempt by user {UserName} for image {PictureId}", currentUserName, id);
@@ -280,20 +280,20 @@ namespace Nest.Controllers
             {
                 string fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picture.PictureUrl.TrimStart('/'));
 
-                if (FileUtil.FileExists(fullPath))
+                if (FileUtil.FileExists(fullPath)) //Checking for filepath and deletes if found
                 {
                     FileUtil.FileDelete(fullPath);
                 }
             }
 
-            bool success = await _pictureRepository.Delete(id);
+            bool success = await _pictureRepository.Delete(id); //Returns true if deleted successfully
             if (!success)
             {
                 _logger.LogError("[PictureController] picture not deleted with {Id}", id);
                 return BadRequest("Picture not deleted");
             }
 
-            // Redirect to the correct page 
+            //Redirect to the correct page 
             return RedirectToAction(source == "MyPage" ? "MyPage" : "Grid");
         }
 

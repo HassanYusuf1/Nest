@@ -1,6 +1,4 @@
-/*Picture grid*/
-
-/* Center the container and set a max width */
+/* CONTAINER AND MAIN CSS, MOSTLY PICTURE CSS */
 .container-page {
   max-width: 1000px;
   margin: 0 auto;
@@ -67,6 +65,8 @@
   margin-top: 5px;
 }
 
+/*CSS FOR THE COMMENTS CONTENT  */
+
 .comments {
   padding: 10px;
   border-top: 1px solid #dbdbdb;
@@ -101,7 +101,7 @@
 .comment-form button:hover {
   background-color: #007bb5;
 }
-/* Slett-knapp stil */
+/* DELETE BUTTON */
 .btn-delete {
   background-color: #ff4d4d; /* Rød farge for slett-knappen */
   color: white;
@@ -115,6 +115,8 @@
 .btn-delete:hover {
   background-color: #e60000; /* Endrer fargen når man hover over knappen */
 }
+
+/*ADJUSTMENTS TO BOOTSTRAP FOR NOTE AND PICTURE CARD  */
 .picture-feed-card {
   background-color: #fff;
   border: 1px solid #dbdbdb;
@@ -177,7 +179,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Title and text styling */
+/* TITLE AND TEXT FOR NOTES */
 .note-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -196,7 +198,7 @@
   line-height: 1.6;
 }
 
-/* Button styling */
+/* MORE BUTTONS */
 .note-actions .btn {
   margin-right: 5px;
   font-size: 0.85rem;
@@ -214,7 +216,7 @@
   color: #fff;
 }
 
-/* Comments section styling */
+/* COMMENT SECTION STYLING FOR PICTURE*/
 .comments-section {
   background-color: #f8f9fa;
   padding: 10px;
