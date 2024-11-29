@@ -54,7 +54,7 @@ namespace Nest.Controllers
         [HttpGet]
         public async Task<IActionResult> Picture()
         {
-            var pictures = await _pictureRepository.GetAll();
+            var pictures = await _pictureRepository.GetAll() ?? Enumerable.Empty<Picture>();
             var pictureViewModel = new PicturesViewModel(pictures, "Picture");
 
             if (pictures == null)
@@ -67,7 +67,7 @@ namespace Nest.Controllers
 
         public async Task<IActionResult> Grid()
         {
-            var pictures = await _pictureRepository.GetAll();
+            var pictures = await _pictureRepository.GetAll() ?? Enumerable.Empty<Picture>();
             var pictureViewModel = new PicturesViewModel(pictures, "Picture");
 
             if (pictures == null)

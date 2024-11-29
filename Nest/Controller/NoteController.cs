@@ -181,7 +181,7 @@ public class NoteController : Controller
     [Authorize]
     public async Task<IActionResult> Notes()
     {
-        var notes = await _noteRepository.GetAll();
+        var notes = await _noteRepository.GetAll() ?? Enumerable.Empty<Note>();
         var notesViewModel = new NotesViewModel(notes, "Notes");
         if (notes == null)
         {
