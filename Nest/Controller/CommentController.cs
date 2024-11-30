@@ -206,7 +206,6 @@ namespace Nest.Controllers
         [Authorize]
         public IActionResult CreateCommentNote(int noteId, string source = "Notes") //Method for creating comment for note
         {
-        {
             try
             {
                 var Comment = new Comment
@@ -382,7 +381,9 @@ namespace Nest.Controllers
 
             //Redirect to the correct page based on the Source parameter
             return RedirectToAction(source == "Notes" ? "Notes" : "MyPage", "Note");
+
         }
+        
 
 
     }
